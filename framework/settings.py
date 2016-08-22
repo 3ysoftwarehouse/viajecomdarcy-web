@@ -56,8 +56,8 @@ CUSTOM_APPS = [
     'apps.default', 
     
     # SUBCLASS APPS
-    'apps.subclasses.empresa',
-    'apps.subclasses.usuario',
+    'apps.subclasses.empresa.startup',
+    'apps.subclasses.usuario.employee',
 ]
 INSTALLED_APPS = DJANGO_APPS + CUSTOM_APPS
 
