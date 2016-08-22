@@ -1,0 +1,142 @@
+{% extends "default/panel/layout.html" %} 
+
+{% block page_info %}
+   <li>
+     <b>Cliente</b>
+   </li>
+   <li>
+     <a class="active">Detalhes</a>
+   </li>
+{% endblock %}
+
+{% block content %}
+   <div class="bg-white">
+      <!-- START PANEL -->
+      <div class="panel panel-transparent">
+         <div class="panel-heading">
+            <div class="panel-title">
+               Cliente
+            </div>
+            <div class="row">
+
+                  <!-- BASIC DATA -->
+                  <div class="col-lg-12 col-md-12 ">
+                     <!-- START PANEL -->
+                     <div class="panel panel-transparent">
+                        <div class="panel-body">
+                           <div class="row clearfix">
+                              <div class="col-sm-12">
+                                 <div class="form-group form-group-default required" aria-required="true">
+                                    <label>Nome</label>
+                                    {{object.usuario.nomecompleto}}
+                                 </div>
+                              </div>
+                              <div class="col-sm-6">
+                                 <div class="form-group form-group-default">
+                                    <label>Data de Emissão do RG</label>
+                                    {{object.dt_emissao_rg}}
+                                 </div>
+                              </div>
+                              <div class="col-sm-6">
+                                 <div class="form-group form-group-default">
+                                    <label>Tempo de residência</label>
+                                    {{object.tempo_residencia}}
+                                 </div>
+                              </div>
+                              <div class="col-sm-6">
+                                 <div class="form-group form-group-default">
+                                    <label>Empresa</label>
+                                    {{object.empresa}}
+                                 </div>
+                              </div>
+                              <div class="col-sm-6">
+                                 <div class="form-group form-group-default">
+                                    <label>CEP da Empresa</label>
+                                    {{object.cep}}
+                                 </div>
+                              </div>
+                              <div class="col-sm-6">
+                                 <div class="form-group form-group-default">
+                                    <label>Endereço da Empresa</label>
+                                    {{object.endereco}}
+                                 </div>
+                              </div>
+                              <div class="col-sm-6">
+                                 <div class="form-group form-group-default">
+                                    <label>Telefone da Empresa</label>
+                                    {{object.telefone}}
+                                 </div>
+                              </div>
+                              <div class="col-sm-6">
+                                 <div class="form-group form-group-default">
+                                    <label>Data de admissão</label>
+                                    {{object.dt_admissao}}
+                                 </div>
+                              </div>
+                              <div class="col-sm-6">
+                                 <div class="form-group form-group-default">
+                                    <label>Cargo ou Função</label>
+                                    {{object.cargo}}
+                                 </div>
+                              </div>
+                              <div class="col-sm-6">
+                                 <div class="form-group form-group-default">
+                                    <label>Renda Principal</label>
+                                    {{object.principal_renda}}
+                                 </div>
+                              </div>
+                              <div class="col-sm-6">
+                                 <div class="form-group form-group-default">
+                                    <label>Outras Rendas</label>
+                                    {{object.outra_renda}}
+                                 </div>
+                              </div>
+                              <div class="col-sm-6">
+                                 <div class="form-group form-group-default">
+                                    <label>Patrimônio</label>
+                                    {{object.patrimonio}}
+                                 </div>
+                              </div>
+                              <div class="col-sm-6">
+                                 <div class="form-group form-group-default">
+                                    <label>Banco onde tem conta</label>
+                                    {{object.banco}}
+                                 </div>
+                              </div>
+                              <div class="col-sm-6">
+                                 <div class="form-group form-group-default">
+                                    <label>Agência</label>
+                                    {{object.agencia}}
+                                 </div>
+                              </div>
+                              <div class="col-sm-6">
+                                 <div class="form-group form-group-default">
+                                    <label>Conta</label>
+                                    {{object.conta}}
+                                 </div>
+                              </div>
+                              <div class="col-sm-6">
+                                 <div class="form-group form-group-default">
+                                    <label>Cliente do bancos desde</label>
+                                    {{object.dt_banco}}
+                                 </div>
+                              </div>
+                              <div class="col-sm-6">
+                                 <div class="form-group form-group-default">
+                                    <label>Telefone do banco</label>
+                                    {{object.telefone_banco}}
+                                 </div>
+                              </div>
+                           </div>
+                           
+                        </div>
+                     </div>
+                     <!-- END PANEL -->
+                  </div>
+                  <!-- END BASIC DATA -->                 
+            </div>
+         </div>
+      </div>
+      <!-- END PANEL -->
+   </div>
+{% endblock %}
