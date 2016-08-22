@@ -1,0 +1,94 @@
+{% extends "default/panel/layout.html" %} 
+{% load staticfiles %}
+
+{% block css %}
+ 
+{% endblock %}
+
+{% block page_info %}
+    <li>
+      <a class="active">Cliente</a>
+    </li>
+{% endblock %}
+
+{% block content %}
+<div class="panel panel-transparent">
+  <div class="panel-heading">
+    <div class="panel-title fs-16">
+      Cliente
+    </div>
+    <div class="btn-group pull-right m-b-10">
+      <a class="btn btn-default" href="/framework/dashboard/cliente/register/" type="button">Cadastrar</a>
+    </div>
+    <div class="pull-right">
+      <div class="col-xs-12">
+        <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div class="panel-body">
+   <table class="table table-hover table-condensed table-responsive" id="tableWithSearch">
+        <thead>
+          <tr>
+             <th style="width:1%">
+                <button class="btn">
+                <i class="pg-trash"></i>
+                </button>
+             </th>
+             <th style="width:20%">Nome</th>
+             <th style="width:20%">Empresa</th>
+             <th style="width:20%">Telefone da empresa</th>
+             <th style="width:20%">Cargo</th>
+             <th style="width:20%">Renda Principal</th>
+             <th style="width:15%">Opções</th>
+          </tr>
+       </thead>
+       <tbody>
+          {% for cliente in object_list %}
+          <tr>
+             <td class="v-align-middle">
+                <div class="checkbox ">
+                   <input type="checkbox" value="1" id="checkbox1">
+                   <label for="checkbox1"></label>
+                </div>
+             </td>
+             <td class="v-align-middle ">
+                <p>{{cliente.usuario.nomecompleto}}</p>
+             </td>
+             <td class="v-align-middle">
+                <p>{{cliente.empresa}}</p>
+             </td>   
+             <td class="v-align-middle">
+                <p>{{cliente.telefone_empresa}}</p>
+             </td>    
+             <td class="v-align-middle">
+                <p>{{cliente.cargo}}</p>
+             </td>   
+             <td class="v-align-middle">
+                <p>{{cliente.principal_renda}}</p>
+             </td>            
+             <td class="v-align-middle">
+                <a href="/framework/dashboard/cliente/detail/{{cliente.pk}}">
+                <i class="pg-search"></i>
+                </a>
+                <a href="/framework/dashboard/cliente/edit/{{cliente.pk}}">
+                <i class="pg-settings"></i>
+                </a>
+                {% if request.user.id_usuario != usuario.id_usuario %}
+                <a href="/framework/dashboard/cliente/delete/{{cliente.usuario.pk}}">
+                <i class="pg-eraser"></i>
+                </a>
+                {% endif %}
+             </td>
+          </tr>
+          {% endfor %}
+       </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+  
+{% endblock %}

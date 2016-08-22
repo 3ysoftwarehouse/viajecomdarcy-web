@@ -1,0 +1,82 @@
+{% extends "default/panel/layout.html" %} 
+{% load staticfiles %}
+
+{% block css %}
+ 
+{% endblock %}
+
+{% block page_info %}
+    <li>
+      <a class="active">Funcionário</a>
+    </li>
+{% endblock %}
+
+{% block content %}
+<div class="panel panel-transparent">
+  <div class="panel-heading">
+    <div class="panel-title fs-16">
+      Funcionário
+    </div>
+    <div class="btn-group pull-right m-b-10">
+      <a class="btn btn-default" href="/framework/dashboard/employee/register/" type="button">Cadastrar</a>
+    </div>
+    <div class="pull-right">
+      <div class="col-xs-12">
+        <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div class="panel-body">
+   <table class="table table-hover table-condensed table-responsive" id="tableWithSearch">
+        <thead>
+          <tr>
+             <th style="width:1%">
+                <button class="btn">
+                <i class="pg-trash"></i>
+                </button>
+             </th>
+             <th style="width:20%">Nome</th>
+             <th style="width:20%">matricula</th>
+             <th style="width:15%">Opções</th>
+          </tr>
+       </thead>
+       <tbody>
+          {% for passageiro in object_list %}
+          <tr>
+             <td class="v-align-middle">
+                <div class="checkbox ">
+                   <input type="checkbox" value="1" id="checkbox1">
+                   <label for="checkbox1"></label>
+                </div>
+             </td>
+             <td class="v-align-middle ">
+                <p>{{passageiro.id_usuario.nomecompleto}}</p>
+             </td>
+             <td class="v-align-middle">
+                <p>{{passageiro.matricula}}</p>
+             </td>                       
+             <td class="v-align-middle">
+                <a href="/framework/dashboard/passageiro/detail/{{passageiro.pk}}">
+                <i class="pg-search"></i>
+                </a>
+                <a href="/framework/dashboard/passageiro/edit/{{passageiro.pk}}">
+                <i class="pg-settings"></i>
+                </a>
+                {% if request.user.id_usuario != usuario.id_usuario %}
+                <a href="/framework/dashboard/passageiro/delete/{{passageiro.id_usuario.pk}}">
+                <i class="pg-eraser"></i>
+                </a>
+                {% endif %}
+             </td>
+          </tr>
+          {% endfor %}
+       </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+  
+{% endblock %}
