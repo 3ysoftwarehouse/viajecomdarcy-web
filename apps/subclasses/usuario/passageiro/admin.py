@@ -9,8 +9,8 @@ from django.contrib import admin
 ##################################################
 #				CUSTOM IMPORTS                   #
 ##################################################
-from .models import Escola
+from .models import Passageiro
 ##################################################
 
 # Registra as alteracoes no painel admin
-admin.site.register(Escola)
+admin.site.register(Passageiro)
