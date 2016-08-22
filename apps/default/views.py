@@ -312,8 +312,10 @@ class UserRegister(JSONResponseMixin,View):
 
 			else:
 				form = UserRegisterForm(request.POST)
+				PhoneFormSet = formset_factory(PhoneForm)		
+				formset = PhoneFormSet(request.POST, request.FILES)
 
-		return render(request, 'default/user/register.html', {'form': form, 'formset':formset})
+		return render(request, 'default/user/register.html', {'form': form, 'formset':formset, 'context':context})
 
 
 class UserEdit(JSONResponseMixin,View):
@@ -499,8 +501,10 @@ class UserEdit(JSONResponseMixin,View):
 
 			else:
 				form = UserRegisterForm(request.POST)
+				PhoneFormSet = formset_factory(PhoneForm)		
+				formset = PhoneFormSet(request.POST, request.FILES)
 
-		return render(request, 'default/user/edit.html', {'form': form, 'formset':formset})
+		return render(request, 'default/user/edit.html', {'form': form, 'formset':formset, 'context':context})
 
 
 class UserList(JSONResponseMixin,ListView):
@@ -712,8 +716,9 @@ class CompanyRegister(JSONResponseMixin,View):
 				return redirect(reverse_lazy("company-list"))
 
 		else:
-			form = CompanyRegisterForm()
-			formset = formset_factory(PhoneForm)
+			PhoneFormSet = formset_factory(PhoneForm)		
+			formset = PhoneFormSet(request.POST, request.FILES)
+			form = CompanyRegisterForm(request.POST)
 
 		return render(request, 'default/company/register.html', {'form': form, 'formset':formset ,'context':context})
 
@@ -889,7 +894,6 @@ class CompanyEdit(JSONResponseMixin,View):
 			form = CompanyRegisterForm(request.POST)
 
 		return render(request, 'default/company/edit.html', {'form': form,'formset':formset,'context':context})
-
 
 
 class CompanyList(JSONResponseMixin,ListView):

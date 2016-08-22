@@ -187,7 +187,9 @@ class EmployeeRegister(JSONResponseMixin,View):
 				return redirect(reverse_lazy("employee-list"))
 
 			else:
-				form = EmployeeRegisterForm(request.POST)
+				form = EmployeeRegisterForm(request.POST,request.FILES)
+				PhoneFormSet = formset_factory(PhoneForm)		
+				formset = PhoneFormSet(request.POST, request.FILES)
 
 		return render(request, 'subclasses/usuario/employee/register.html', {'form': form, 'formset':formset})
 
@@ -390,6 +392,7 @@ class EmployeeEdit(JSONResponseMixin,View):
 				formset = PhoneFormSet(request.POST, request.FILES)
 
 		return render (request, 'subclasses/usuario/employee/edit.html', {'form':form ,'formset':formset,'context':context})
+
 
 
 class EmployeeList(JSONResponseMixin,ListView):
