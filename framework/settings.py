@@ -157,9 +157,9 @@ WSGI_APPLICATION = 'framework.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'framework',
+        'NAME': 'viajecomdarcy',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': 'framework',
         'HOST': ''
     }
 }
