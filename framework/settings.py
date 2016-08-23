@@ -158,7 +158,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'viajecomdarcy',
         'USER': 'root',
-        'PASSWORD': 'manohacker',
+        'PASSWORD': 'framework',
         'HOST': ''
     }
 }
