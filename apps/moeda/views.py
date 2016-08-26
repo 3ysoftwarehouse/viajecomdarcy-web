@@ -53,7 +53,7 @@ class MoedaDetail(JSONResponseMixin,DetailView):
 	template_name = 'moeda/detail.html'
 
 	def get_context_data(self, **kwargs):
-		context = super(UserDetail, self).get_context_data(**kwargs)
+		context = super(MoedaDetail, self).get_context_data(**kwargs)
 		return context
 
 

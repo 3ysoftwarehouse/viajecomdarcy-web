@@ -3,10 +3,10 @@
 
 {% block page_info %}
   <li>
-     <b>Empresa</b>
+     <b>Moeda</b>
   </li>
   <li>
-     <a class="active">Editar</a>
+     <a class="active">Cadastro</a>
   </li>
 {% endblock %}
 
@@ -29,8 +29,8 @@
          <h5>
             Pages default style
          </h5>
-         {% csrf_token %}
-         <form class="" role="form">
+         <form autocomplete="off"  method="post" enctype="multipart/form-data" role="form" id="form-personal" novalidate="novalidate">
+            {% csrf_token %}
             <div class="form-group form-group-default required">
                <label>Nome</label>
                {{form.moeda_desc}}
