@@ -56,12 +56,13 @@ CUSTOM_APPS = [
     'apps.default', 
     
     # SUBCLASS APPS
-    'apps.subclasses.empresa.startup',
+    #'apps.subclasses.empresa.startup',
     'apps.subclasses.empresa.escola',
     'apps.subclasses.empresa.agencia',
-    'apps.subclasses.usuario.employee',
+    #'apps.subclasses.usuario.employee',
     'apps.subclasses.usuario.cliente',
     'apps.subclasses.usuario.passageiro',
+    'apps.subclasses.usuario.emissor',
 ]
 INSTALLED_APPS = DJANGO_APPS + CUSTOM_APPS
 
@@ -160,7 +161,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'viajecomdarcy',
         'USER': 'root',
-        'PASSWORD': 'framework',
+        'PASSWORD': '⁠⁠⁠framework',
         'HOST': ''
     }
 }
