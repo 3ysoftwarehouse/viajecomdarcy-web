@@ -27,10 +27,10 @@
       </div>
       <div class="panel-body">
          <h5>
-            Pages default style - {{form.errors}}
+            Pages default style
          </h5>
-         {% csrf_token %}
          <form autocomplete="off"  method="post" enctype="multipart/form-data" role="form" id="form-personal" novalidate="novalidate">
+            {% csrf_token %}
             <div class="form-group form-group-default required">
                <label>Nome</label>
                {{form.moeda_desc}}
