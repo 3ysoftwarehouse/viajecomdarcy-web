@@ -178,7 +178,7 @@ class AgenciaRegister(JSONResponseMixin,View):
 
 				# EXTRAS
 				agencia = Agencia()
-				agencia.empresa = empresa
+				agencia.id_empresa = empresa
 				agencia.save()
 					
 				return redirect(reverse_lazy("agencia-list"))
@@ -194,7 +194,7 @@ class AgenciaRegister(JSONResponseMixin,View):
 class AgenciaEdit(JSONResponseMixin,View):
 	def get(self, request, pk=None):
 		agencia = Agencia.objects.get(pk=pk)
-		empresa = Empresa.objects.get(pk=agencia.empresa.pk)
+		empresa = Empresa.objects.get(pk=agencia.id_empresa.pk)
 		telefones = TelefoneEmpresa.objects.filter(id_empresa=empresa.pk)
 
 		
@@ -210,23 +210,23 @@ class AgenciaEdit(JSONResponseMixin,View):
 			initial=data
 			)
 
-		form = StartupRegisterForm(
+		form = AgenciaRegisterForm(
 			initial={
-			'razaosocial': agencia.empresa.razaosocial,
-			'nomefantasia': agencia.empresa.nomefantasia,
-			'cnpj': agencia.empresa.cnpj,
-			'verificada': agencia.empresa.verificada,
-			'ie': agencia.empresa.ie,
-			'tipo_empresa': agencia.empresa.id_tipo_empresa,
-			'cep' :  agencia.empresa.id_endereco.id_logradouro.cep,
-		    'rua' :  agencia.empresa.id_endereco.id_logradouro.nome,
-		    'bairro' :  agencia.empresa.id_endereco.id_logradouro.bairro,
-		    'cidade' :  agencia.empresa.id_endereco.id_logradouro.cidade,
-		    'estado' :  agencia.empresa.id_endereco.id_logradouro.estado,
-		    'pais' : agencia.empresa.id_endereco.id_logradouro.pais,
-		    'numeroed' :  agencia.empresa.id_endereco.numero,
-		    'complemento' : agencia.empresa.id_endereco.complemento,
-		    'pontoreferencia' :  agencia.empresa.id_endereco.pontoreferencia,
+			'razaosocial': agencia.id_empresa.razaosocial,
+			'nomefantasia': agencia.id_empresa.nomefantasia,
+			'cnpj': agencia.id_empresa.cnpj,
+			'verificada': agencia.id_empresa.verificada,
+			'ie': agencia.id_empresa.ie,
+			'tipo_empresa': agencia.id_empresa.id_tipo_empresa,
+			'cep' :  agencia.id_empresa.id_endereco.id_logradouro.cep,
+		    'rua' :  agencia.id_empresa.id_endereco.id_logradouro.nome,
+		    'bairro' :  agencia.id_empresa.id_endereco.id_logradouro.bairro,
+		    'cidade' :  agencia.id_empresa.id_endereco.id_logradouro.cidade,
+		    'estado' :  agencia.id_empresa.id_endereco.id_logradouro.estado,
+		    'pais' : agencia.id_empresa.id_endereco.id_logradouro.pais,
+		    'numeroed' :  agencia.id_empresa.id_endereco.numero,
+		    'complemento' : agencia.id_empresa.id_endereco.complemento,
+		    'pontoreferencia' :  agencia.id_empresa.id_endereco.pontoreferencia,
 		    
 			# EXTRAS
 		    #'representante' : startup.representante,
@@ -330,7 +330,7 @@ class AgenciaEdit(JSONResponseMixin,View):
 
 				agencia = Agencia.objects.get(pk=pk)
 
-				empresa = Empresa.objects.get(pk=agencia.empresa.pk)
+				empresa = Empresa.objects.get(pk=agencia.id_empresa.pk)
 				telefones = TelefoneEmpresa.objects.filter(id_empresa=empresa.pk)
 				id_endereco = Endereco.objects.get(id_endereco=empresa.id_endereco.pk)
 				id_logradouro = Logradouro.objects.get(id_logradouro=id_endereco.id_logradouro.pk)
@@ -410,7 +410,7 @@ class AgenciaDetail(JSONResponseMixin,DetailView):
 
 
 class AgenciaDelete(JSONResponseMixin,DeleteView):
-	model = Agencia
+	model = Empresa
 	success_url = reverse_lazy('agencia-list')
 	template_name = 'subclasses/empresa/agencia/delete.html'
 
