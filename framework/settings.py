@@ -58,6 +58,7 @@ CUSTOM_APPS = [
     # SUBCLASS APPS
     'apps.subclasses.empresa.startup',
     'apps.subclasses.empresa.escola',
+    'apps.subclasses.empresa.agencia',
     'apps.subclasses.usuario.employee',
     'apps.subclasses.usuario.cliente',
     'apps.subclasses.usuario.passageiro',

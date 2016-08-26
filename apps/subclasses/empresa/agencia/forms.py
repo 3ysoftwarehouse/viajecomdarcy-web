@@ -16,7 +16,7 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from apps.default.forms import CompanyRegisterForm
 ##################################################
 
-class EscolaRegisterForm(CompanyRegisterForm, forms.Form):
+class AgenciaRegisterForm(CompanyRegisterForm, forms.Form):
 
 	#representante = forms.CharField(label='Representante:', max_length=150, required=True)
 	pass
