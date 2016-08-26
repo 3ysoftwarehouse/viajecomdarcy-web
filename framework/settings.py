@@ -54,7 +54,7 @@ DJANGO_APPS = [
 ]
 CUSTOM_APPS = [
     'apps.default', 
-    
+    'apps.excursao',  
     # SUBCLASS APPS
     #'apps.subclasses.empresa.startup',
     'apps.subclasses.empresa.escola',
