@@ -55,7 +55,9 @@ DJANGO_APPS = [
 CUSTOM_APPS = [
     'apps.default', 
     'apps.excursao',
-    'apps.moeda',  
+    'apps.moeda',
+    'apps.pacote',
+
     # SUBCLASS APPS
     #'apps.subclasses.empresa.startup',
     'apps.subclasses.empresa.escola',
@@ -162,7 +164,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'viajecomdarcy',
         'USER': 'root',
-        'PASSWORD': '⁠⁠⁠framework',
+        'PASSWORD': '',
         'HOST': ''
     }
 }
