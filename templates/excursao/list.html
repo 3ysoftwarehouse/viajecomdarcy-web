@@ -1,0 +1,82 @@
+{% extends "default/panel/layout.html" %} 
+{% load staticfiles %}
+
+{% block css %}
+ 
+{% endblock %}
+
+{% block page_info %}
+    <li>
+      <a class="active">Excursao</a>
+    </li>
+{% endblock %}
+
+{% block content %}
+<div class="panel panel-transparent">
+  <div class="panel-heading">
+    <div class="panel-title fs-16">
+      Excursao
+    </div>
+    <div class="btn-group pull-right m-b-10">
+      <a class="btn btn-default" href="/framework/dashboard/excursao/register/" type="button">Cadastrar</a>
+    </div>
+    <div class="pull-right">
+      <div class="col-xs-12">
+        <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div class="panel-body">
+   <table class="table table-hover table-condensed table-responsive" id="tableWithSearch">
+        <thead>
+          <tr>
+             <th style="width:1%">
+                <button class="btn">
+                <i class="pg-trash"></i>
+                </button>
+             </th>
+             <th style="width:20%">Descrição</th>
+             <th style="width:20%">Ativa</th>
+             <th style="width:15%">Opções</th>
+          </tr>
+       </thead>
+       <tbody>
+          {% for excursao in object_list %}
+          <tr>
+             <td class="v-align-middle">
+                <div class="checkbox ">
+                   <input type="checkbox" value="1" id="checkbox1">
+                   <label for="checkbox1"></label>
+                </div>
+             </td>
+             <td class="v-align-middle ">
+                <p>{{excursao.excurcao_desc}}</p>
+             </td>
+             <td class="v-align-middle">
+                <p>{{excursao.is_active}}</p>
+             </td>                       
+             <td class="v-align-middle">
+                <a href="/framework/dashboard/excursao/detail/{{excursao.pk}}">
+                <i class="pg-search"></i>
+                </a>
+                <a href="/framework/dashboard/excursao/edit/{{excursao.pk}}">
+                <i class="pg-settings"></i>
+                </a>
+                {% if request.user.id_usuario != usuario.id_usuario %}
+                <a href="/framework/dashboard/excursao/delete/{{excursao.pk}}">
+                <i class="pg-eraser"></i>
+                </a>
+                {% endif %}
+             </td>
+          </tr>
+          {% endfor %}
+       </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+  
+{% endblock %}
