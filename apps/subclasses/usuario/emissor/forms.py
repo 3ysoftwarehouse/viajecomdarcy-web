@@ -14,13 +14,9 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField
 #               CUSTOM IMPORTS                   #
 ##################################################
 from apps.default.forms import UserRegisterForm
-from apps.subclasses.empresa.escola.models import Escola
+from apps.subclasses.empresa.agencia.models import Agencia
 ##################################################
 
-class PassageiroRegisterForm(UserRegisterForm, forms.Form):
+class EmissorRegisterForm(UserRegisterForm, forms.Form):
 
-	id_escola = forms.ModelChoiceField (queryset = Escola.objects.all())
-	matricula = forms.IntegerField(label='Matricula:')
-	natularidade = forms.CharField(label='Natularidade:', max_length=30)
-	observacao = forms.CharField(label='Obs:', max_length=250)
-	
+	id_agencia = forms.ModelChoiceField (queryset = Agencia.objects.all())

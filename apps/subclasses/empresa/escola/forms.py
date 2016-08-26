@@ -18,5 +18,6 @@ from apps.default.forms import CompanyRegisterForm
 
 class EscolaRegisterForm(CompanyRegisterForm, forms.Form):
 
-	representante = forms.CharField(label='Representante:', max_length=150, required=True)
+	#representante = forms.CharField(label='Representante:', max_length=150, required=True)
+	pass
 	
