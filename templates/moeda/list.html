@@ -1,0 +1,88 @@
+{% extends "default/panel/layout.html" %} 
+{% load staticfiles %}
+
+{% block css %}
+ 
+{% endblock %}
+
+{% block page_info %}
+    <li>
+      <a class="active">Moeda</a>
+    </li>
+{% endblock %}
+
+{% block content %}
+<div class="panel panel-transparent">
+  <div class="panel-heading">
+    <div class="panel-title fs-16">
+      Listar
+    </div>
+    <div class="btn-group pull-right m-b-10">
+      <a class="btn btn-default" href="/framework/dashboard/moeda/register/" type="button">Cadastrar</a>
+    </div>
+    <div class="pull-right">
+      <div class="col-xs-12">
+        <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div class="panel-body">
+   <table class="table table-hover table-condensed table-responsive" id="tableWithSearch">
+        <thead>
+           <tr>
+              <th style="width:5%">
+                 <button class="btn">
+                    <i class="pg-trash"></i>
+                 </button>
+              </th>
+              <th style="width:20%">Nome</th>
+              <th style="width:20%">Cambio</th>
+              <th style="width:15%">Símbolo</th>
+              <th style="width:15%">Ultima atualização</th>
+              <th style="width:15%">Opções</th>
+           </tr>
+        </thead>
+        <tbody>
+           {% for moeda in object_list %}
+             <tr>
+                <td class="v-align-middle">
+                   <div class="checkbox ">
+                      <input type="checkbox" value="1" id="checkbox1">
+                      <label for="checkbox1"></label>
+                   </div>
+                </td>
+                <td class="v-align-middle ">
+                   <p>{{moeda.moeda_desc}}</p>
+                </td>
+                <td class="v-align-middle">
+                   <p>{{moeda.moeda_cambio}}</p>
+                </td>
+                <td class="v-align-middle">
+                   <p>{{moeda.moeda_simbolo}}</p>
+                </td>
+                <td class="v-align-middle">
+                   <p>{{moeda.moeda_ultimaatualizacao}}</p>
+                </td>
+                <td class="v-align-middle">
+                  <a href="/framework/dashboard/moeda/detail/{{moeda.id_moeda}}">
+                    <i class="pg-search"></i>
+                  </a>
+                  <a href="/framework/dashboard/moeda/edit/{{moeda.id_moeda}}">
+                    <i class="pg-settings"></i>
+                  </a>
+                  <a href="/framework/dashboard/moeda/delete/{{moeda.id_moeda}}">
+                    <i class="pg-eraser"></i>
+                  </a>
+                </td> 
+             </tr>
+          {% endfor %}
+        </tbody>
+     </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+  
+{% endblock %}
