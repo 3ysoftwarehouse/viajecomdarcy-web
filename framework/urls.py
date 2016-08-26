@@ -29,6 +29,8 @@ urlpatterns += i18n_patterns(
 	url(r'^$', login_required(RedirectView.as_view(url='framework/dashboard/home/'))),
 	url(r'^framework/', include('apps.default.urls')),
 	url(r'^framework/', include('apps.excursao.urls')),
+	url(r'^framework/', include('apps.moeda.urls')),
+	url(r'^framework/', include('apps.pacote.urls')),
 	#url(r'^framework/', include('apps.subclasses.empresa.startup.urls')),
 	url(r'^framework/', include('apps.subclasses.empresa.escola.urls')),
 	url(r'^framework/', include('apps.subclasses.empresa.agencia.urls')),

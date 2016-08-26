@@ -1,0 +1,64 @@
+{% extends "default/panel/layout.html" %}
+
+{% block page_info %}
+   <li>
+      <b>Moeda</b>
+   </li>
+   <li>
+      <a class="active">Detalhes</a>
+   </li>
+{% endblock %}
+
+{% block content %}
+   <div class="bg-white">
+      <!-- START PANEL -->
+      <div class="panel panel-transparent">
+         <div class="panel-heading">
+            <div class="panel-title">
+               Moeda
+            </div>
+            <div class="row">
+               <!-- BASIC DATA -->
+               <div class="col-lg-6 col-md-6 ">
+                  <!-- START PANEL -->
+                  <div class="panel panel-transparent">
+                     <div class="panel-body">
+                        <div class="row clearfix">
+                           <div class="col-sm-6">
+                              <div class="form-group form-group-default required" aria-required="true">
+                                 <label>Nome</label>
+                                 {{object.moeda_desc}}
+                              </div>
+                           </div>
+                           <div class="col-sm-6">
+                              <div class="form-group form-group-default">
+                                 <label>Cambio</label>
+                                 {{object.moeda_cambio}}
+                              </div>
+                           </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-sm-6">
+                              <div class="form-group form-group-default">
+                                 <label>Ultima atualização</label>
+                                 {{object.moeda_ultimaatualizacao}}
+                              </div>
+                           </div>
+                           <div class="col-sm-6">
+                              <div class="form-group form-group-default">
+                                 <label>Símbolo</label>
+                                 {{object.moeda_simbolo}}
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <!-- END PANEL -->
+               </div>
+               <!-- END BASIC DATA -->
+            </div>
+         </div>
+      </div>
+      <!-- END PANEL -->
+   </div>
+{% endblock %}
