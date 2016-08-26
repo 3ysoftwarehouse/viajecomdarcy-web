@@ -1,0 +1,44 @@
+{% extends "default/panel/layout.html" %}
+{% load staticfiles %}
+
+{% block page_info %}
+    <li>
+      <b>Excursao</b>
+    </li>
+    <li>
+      <a class="active">Cadastro</a>
+    </li>    
+{% endblock %}
+
+{% block content %}
+   {% if context %}
+      {%  for title, value in context.items %}
+         {{title}} : {{value}} <br>
+      {% endfor %}
+   {% endif %}
+  <div class="col-md-12">
+  <!-- START PANEL -->
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">
+      </div>
+    </div>
+    <div class="panel-body">
+      <form autocomplete="off"  method="post" enctype="multipart/form-data" role="form" id="form-personal" novalidate="novalidate">
+      {% csrf_token %}
+        <div class="form-group form-group-default required">
+          <label>{{form.excurcao_desc.label_tag}}</label>
+          {{form.excurcao_desc}}
+        </div>
+        <div class="form-group form-group-default required">
+          <label>{{form.is_active.label_tag}}</label>
+          {{form.is_active}}
+        </div>
+        <button class="btn btn-success btn-cons m-t-10 pull-right" type="submit">Cadastrar
+      </form>
+      </button>
+    </div>
+  </div>
+  <!-- END PANEL -->
+</div>
+{% endblock %}
