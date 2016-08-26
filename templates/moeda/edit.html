@@ -1,0 +1,53 @@
+{% extends "default/panel/layout.html" %}
+{% load staticfiles %}
+
+{% block page_info %}
+  <li>
+     <b>Empresa</b>
+  </li>
+  <li>
+     <a class="active">Editar</a>
+  </li>
+{% endblock %}
+
+{% block content %}
+  {% if context %}
+  {%  for title, value in context.items %}
+    {{title}} : {{value}} <br>
+  {% endfor %}
+{% endif %}
+
+<div class="col-md-12">
+   <!-- START PANEL -->
+   <div class="panel panel-default">
+      <div class="panel-heading">
+         <div class="panel-title">
+            Dados
+         </div>
+      </div>
+      <div class="panel-body">
+         <h5>
+            Pages default style
+         </h5>
+         {% csrf_token %}
+         <form class="" role="form">
+            <div class="form-group form-group-default required">
+               <label>Nome</label>
+               {{form.moeda_desc}}
+            </div>
+            <div class="form-group form-group-default required">
+               <label>Cambio</label>
+               {{form.moeda_cambio}}
+            </div>
+            <div class="form-group form-group-default required">
+               <label>Símbolo</label>
+               {{form.moeda_simbolo}}
+            </div>
+            <input type="submit" value="Salvar" />
+         </form>
+      </div>
+   </div>
+   <!-- END PANEL -->
+</div>
+{% endblock %}
+
