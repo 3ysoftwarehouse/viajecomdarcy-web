@@ -1,0 +1,169 @@
+{% extends "default/panel/layout.html" %}
+
+{% block page_info %}
+   <li>
+      <b>Agência</b>
+   </li>
+   <li>
+      <a class="active">Detalhes</a>
+   </li>
+{% endblock %}
+
+{% block content %}
+   <div class="bg-white">
+      <!-- START PANEL -->
+      <div class="panel panel-transparent">
+         <div class="panel-heading">
+            <div class="panel-title">
+               Escola
+            </div>
+            <div class="row">
+               <!-- BASIC DATA -->
+               <div class="col-lg-6 col-md-6 ">
+                  <!-- START PANEL -->
+                  <div class="panel panel-transparent">
+                     <div class="panel-body">
+                        <div class="row clearfix">
+                           <div class="col-sm-6">
+                              <div class="form-group form-group-default required" aria-required="true">
+                                 <label>Razão Social</label>
+                                 {{object.id_empresa.razaosocial}}
+                              </div>
+                           </div>
+                           <div class="col-sm-6">
+                              <div class="form-group form-group-default">
+                                 <label>Nome Fantasia</label>
+                                 {{object.id_empresa.nomefantasia}}
+                              </div>
+                           </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-sm-6">
+                              <div class="form-group form-group-default">
+                                 <label>CNPJ</label>
+                                 {{object.id_empresa.cnpj}}
+                              </div>
+                           </div>
+                           <div class="col-sm-6">
+                              <div class="form-group form-group-default">
+                                 <label>Inscrição estadual</label>
+                                 {{object.id_empresa.ie}}
+                              </div>
+                           </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-sm-6">
+                              <div class="form-group form-group-default">
+                                 <label>Tipo de empresa</label>
+                                 {{object.id_empresa.id_tipo_empresa}}
+                              </div>
+                           </div>
+                           <div class="col-sm-6">
+                              <div class="form-group form-group-default">
+                                 <label>Verificada</label>
+                                 {{object.id_empresa.verificada}}
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <!-- END PANEL -->
+               </div>
+               <!-- END BASIC DATA -->
+               <!-- ADDRESS DATA -->
+               <div class="col-lg-6 col-md-6 ">
+                  <!-- START PANEL -->
+                  <div class="panel panel-transparent">
+                     <div class="panel-body">
+                        <div class="row clearfix">
+                           <div class="col-sm-4">
+                              <div class="form-group form-group-default required" aria-required="true">
+                                 <label>País</label>
+                                 {{object.id_empresa.id_endereco.id_logradouro.pais}}
+                              </div>
+                           </div>
+                           <div class="col-sm-4">
+                              <div class="form-group form-group-default">
+                                 <label>Estado</label>
+                                 {{object.id_empresa.id_endereco.id_logradouro.estado}}
+                              </div>
+                           </div>
+                           <div class="col-sm-4">
+                              <div class="form-group form-group-default">
+                                 <label>CEP</label>
+                                 {{object.id_empresa.id_endereco.id_logradouro.cep}}
+                              </div>
+                           </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-sm-6">
+                              <div class="form-group form-group-default">
+                                 <label>Cidade</label>
+                                 {{object.id_empresa.id_endereco.id_logradouro.cidade}}
+                              </div>
+                           </div>
+                           <div class="col-sm-6">
+                              <div class="form-group form-group-default">
+                                 <label>Bairro</label>
+                                 {{object.id_empresa.id_endereco.id_logradouro.bairro}}
+                              </div>
+                           </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-sm-12">
+                              <div class="form-group form-group-default">
+                                 <label>Rua</label>
+                                 {{object.id_empresa.id_endereco.id_logradouro.nome}}
+                              </div>
+                           </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-sm-6">
+                              <div class="form-group form-group-default">
+                                 <label>Numero</label>
+                                 {{object.id_empresa.id_endereco.numero}}
+                              </div>
+                           </div>
+                           <div class="col-sm-6">
+                              <div class="form-group form-group-default">
+                                 <label>Complemento</label>
+                                 {{object.id_empresa.id_endereco.complemento}}
+                              </div>
+                           </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-sm-12">
+                              <div class="form-group form-group-default">
+                                 <label>Ponto de referencia</label>
+                                 {{object.id_empresa.id_endereco.pontoreferencia}}
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <!-- END PANEL -->
+               </div>
+               <!-- END ADDRESS DATA -->
+               <!-- EXTRA DATA -->
+               <div class="col-lg-6 col-md-6 ">
+                  <!-- START PANEL -->
+                  <div class="panel panel-transparent">
+                     <div class="panel-body">
+                        <div class="row clearfix">
+                           <div class="col-sm-12">
+                              <div class="form-group form-group-default required" aria-required="true">
+                                --
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <!-- END PANEL -->
+               </div>
+               <!-- END EXTRA DATA -->
+            </div>
+         </div>
+      </div>
+      <!-- END PANEL -->
+   </div>
+{% endblock %}

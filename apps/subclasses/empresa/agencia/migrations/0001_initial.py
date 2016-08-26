@@ -16,10 +16,10 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Escola',
+            name='Agencia',
             fields=[
-                ('id_escola', models.AutoField(primary_key=True, serialize=False)),
-                ('id_empresa', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='escola_name', to='default.Empresa')),
+                ('id_agencia', models.AutoField(primary_key=True, serialize=False)),
+                ('id_empresa', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='agencia_name', to='default.Empresa')),
             ],
         ),
     ]

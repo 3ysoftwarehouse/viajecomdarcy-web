@@ -7,7 +7,7 @@
 
 {% block page_info %}
     <li>
-      <a class="active">Escola</a>
+      <a class="active">Agência</a>
     </li>
 {% endblock %}
 
@@ -15,10 +15,10 @@
 <div class="panel panel-transparent">
   <div class="panel-heading">
     <div class="panel-title fs-16">
-      Escola
+      Agência
     </div>
     <div class="btn-group pull-right m-b-10">
-     <a class="btn btn-default" href="/framework/dashboard/escola/register/" type="button">Cadastrar</a>
+     <a class="btn btn-default" href="/framework/dashboard/agencia/register/" type="button">Cadastrar</a>
     </div>
     <div class="pull-right">
       <div class="col-xs-12">
@@ -46,7 +46,7 @@
          </tr>
       </thead>
       <tbody>
-         {% for escola in object_list %}
+         {% for agencia in object_list %}
            <tr>
               <td class="v-align-middle">
                  <div class="checkbox ">
@@ -55,31 +55,31 @@
                  </div>
               </td>
               <td class="v-align-middle ">
-                 <p>{{escola.id_empresa.razaosocial}}</p>
+                 <p>{{agencia.id_empresa.razaosocial}}</p>
               </td>
               <td class="v-align-middle">
-                 <p>{{escola.id_empresa.nomefantasia}}</p>
+                 <p>{{agencia.id_empresa.nomefantasia}}</p>
               </td>
               <td class="v-align-middle">
-                 <p>{{escola.id_empresa.id_tipo_empresa.descricao}}</p>
+                 <p>{{agencia.id_empresa.id_tipo_empresa.descricao}}</p>
               </td>
               <td class="v-align-middle">
-                 <p>{{escola.id_empresa.cnpj}}</p>
+                 <p>{{agencia.id_empresa.cnpj}}</p>
               </td>
               <td class="v-align-middle">
-                 <p>{{escola.id_empresa.ie}}</p>
+                 <p>{{agencia.id_empresa.ie}}</p>
               </td>
               <td class="v-align-middle">
-                 <p>{{escola.id_empresa.verificada}}</p>
+                 <p>{{agencia.id_empresa.verificada}}</p>
               </td>
               <td class="v-align-middle">
-                <a href="/framework/dashboard/escola/detail/{{escola.id_escola}}">
+                <a href="/framework/dashboard/agencia/detail/{{agencia.id_agencia}}">
                   <i class="pg-search"></i>
                 </a>
-                <a href="/framework/dashboard/escola/edit/{{escola.id_escola}}">
+                <a href="/framework/dashboard/agencia/edit/{{agencia.id_agencia}}">
                   <i class="pg-settings"></i>
                 </a>
-                <a href="/framework/dashboard/escola/delete/{{escola.id_empresa.pk}}">
+                <a href="/framework/dashboard/agencia/delete/{{agencia.id_empresa.pk}}">
                   <i class="pg-eraser"></i>
                 </a>
               </td> 
