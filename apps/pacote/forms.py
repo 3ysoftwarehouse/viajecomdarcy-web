@@ -64,7 +64,7 @@ class PacoteRegisterForm(forms.Form):
 		self.fields['pacote_obs'].widget.attrs['class'] = 'form-control'
 
 		# id_opcional Fields widget
-		self.fields['id_opcional'].widget.attrs['class'] = 'full-width'
+		self.fields['id_opcional'].widget.attrs['style'] = 'width:100%;'
 		
 		pass
 
