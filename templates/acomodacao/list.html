@@ -7,7 +7,7 @@
 
 {% block page_info %}
     <li>
-      <a class="active">Pacote</a>
+      <a class="active">Acomodação</a>
     </li>
 {% endblock %}
 
@@ -18,7 +18,7 @@
       Listar
     </div>
     <div class="btn-group pull-right m-b-10">
-      <a class="btn btn-default" href="/framework/dashboard/pacote/register/" type="button">Cadastrar</a>
+      <a class="btn btn-default" href="/framework/dashboard/acomodacao/register/" type="button">Cadastrar</a>
     </div>
     <div class="pull-right">
       <div class="col-xs-12">
@@ -36,17 +36,13 @@
                     <i class="pg-trash"></i>
                  </button>
               </th>
+              <th style="width:20%">Código</th>
               <th style="width:20%">Nome</th>
-              <th style="width:20%">Descrição</th>
-              <th style="width:20%">Excursão</th>
-              <th style="width:15%">Preço</th>
-              <th style="width:15%">Taxa</th>
-              <th style="width:15%">Ativado</th>
               <th style="width:15%">Opções</th>
            </tr>
         </thead>
         <tbody>
-           {% for pacote in object_list %}
+           {% for acomodacao in object_list %}
              <tr>
                 <td class="v-align-middle">
                    <div class="checkbox ">
@@ -55,35 +51,19 @@
                    </div>
                 </td>
                 <td class="v-align-middle ">
-                   <p>{{pacote.pacote_nome}}</p>
+                   <p>{{acomodacao.id_acomodacao}}</p>
                 </td>
                 <td class="v-align-middle">
-                   <p>{{pacote.pacote_desc}}</p>
+                   <p>{{acomodacao.acomodacao_desc}}</p>
                 </td>
                 <td class="v-align-middle">
-                   <p>{{pacote.id_excursao}}</p>
-                </td>
-                <td class="v-align-middle">
-                   <p>{{pacote.id_moeda.moeda_simbolo}} {{pacote.pacote_preco}}</p>
-                </td>
-                <td class="v-align-middle">
-                   <p>{{pacote.pacote_taxa}}</p>
-                </td>
-                <td class="v-align-middle">
-                  {% if pacote.is_active %}
-                    <span class="glyphicon glyphicon-ok"></span>
-                  {% else %}
-                    <span class="glyphicon glyphicon-remove"></span>
-                  {% endif %}
-                </td>
-                <td class="v-align-middle">
-                  <a href="/framework/dashboard/pacote/detail/{{pacote.id_pacote}}">
+                  <a href="/framework/dashboard/acomodacao/detail/{{acomodacao.id_acomodacao}}">
                     <i class="pg-search"></i>
                   </a>
-                  <a href="/framework/dashboard/pacote/edit/{{pacote.id_pacote}}">
+                  <a href="/framework/dashboard/acomodacao/edit/{{acomodacao.id_acomodacao}}">
                     <i class="pg-settings"></i>
                   </a>
-                  <a href="/framework/dashboard/pacote/delete/{{pacote.id_pacote}}">
+                  <a href="/framework/dashboard/acomodacao/delete/{{acomodacao.id_acomodacao}}">
                     <i class="pg-eraser"></i>
                   </a>
                 </td> 

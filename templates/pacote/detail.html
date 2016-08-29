@@ -2,7 +2,7 @@
 
 {% block page_info %}
    <li>
-      <b>Moeda</b>
+      <b>Pacote</b>
    </li>
    <li>
       <a class="active">Detalhes</a>
@@ -15,7 +15,7 @@
       <div class="panel panel-transparent">
          <div class="panel-heading">
             <div class="panel-title">
-               Moeda
+               Pacote
             </div>
             <div class="row">
                <!-- BASIC DATA -->
@@ -70,6 +70,16 @@
                               <div class="form-group form-group-default">
                                  <label>Day by Day</label>
                                  {{object.pacote_daybyday}}
+                              </div>
+                           </div>
+                           <div class="col-sm-6">
+                              <div class="form-group form-group-default">
+                                 <label>Ativado</label>
+                                 {% if pacote.is_active %}
+                                   <span class="glyphicon glyphicon-ok"></span>
+                                 {% else %}
+                                   <span class="glyphicon glyphicon-remove"></span>
+                                 {% endif %}
                               </div>
                            </div>
                         </div>
