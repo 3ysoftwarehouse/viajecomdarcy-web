@@ -70,7 +70,13 @@
                  <p>{{statup.empresa.ie}}</p>
               </td>
               <td class="v-align-middle">
-                 <p>{{statup.empresa.verificada}}</p>
+                 <p>
+                    {% if statup.empresa.verificada %}
+                      <span class="glyphicon glyphicon-ok"></span>
+                    {% else %}
+                      <span class="glyphicon glyphicon-remove"></span>
+                    {% endif %}
+                </p>
               </td>
               <td class="v-align-middle">
                 <a href="/framework/dashboard/startup/detail/{{statup.id_startup}}">

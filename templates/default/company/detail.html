@@ -61,7 +61,11 @@
                            <div class="col-sm-6">
                               <div class="form-group form-group-default">
                                  <label>Verificada</label>
-                                 {{object.verificada}}
+                                {% if object.verificada %}
+                                  <span class="glyphicon glyphicon-ok"></span>
+                                {% else %}
+                                  <span class="glyphicon glyphicon-remove"></span>
+                                {% endif %}
                               </div>
                            </div>
                         </div>

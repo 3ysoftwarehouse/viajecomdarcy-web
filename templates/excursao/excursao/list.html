@@ -54,7 +54,13 @@
                 <p>{{excursao.excurcao_desc}}</p>
              </td>
              <td class="v-align-middle">
-                <p>{{excursao.is_active}}</p>
+                <p>
+                   {% if excursao.is_active %}
+                     <span class="glyphicon glyphicon-ok"></span>
+                   {% else %}
+                     <span class="glyphicon glyphicon-remove"></span>
+                   {% endif %}
+                </p>
              </td>                       
              <td class="v-align-middle">
                 <a href="/framework/dashboard/excursao/detail/{{excursao.pk}}">
