@@ -34,7 +34,11 @@
                               <div class="col-sm-6">
                                  <div class="form-group form-group-default">
                                     <label>Ativa</label>
-                                    {{object.is_active}}
+                                   {% if object.is_active %}
+                                     <span class="glyphicon glyphicon-ok"></span>
+                                   {% else %}
+                                     <span class="glyphicon glyphicon-remove"></span>
+                                   {% endif %}
                                  </div>
                               </div>
                            </div>
