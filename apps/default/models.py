@@ -128,7 +128,7 @@ class Usuario(AbstractBaseUser):
 	nomecompleto = models.CharField(max_length=100,null=True, blank=True)
 	email = models.CharField('email',max_length=75,unique=True,default='')
 	cpf = models.CharField(max_length=14, null=True, blank=True)
-	data_nascimento = models.DateTimeField(null=True, blank=True)
+	data_nascimento = models.DateField(null=True, blank=True)
 	rg = models.CharField(max_length=12, null=True, blank=True)
 	orgaoemissor = models.CharField(max_length=45,null=True, blank=True)
 	foto = models.ImageField(upload_to="default/users",null=True, blank=True)
