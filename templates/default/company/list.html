@@ -70,7 +70,13 @@
                    <p>{{empresa.ie}}</p>
                 </td>
                 <td class="v-align-middle">
-                   <p>{{empresa.verificada}}</p>
+                   <p>
+                    {% if empresa.verificada %}
+                      <span class="glyphicon glyphicon-ok"></span>
+                    {% else %}
+                      <span class="glyphicon glyphicon-remove"></span>
+                    {% endif %}
+                  </p>
                 </td>
                 <td class="v-align-middle">
                   <a href="/framework/dashboard/company/detail/{{empresa.id_empresa}}">
