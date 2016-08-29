@@ -1,0 +1,58 @@
+{% extends "default/panel/layout.html" %}
+{% load staticfiles %}
+
+{% block page_info %}
+    <li>
+      <b>Opcional</b>
+    </li>
+    <li>
+      <a class="active">Cadastro</a>
+    </li>    
+{% endblock %}
+
+{% block content %}
+   {% if context %}
+      {%  for title, value in context.items %}
+         {{title}} : {{value}} <br>
+      {% endfor %}
+   {% endif %}
+  <div class="col-md-12">
+  <!-- START PANEL -->
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">
+      </div>
+    </div>
+    <div class="panel-body">
+      <form autocomplete="off"  method="post" enctype="multipart/form-data" role="form" id="form-personal" novalidate="novalidate">
+      {% csrf_token %}
+      {{ form.errors }}
+        <div class="form-group form-group-default required">
+          <label>{{form.opcional_desc.label_tag}}</label>
+          {{form.opcional_desc}}
+        </div>
+        <div class="form-group form-group-default required">
+          <label>{{form.opcional_preco.label_tag}}</label>
+          {{form.opcional_preco}}
+        </div>
+        <div class="form-group form-group-default required">
+          <label>{{form.id_moeda.label_tag}}</label>
+          {{form.id_moeda}}
+        </div>
+        <button class="btn btn-success btn-cons m-t-10 pull-right" type="submit">Cadastrar
+      </form>
+      </button>
+    </div>
+  </div>
+  <!-- END PANEL -->
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script src="{% static 'js/default/jquery.inputmask.min.js' %}" type="text/javascript"></script>
+<script>
+$(document).ready(function() {
+  //Input mask
+  $("#id_opcional_preco").mask("999,99");
+</script>
+{% endblock %}
