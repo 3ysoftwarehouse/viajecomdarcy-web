@@ -57,7 +57,6 @@ CUSTOM_APPS = [
     'apps.excursao',
     'apps.moeda',
     'apps.pacote',
-    'apps.acomodacao',
 
     # SUBCLASS APPS
     #'apps.subclasses.empresa.startup',

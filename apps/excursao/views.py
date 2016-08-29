@@ -19,7 +19,7 @@ from django.forms import formset_factory
 ##################################################
 #				CUSTOM IMPORTS                   #
 ##################################################
-from .models import Excursao, Cidade # MODELS
+from .models import Excursao, Cidade, Opcional # MODELS
 from .forms import ExcursaoRegisterForm
 from apps.default.views import JSONResponseMixin
 ##################################################
@@ -187,5 +187,57 @@ class CidadeDelete(JSONResponseMixin,DeleteView):
 '''
 ----------------------------------------
 			END CIDADE METHODS
+----------------------------------------
+'''
+
+'''
+----------------------------------------
+			OPCIONAL METHODS
+----------------------------------------
+'''
+class OpcionalRegister(JSONResponseMixin,CreateView):
+    model = Opcional
+    template_name = 'excursao/opcional/register.html'
+    fields = [
+    'opcional_desc', 'opcional_preco','id_moeda'
+    ]
+    success_url = reverse_lazy('opcional-list')
+
+
+
+class OpcionalEdit(JSONResponseMixin,UpdateView):
+    model = Opcional
+    template_name = 'excursao/opcional/edit.html'
+    fields = [
+    'opcional_desc', 'opcional_preco','id_moeda'
+    ]
+    success_url = reverse_lazy('opcional-list')
+
+
+class OpcionalList(JSONResponseMixin,ListView):
+	model = Opcional
+	template_name = 'excursao/opcional/list.html'
+
+	def get_context_data(self, **kwargs):
+		context = super(OpcionalList, self).get_context_data(**kwargs)
+		return context
+
+
+class OpcionalDetail(JSONResponseMixin,DetailView):
+	model = Opcional
+	template_name = 'excursao/opcional/detail.html'
+
+	def get_context_data(self, **kwargs):
+		context = super(OpcionalDetail, self).get_context_data(**kwargs)
+		return context
+
+
+class OpcionalDelete(JSONResponseMixin,DeleteView):
+	model = Opcional
+	success_url = reverse_lazy('opcional-list')
+	template_name = 'excursao/opcional/delete.html'
+'''
+----------------------------------------
+			END OPCIONAL METHODS
 ----------------------------------------
 '''
