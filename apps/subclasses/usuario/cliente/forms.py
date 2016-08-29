@@ -35,4 +35,39 @@ class ClienteRegisterForm(UserRegisterForm, forms.Form):
 	dt_banco = forms.DateField(label='Cliente do bancos desde:',input_formats=settings.DATE_INPUT_FORMATS)
 	telefone_banco = forms.CharField(label='Telefone do banco:', max_length=45)
 
+	def __init__(self, *args, **kwargs):
+		super(ClienteRegisterForm, self).__init__(*args, **kwargs)
+
+		self.fields['dt_emissao_rg'].widget.attrs['class'] = 'form-control'
+		self.fields['dt_emissao_rg'].widget.attrs['placeholder'] = 'Digite a data de emissão do RG'
+		self.fields['tempo_residencia'].widget.attrs['class'] = 'form-control'
+		self.fields['tempo_residencia'].widget.attrs['placeholder'] = 'Digite o tempo de residência'
+		self.fields['empresa'].widget.attrs['class'] = 'form-control'
+		self.fields['empresa'].widget.attrs['placeholder'] = 'Digite o nome da empresa'
+		self.fields['cep_empresa'].widget.attrs['class'] = 'form-control'
+		self.fields['cep_empresa'].widget.attrs['placeholder'] = 'Digite o cep da empresa'
+		self.fields['endereco_empresa'].widget.attrs['class'] = 'form-control'
+		self.fields['endereco_empresa'].widget.attrs['placeholder'] = 'Digite o endereço da empresa'
+		self.fields['telefone_empresa'].widget.attrs['class'] = 'form-control'
+		self.fields['telefone_empresa'].widget.attrs['placeholder'] = 'Digite o telefone da empresa'
+		self.fields['dt_admissao'].widget.attrs['class'] = 'form-control'
+		self.fields['dt_admissao'].widget.attrs['placeholder'] = 'Digite a data de adminissão'
+		self.fields['cargo'].widget.attrs['class'] = 'form-control'
+		self.fields['cargo'].widget.attrs['placeholder'] = 'Digite o cargo'
+		self.fields['principal_renda'].widget.attrs['class'] = 'form-control'
+		self.fields['principal_renda'].widget.attrs['placeholder'] = 'Digite o valor da reda principal'
+		self.fields['outra_renda'].widget.attrs['class'] = 'form-control'
+		self.fields['outra_renda'].widget.attrs['placeholder'] = 'Digite o valor de outras rendas'
+		self.fields['patrimonio'].widget.attrs['class'] = 'form-control'
+		self.fields['patrimonio'].widget.attrs['placeholder'] = 'Digite o valor do patrimonio'
+		self.fields['banco'].widget.attrs['class'] = 'form-control'
+		self.fields['banco'].widget.attrs['placeholder'] = 'Digite o numero do banco'
+		self.fields['agencia'].widget.attrs['class'] = 'form-control'
+		self.fields['agencia'].widget.attrs['placeholder'] = 'Digite a agência'
+		self.fields['conta'].widget.attrs['class'] = 'form-control'
+		self.fields['conta'].widget.attrs['placeholder'] = 'Digite o numero da conta'
+		self.fields['dt_banco'].widget.attrs['class'] = 'form-control'
+		self.fields['dt_banco'].widget.attrs['placeholder'] = 'Digite a data aproximada de inicio da conta'
+		self.fields['telefone_banco'].widget.attrs['class'] = 'form-control'
+		self.fields['telefone_banco'].widget.attrs['placeholder'] = 'Digite o telefone do banco'
 

@@ -1,42 +1,30 @@
 {% extends "default/user/register.html" %}
-
 {% block subclass_itens %}
-       <li class="">
-         <a data-toggle="tab" href="#tab3"><i class="fa fa-truck tab-icon"></i> 
-            <span>
-               Extras
-            </span>
-         </a>
-       </li>
+<li class="">
+   <a data-toggle="tab" href="#tab3"><i class="fa fa-truck tab-icon"></i> 
+   <span>
+   Extras
+   </span>
+   </a>
+</li>
 {% endblock %}
-
 {% block subclass_form %}
-       <div class="tab-pane slide-left padding-20" id="tab3">
-         <div class="row row-same-height">
-           
-           <div class="col-md-5 b-r b-dashed b-grey ">
-             <div class="padding-30 m-t-50">
-               <h2></h2>
-               <p></p>
-               <p class="small hint-text"></p>
-             </div>
-           </div>
-       		
-           <div class="col-md-7">
-             <div class="padding-30">                        
-                 <p>Extras</p>
-                 <div class="form-group-attached">                   
-                   <div class="row clearfix">
-                     <div class="col-sm-12">
-                       <div class="form-group form-group-default">
-                         <label>{{form.id_agencia.label_tag}}</label>
-                         {{form.id_agencia}}
-                       </div>
-                     </div>
-                   </div>
-                 </div>               
-             </div>
-           </div>
+<div class="tab-pane slide-left padding-20" id="tab3">
+   <div class="row row-same-height">
+      <div class="col-md-12">
+         <div class="padding-10">
+
+            <div class="row clearfix">
+               <div class="col-sm-12">
+                  <div class="form-group form-group-default">
+                     <label>{{form.id_agencia.label_tag}}</label>
+                     {{form.id_agencia}}
+                  </div>
+               </div>
+            </div>
+
          </div>
-       </div>
+      </div>
+   </div>
+</div>
 {% endblock %}
