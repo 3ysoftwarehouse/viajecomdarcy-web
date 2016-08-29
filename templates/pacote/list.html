@@ -41,6 +41,7 @@
               <th style="width:20%">Excursão</th>
               <th style="width:15%">Preço</th>
               <th style="width:15%">Taxa</th>
+              <th style="width:15%">Ativado</th>
               <th style="width:15%">Opções</th>
            </tr>
         </thead>
@@ -67,6 +68,13 @@
                 </td>
                 <td class="v-align-middle">
                    <p>{{pacote.pacote_taxa}}</p>
+                </td>
+                <td class="v-align-middle">
+                  {% if pacote.is_active %}
+                    <span class="glyphicon glyphicon-ok"></span>
+                  {% else %}
+                    <span class="glyphicon glyphicon-remove"></span>
+                  {% endif %}
                 </td>
                 <td class="v-align-middle">
                   <a href="/framework/dashboard/pacote/detail/{{pacote.id_pacote}}">
