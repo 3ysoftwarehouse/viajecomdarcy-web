@@ -219,7 +219,13 @@
       <!-- END BASIC JAVASCRIPT -->
 
       <!-- EXTRA JAVASCRIPT -->
-      {% block javascript %}{% endblock %}
+      {% block javascript %}
+      <script>
+        $(document).ready(function() {
+            var init = new Switchery(document.querySelector('.js-switch'))
+        });   
+      </script>
+      {% endblock %}
       <!-- END EXTRA JAVASCRIPT -->
 
    </body>
