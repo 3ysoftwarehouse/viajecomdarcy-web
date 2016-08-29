@@ -12,6 +12,7 @@ from django.http import (HttpResponse,
                          HttpResponseForbidden,
                          HttpResponseBadRequest)
 from django.forms import formset_factory
+from datetime import datetime
 ##################################################
 
 
@@ -207,6 +208,11 @@ class UserRegister(JSONResponseMixin,View):
 			complemento = request.POST['complemento']
 			pontoreferencia = request.POST['pontoreferencia']
 
+			if data_nascimento:
+				data_nascimento = datetime.strptime(data_nascimento, '%d/%m/%Y')
+			else:
+				data_nascimento = None
+
 			if not nome:
 				context['error_msg'] = 'nome cannot be empty !'
 			if not sobrenome:
@@ -390,6 +396,11 @@ class UserEdit(JSONResponseMixin,View):
 			numero = request.POST['numero']
 			complemento = request.POST['complemento']
 			pontoreferencia = request.POST['pontoreferencia']
+
+			if data_nascimento:
+				data_nascimento = datetime.strptime(data_nascimento, '%d/%m/%Y')
+			else:
+				data_nascimento = None
 
 			if not nome:
 				context['error_msg'] = 'nome cannot be empty !'
