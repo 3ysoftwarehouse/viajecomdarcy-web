@@ -1,6 +1,5 @@
 {% extends "default/panel/layout.html" %}
 {% load staticfiles %}
-
 {% block page_info %}
   <li>
      <b>Pacote</b>
@@ -28,6 +27,11 @@
       <div class="panel-body">
          <form autocomplete="off"  method="post" enctype="multipart/form-data" role="form" id="form-personal" novalidate="novalidate">
             {% csrf_token %}
+
+            <div class="form-group form-group-default required">
+               <label>Opcionais</label>
+               {{form.id_opcional}}
+            </div>
             <div class="form-group form-group-default required">
                <label>Nome</label>
                {{form.pacote_nome}}
@@ -74,5 +78,19 @@
    </div>
    <!-- END PANEL -->
 </div>
+
+{% endblock %}
+
+{% block javascript %}
+
+<script>
+$(document).ready(function() {
+
+//Multiselect - Select2 plug-in
+$("#id_id_opcional").select2();
+
+});
+
+</script>
 {% endblock %}
 

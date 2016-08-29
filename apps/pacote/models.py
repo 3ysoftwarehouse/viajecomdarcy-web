@@ -1,6 +1,6 @@
 from django.db import models
 from apps.moeda.models import Moeda
-from apps.excursao.models import Excursao
+from apps.excursao.models import Excursao, Opcional
 
 class Pacote(models.Model):
 	id_pacote = models.AutoField(primary_key=True)
@@ -18,3 +18,8 @@ class Pacote(models.Model):
 		return self.pacote_nome
 	def __unicode__(self):
 		return unicode(self.pacote_nome)
+
+class PacoteOpcional(models.Model):
+	id_pacote_opcional = models.AutoField(primary_key=True)
+	id_pacote = models.ForeignKey(Pacote, on_delete=models.CASCADE,related_name='pacote_name')
+	id_opcional = models.ForeignKey(Opcional, on_delete=models.CASCADE,related_name='opcional_name')
