@@ -1,0 +1,46 @@
+{% extends "default/panel/layout.html" %} 
+
+{% block page_info %}
+   <li>
+     <b>Cidade</b>
+   </li>
+   <li>
+     <a class="active">Detalhes</a>
+   </li>
+{% endblock %}
+
+{% block content %}
+   <div class="bg-white">
+      <!-- START PANEL -->
+      <div class="panel panel-transparent">
+         <div class="panel-heading">
+            <div class="panel-title">
+               Cidade
+            </div>
+            <div class="row">
+
+                  <!-- BASIC DATA -->
+                  <div class="col-lg-12 col-md-12 ">
+                     <!-- START PANEL -->
+                     <div class="panel panel-transparent">
+                        <div class="panel-body">
+                           <div class="row clearfix">
+                              <div class="col-sm-12">
+                                 <div class="form-group form-group-default required" aria-required="true">
+                                    <label>Cidade</label>
+                                    {{object.cidade}}
+                                 </div>
+                              </div>
+                           </div>
+                           
+                        </div>
+                     </div>
+                     <!-- END PANEL -->
+                  </div>
+                  <!-- END BASIC DATA -->                 
+            </div>
+         </div>
+      </div>
+      <!-- END PANEL -->
+   </div>
+{% endblock %}

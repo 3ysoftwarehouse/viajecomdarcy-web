@@ -7,3 +7,11 @@ class Excursao(models.Model):
 
 	def __str__(self):
 		return self.excurcao_desc
+
+
+class Cidade(models.Model):
+	id_cidade = models.AutoField(primary_key=True)
+	cidade = models.CharField(max_length=100,null=False)
+
+	def __str__(self):
+		return self.cidade

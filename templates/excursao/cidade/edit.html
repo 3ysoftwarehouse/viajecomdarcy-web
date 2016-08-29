@@ -1,0 +1,39 @@
+{% extends "default/panel/layout.html" %}
+{% load staticfiles %}
+
+{% block page_info %}
+    <li>
+      <b>Cidade</b>
+    </li>
+    <li>
+      <a class="active">Editar</a>
+    </li>    
+{% endblock %}
+
+{% block content %}
+   {% if context %}
+      {%  for title, value in context.items %}
+         {{title}} : {{value}} <br>
+      {% endfor %}
+   {% endif %}
+  <div class="col-md-12">
+  <!-- START PANEL -->
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">
+      </div>
+    </div>
+    <div class="panel-body">
+      <form autocomplete="off"  method="post" enctype="multipart/form-data" role="form" id="form-personal" novalidate="novalidate">
+      {% csrf_token %}
+        <div class="form-group form-group-default required">
+          <label>{{form.cidade.label_tag}}</label>
+          {{form.cidade}}
+        </div>
+        <button class="btn btn-success btn-cons m-t-10 pull-right" type="submit">Editar</button>
+      </form>
+    </div>
+  </div>
+  <!-- END PANEL -->
+</div>
+{% endblock %}
