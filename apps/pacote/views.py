@@ -23,22 +23,30 @@ from .models import Pacote, PacoteOpcional, PacoteCidade # MODELS
 from apps.moeda.models import Moeda
 from apps.excursao.models import Excursao, Opcional, Cidade
 from apps.default.views import JSONResponseMixin
-from .forms import PacoteRegisterForm, PacoteCidadeRegisterForm # USER FORMS
+from .forms import PacoteRegisterForm, PacoteCidadeRegisterForm, PacoteAcomodacaoRegisterForm # USER FORMS
 ##################################################
 
 
 class PacoteRegister(JSONResponseMixin,View):
     def get(self, request):
         form = PacoteRegisterForm
-        formset = formset_factory(PacoteCidadeRegisterForm)
-        return render (request, 'pacote/register.html', {'form':form, 'formset':formset})
+        cidadeformset = formset_factory(PacoteCidadeRegisterForm)
+        acomodacaoformset = formset_factory(PacoteAcomodacaoRegisterForm)
+        return render (request, 'pacote/register.html', {'form':form, 'cidadeformset':cidadeformset, 'acomodacaoformset':acomodacaoformset})
 
     def post(self, request, *args, **kwargs):
         context = {}
         if request.method == 'POST':            
             form = PacoteRegisterForm(request.POST)
+
             PacoteCidadeFormSet = formset_factory(PacoteCidadeRegisterForm)       
-            formset = PacoteCidadeFormSet(request.POST, request.FILES)
+            CidadeFormset = PacoteCidadeFormSet(request.POST, request.FILES)
+
+            PacoteAcomodacaoFormSet = formset_factory(PacoteAcomodacaoRegisterForm)       
+            AcomodacaoFormset = PacoteAcomodacaoFormSet(request.POST, request.FILES)
+
+
+
 
             id_excursao = request.POST['id_excursao']
             id_moeda = request.POST['id_moeda']
@@ -126,7 +134,7 @@ class PacoteRegister(JSONResponseMixin,View):
                 PacoteCidadeFormSet = formset_factory(PacoteCidadeRegisterForm)       
                 formset = PacoteCidadeFormSet(request.POST, request.FILES)
 
-        return render(request, 'pacote/register.html', {'form': form, 'formset': formset, 'context':context})
+        return render(request, 'pacote/register.html', {'form': form, 'CidadeFormset': CidadeFormset, 'context':context})
 
 
 
