@@ -16,6 +16,7 @@ from django.contrib.admin.widgets import FilteredSelectMultiple
 from .models import Pacote # MODELS
 from apps.moeda.models import Moeda
 from apps.excursao.models import Excursao, Opcional, Cidade
+from apps.acomodacao.models import Acomodacao
 ##################################################
 
 class PacoteCidadeRegisterForm(forms.Form):
@@ -32,7 +33,6 @@ class PacoteCidadeRegisterForm(forms.Form):
 
 		pass
 
-
 class PacoteRegisterForm(forms.Form):
 
 	id_excursao = forms.ModelChoiceField (queryset=Excursao.objects.all())
@@ -44,7 +44,6 @@ class PacoteRegisterForm(forms.Form):
 	pacote_taxa = forms.DecimalField()
 	pacote_daybyday = forms.CharField(max_length=200,widget=forms.Textarea)
 	pacote_obs = forms.CharField(max_length=200,widget=forms.Textarea)
-
 	id_opcional = forms.ModelMultipleChoiceField(queryset=Opcional.objects.all())
 
 	def __init__(self, *args, **kwargs):
@@ -83,7 +82,19 @@ class PacoteRegisterForm(forms.Form):
 		
 		pass
 
-
+class PacoteAcomodacaoRegisterForm(forms.Form):
+	id_acomodacao = forms.ModelChoiceField (queryset=Acomodacao.objects.all())
+	preco = forms.DecimalField()
 	
+
+	def __init__(self, *args, **kwargs):
+		super(PacoteAcomodacaoRegisterForm, self).__init__(*args, **kwargs)
+		# id_acomodacao Fields widget
+		self.fields['id_acomodacao'].widget.attrs['class'] = 'form-control select'
+
+		# preco Fields widget
+		self.fields['preco'].widget.attrs['class'] = 'form-control'
+
+		pass
 
 

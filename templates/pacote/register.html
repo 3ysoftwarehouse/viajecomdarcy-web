@@ -115,9 +115,10 @@
      </div>
    </div>
    <div class="col-md-4">
+
      <div class="row p-t-10">
        <div id="id_cidade_table" class="row form-group-attached p-t-10" >
-        {% for form in formset.forms %}
+        {% for form in cidadeformset.forms %}
         <div id="{{ form.prefix }}-row" class="tr form-group-attached">
           <div class="row">
             <div class="col-sm-5">
@@ -136,9 +137,35 @@
           </div>
         </div>
         {% endfor %}
-        {{ formset.management_form }}             
+        {{ cidadeformset.management_form }}             
       </div>
     </div>
+
+    <div class="row p-t-10">
+       <div id="id_acomodacao_table" class="row form-group-attached p-t-10" >
+        {% for form in acomodacaoformset.forms %}
+        <div id="{{ form.prefix }}-row" class="tr form-group-attached">
+          <div class="row">
+            <div class="col-sm-5">
+              <div class="form-group form-group-default">
+                <label>{{ form.id_acomodacao.label_tag }}</label>
+                <div style="text-align:center;">{{ form.id_acomodacao }}</div>
+              </div>
+            </div>
+            <div class="col-sm-7">
+              <div class="form-group form-group-default">
+                <label>{{ form.preco.label_tag }}</label>
+                <div style="text-align:center;">{{ form.preco }}</div>
+              </div>
+            </div>
+            <div></div>
+          </div>
+        </div>
+        {% endfor %}
+        {{ acomodacaoformset.management_form }}             
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -187,11 +214,13 @@
 <script>
 $(document).ready(function() {
 
-  $("#id_id_opcional").select2();
+$("#id_id_opcional").select2();
+
 
   // multiple fields
   $(function() {
     $('#id_cidade_table .tr').formset()
+    $('#id_acomodacao_table .tr').formset()
   })
 
 });
