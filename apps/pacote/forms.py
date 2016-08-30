@@ -15,8 +15,23 @@ from django.contrib.admin.widgets import FilteredSelectMultiple
 ##################################################
 from .models import Pacote # MODELS
 from apps.moeda.models import Moeda
-from apps.excursao.models import Excursao, Opcional
+from apps.excursao.models import Excursao, Opcional, Cidade
 ##################################################
+
+class PacoteCidadeRegisterForm(forms.Form):
+	id_cidade = forms.ModelChoiceField (queryset=Cidade.objects.all())
+	qtd_dias = forms.IntegerField(min_value=0)
+
+	def __init__(self, *args, **kwargs):
+		super(PacoteCidadeRegisterForm, self).__init__(*args, **kwargs)
+		# id_cidade Fields widget
+		self.fields['id_cidade'].widget.attrs['class'] = 'form-control'
+
+		# qtd_dias Fields widget
+		self.fields['qtd_dias'].widget.attrs['class'] = 'form-control'
+
+		pass
+
 
 class PacoteRegisterForm(forms.Form):
 
@@ -27,12 +42,10 @@ class PacoteRegisterForm(forms.Form):
 	is_active = forms.BooleanField()
 	pacote_preco = forms.DecimalField()
 	pacote_taxa = forms.DecimalField()
-	pacote_daybyday = forms.CharField(max_length=200)
-	pacote_obs = forms.CharField(max_length=200)
+	pacote_daybyday = forms.CharField(max_length=200,widget=forms.Textarea)
+	pacote_obs = forms.CharField(max_length=200,widget=forms.Textarea)
 
-	id_opcional = forms.ModelMultipleChoiceField(\
-      widget=FilteredSelectMultiple("Opcional", is_stacked=False),\
-      queryset=Opcional.objects.all())
+	id_opcional = forms.ModelMultipleChoiceField(queryset=Opcional.objects.all())
 
 	def __init__(self, *args, **kwargs):
 		super(PacoteRegisterForm, self).__init__(*args, **kwargs)
@@ -49,7 +62,9 @@ class PacoteRegisterForm(forms.Form):
 		self.fields['pacote_desc'].widget.attrs['class'] = 'form-control'
 
 		# is_active Fields widget
-		self.fields['is_active'].widget.attrs['class'] = 'form-control'
+		self.fields['is_active'].widget.attrs['class'] = 'form-control js-switch'
+		self.fields['is_active'].widget.attrs['data-init-plugin'] = 'switchery'
+		self.fields['is_active'].widget.attrs['checked'] = 'checked'
 
 		# pacote_preco Fields widget
 		self.fields['pacote_preco'].widget.attrs['class'] = 'form-control'
