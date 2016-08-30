@@ -212,18 +212,46 @@
 </script>
 <script src="{% static 'js/default/bootstrap-datepicker.js' %}" type="text/javascript"></script>
 <script>
-$(document).ready(function() {
+  $(document).ready(function() {
 
-$("#id_id_opcional").select2();
+    $("#id_id_opcional").select2();
 
 
-  // multiple fields
-  $(function() {
-    $('#id_cidade_table .tr').formset()
-    $('#id_acomodacao_table .tr').formset()
-  })
+    // multiple fields
+    $(function() {
 
-});
+      $('#id_cidade_table .tr').formset();
+      $('#id_acomodacao_table .tr').formset();
+      $(".add-row").click(function(){
+        var options = document.getElementsByClassName("acomodacao");
+        for(x=0;x<options.length;x++) {
+          var selected = $('option:selected', options[x]).text();
+
+          for(i=1;i<options.length;i++){
+            var list = options[i]
+
+            for(j=0;j<list.length;j++){
+              var option = list[j].text
+
+              console.log("++++++++++++++++++++++")
+              console.log("selected:" + selected)
+              console.log("i=" + String(i))
+              console.log("option:" + option)
+
+              if(selected == option && option != '---------' && x != i){
+                list.remove(j)
+                console.log("removed")
+                break
+              }
+
+            }
+          }
+        }
+      });
+
+    });
+
+  });
 
   //Submit form
   $( ".finish" ).click(function() {
