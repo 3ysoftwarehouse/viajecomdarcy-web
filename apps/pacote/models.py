@@ -1,6 +1,6 @@
 from django.db import models
 from apps.moeda.models import Moeda
-from apps.excursao.models import Excursao, Opcional
+from apps.excursao.models import Excursao, Opcional, Cidade
 
 class Pacote(models.Model):
 	id_pacote = models.AutoField(primary_key=True)
@@ -23,3 +23,12 @@ class PacoteOpcional(models.Model):
 	id_pacote_opcional = models.AutoField(primary_key=True)
 	id_pacote = models.ForeignKey(Pacote, on_delete=models.CASCADE,related_name='pacote_name')
 	id_opcional = models.ForeignKey(Opcional, on_delete=models.CASCADE,related_name='opcional_name')
+
+
+class PacoteCidade(models.Model):
+	id_pacote_cidade = models.AutoField(primary_key=True)
+	id_pacote = models.ForeignKey(Pacote, on_delete=models.CASCADE,related_name='pacote_cidade_name')
+	id_cidade = models.ForeignKey(Cidade, on_delete=models.CASCADE,related_name='cidade_name')
+	qtd_dias = models.IntegerField()
+	ordem = models.IntegerField()
+	

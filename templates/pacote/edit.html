@@ -1,92 +1,205 @@
 {% extends "default/panel/layout.html" %}
 {% load staticfiles %}
+
 {% block page_info %}
-  <li>
-     <b>Pacote</b>
-  </li>
-  <li>
-     <a class="active">Editar</a>
-  </li>
+<li>
+  <b>Pacote</b>
+</li>
+<li>
+  <a class="active">Editar</a>
+</li>    
 {% endblock %}
 
 {% block content %}
-  {% if context %}
-  {%  for title, value in context.items %}
-    {{title}} : {{value}} <br>
-  {% endfor %}
+{% if context %}
+{%  for title, value in context.items %}
+{{title}} : {{value}} <br>
+{% endfor %}
 {% endif %}
+<div id="rootwizard">
+ <!-- Nav tabs -->
+ <ul class="nav nav-tabs nav-tabs-linetriangle nav-tabs-separator nav-stack-sm">
+   <li class="active">
+     <a data-toggle="tab" href="#tab1"><i class="fa fa-bars tab-icon"></i>
+      <span>
+      Dados do Pacote
+     </span>
+   </a>
+ </li>
+{% block subclass_itens %}{% endblock %}     
+</ul>
+<!-- Tab panes -->
 
-<div class="col-md-12">
-   <!-- START PANEL -->
-   <div class="panel panel-default">
-      <div class="panel-heading">
-         <div class="panel-title">
-            Dados
-         </div>
-      </div>
-      <div class="panel-body">
-         <form autocomplete="off"  method="post" enctype="multipart/form-data" role="form" id="form-personal" novalidate="novalidate">
-            {% csrf_token %}
+<form autocomplete="off" method="post" enctype="multipart/form-data" role="form" id="form-personal" novalidate="novalidate">
+  {% csrf_token %}
 
-            <div class="form-group form-group-default required">
-               <label>Opcionais</label>
-               {{form.id_opcional}}
+  <div class="tab-content">
+   <div class="tab-pane active slide-left" id="tab1">
+     <div class="row row-same-height">
+       <div class="col-md-8">
+         <div class="padding-10">               
+           <div class="row clearfix p-t-10">
+             <div class="col-sm-4">
+               <div class="form-group form-group-default required">                        
+                 <label>{{form.pacote_nome.label_tag}}</label>
+                 {{form.pacote_nome}}
+               </div>
+             </div>
+             <div class="col-sm-4">
+               <div class="form-group form-group-default required">
+                 <label>{{form.pacote_desc.label_tag}}</label>
+                 {{form.pacote_desc}}
+               </div>
+             </div>
+             <div class="col-sm-4">
+               <div class="form-group form-group-default">
+                 <label>{{form.id_excursao.label_tag}}</label>
+                 {{ form.id_excursao }}
+                </div>
+              </div>
             </div>
-            <div class="form-group form-group-default required">
-               <label>Nome</label>
-               {{form.pacote_nome}}
+
+            <div class="row">
+             <div class="col-sm-4">
+               <div class="form-group form-group-default required">
+                 <label>{{form.id_moeda.label_tag}}</label>
+                 {{form.id_moeda}}
+               </div>
+             </div>
+             <div class="col-sm-4">
+               <div class="form-group form-group-default required">
+                 <label>{{form.pacote_preco.label_tag}}</label>
+                 {{form.pacote_preco}}
+               </div>
+             </div>
+             <div class="col-sm-4">
+               <div class="form-group form-group-default required">
+                 <label>{{form.pacote_taxa.label_tag}}</label>
+                 {{form.pacote_taxa}}
+               </div>
+             </div>
+           </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="form-group form-group-default required">
+                <label>{{form.is_active.label_tag}}</label>
+                  {{form.is_active}}
+              </div>
             </div>
-            <div class="form-group form-group-default required">
-               <label>Descrição</label>
-               {{form.pacote_desc}}
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="form-group form-group-default required">
+                <label>{{form.id_opcional.label_tag}}</label>
+                  {{form.id_opcional}}
+              </div>
             </div>
-            <div class="form-group form-group-default required">
-               <label>Excursão</label>
-               {{form.id_excursao}}
-            </div>
-            <div class="form-group form-group-default required">
-               <label>Moeda</label>
-               {{form.id_moeda}}
-            </div>
-            <div class="form-group form-group-default required">
-               <label>Preço</label>
-               {{form.pacote_preco}}
-            </div>
-            <div class="form-group form-group-default required">
-               <label>Taxa</label>
-               {{form.pacote_taxa}}
-            </div>
-            <div class="form-group form-group-default required">
-               <label>Day by Day</label>
+          </div>
+
+         <div class="row">
+            <div class="col-sm-6">               
+             <div class="form-group form-group-default">
+               <label>{{form.pacote_daybyday.label_tag}}</label>
                {{form.pacote_daybyday}}
-            </div>
-            <div class="form-group form-group-default required">
-               <label>Observações</label>
-               {{form.pacote_obs}}
-            </div>
-            <div class="form-group form-group-default required">
-               <label>Ativar</label>
-               <input class="form-control js-switch" data-init-plugin="switchery" checked="checked" id="id_is_active" name="is_active" type="checkbox" >
-            </div>
-            <input type="submit" value="Salvar" />
-         </form>
-      </div>
+             </div>
+           </div>
+           <div class="col-sm-6">
+            <div class="form-group form-group-default">
+             <label>{{form.pacote_obs.label_tag}}</label>
+             {{form.pacote_obs}}
+           </div>
+         </div>
+       </div>
+
+     </div>
    </div>
-   <!-- END PANEL -->
+   <div class="col-md-4">
+     <div class="row p-t-10">
+       <div id="id_cidade_table" class="row form-group-attached p-t-10" >
+        {% for form in formset.forms %}
+        <div id="{{ form.prefix }}-row" class="tr form-group-attached">
+          <div class="row">
+            <div class="col-sm-5">
+              <div class="form-group form-group-default">
+                <label>{{ form.id_cidade.label_tag }}</label>
+                <div style="text-align:center;">{{ form.id_cidade }}</div>
+              </div>
+            </div>
+            <div class="col-sm-7">
+              <div class="form-group form-group-default">
+                <label>{{ form.qtd_dias.label_tag }}</label>
+                <div style="text-align:center;">{{ form.qtd_dias }}</div>
+              </div>
+            </div>
+            <div></div>
+          </div>
+        </div>
+        {% endfor %}
+        {{ formset.management_form }}             
+      </div>
+    </div>
+  </div>
 </div>
 
+
+</div>
+
+</div>
+{% block subclass_form %}{% endblock %}             
+<div class="padding-20 bg-white">
+ <ul class="pager wizard">
+   <li class="next">
+     <button class="btn btn-primary btn-cons pull-right" type="button">
+       <span>Próximo</span>
+     </button>
+   </li>
+   <li class="next finish hidden">
+     <button class="btn btn-primary btn-cons btn-animated from-left fa fa-arrow-right pull-right" type="button">
+       <span>Cadastrar</span>
+     </button>
+   </li>
+   <li class="previous first hidden">
+     <button class="btn btn-default btn-cons btn-animated from-left fa fa-cog pull-right" type="button">
+       <span>Primeiro</span>
+     </button>
+   </li>
+   <li class="previous">
+     <button class="btn btn-default btn-cons pull-right" type="button">
+       <span>Anterior</span>
+     </button>
+   </li>
+ </ul>
+</div>
+</form>
+</div>
+</div>
 {% endblock %}
 
 {% block javascript %}
 
+
+<script src="{% static 'js/default/jquery.inputmask.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/default/form_wizard.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/default/jquery.bootstrap.wizard.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'js/default/bootstrap-datepicker.js' %}" type="text/javascript"></script>
 <script>
 $(document).ready(function() {
 
-//Multiselect - Select2 plug-in
-$("#id_id_opcional").val({{ opcionais }}).select2();
+  $("#id_id_opcional").val({{ opcionais }}).select2();
+
+  // multiple fields
+  $(function() {
+    $('#id_cidade_table .tr').formset()
+  })
 
 });
 
+  //Submit form
+  $( ".finish" ).click(function() {
+    $( "#form-personal" ).submit();
+  });
+
 </script>
 {% endblock %}
-
