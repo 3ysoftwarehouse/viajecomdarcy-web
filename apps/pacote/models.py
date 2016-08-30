@@ -1,6 +1,9 @@
 from django.db import models
 from apps.moeda.models import Moeda
 from apps.excursao.models import Excursao, Opcional, Cidade
+from apps.acomodacao.models import Acomodacao
+
+
 
 class Pacote(models.Model):
 	id_pacote = models.AutoField(primary_key=True)
@@ -19,6 +22,7 @@ class Pacote(models.Model):
 	def __unicode__(self):
 		return unicode(self.pacote_nome)
 
+
 class PacoteOpcional(models.Model):
 	id_pacote_opcional = models.AutoField(primary_key=True)
 	id_pacote = models.ForeignKey(Pacote, on_delete=models.CASCADE,related_name='pacote_name')
@@ -32,3 +36,11 @@ class PacoteCidade(models.Model):
 	qtd_dias = models.IntegerField()
 	ordem = models.IntegerField()
 	
+
+class PacoteAcomadacao(models.Model):
+	id_pacote_acomodacao = models.AutoField(primary_key=True)
+	id_pacote = models.ForeignKey(Pacote, on_delete=models.CASCADE,related_name='pacote_acomodacao_name')
+	id_acomodacao = models.ForeignKey(Acomodacao, on_delete=models.CASCADE,related_name='acomadacao_name')
+	id_moeda = models.ForeignKey(Moeda, on_delete=models.CASCADE,related_name='pacote_acomodacao_moeda_name')
+	preco = models.DecimalField(max_digits=10, decimal_places=2)
+
