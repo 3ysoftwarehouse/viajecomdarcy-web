@@ -115,9 +115,10 @@
      </div>
    </div>
    <div class="col-md-4">
+
      <div class="row p-t-10">
        <div id="id_cidade_table" class="row form-group-attached p-t-10" >
-        {% for form in formset.forms %}
+        {% for form in cidadeformset.forms %}
         <div id="{{ form.prefix }}-row" class="tr form-group-attached">
           <div class="row">
             <div class="col-sm-5">
@@ -136,9 +137,35 @@
           </div>
         </div>
         {% endfor %}
-        {{ formset.management_form }}             
+        {{ cidadeformset.management_form }}             
       </div>
     </div>
+
+    <div class="row p-t-10">
+       <div id="id_acomodacao_table" class="row form-group-attached p-t-10" >
+        {% for form in acomodacaoformset.forms %}
+        <div id="{{ form.prefix }}-row" class="tr form-group-attached">
+          <div class="row">
+            <div class="col-sm-5">
+              <div class="form-group form-group-default">
+                <label>{{ form.id_acomodacao.label_tag }}</label>
+                <div style="text-align:center;">{{ form.id_acomodacao }}</div>
+              </div>
+            </div>
+            <div class="col-sm-7">
+              <div class="form-group form-group-default">
+                <label>{{ form.preco.label_tag }}</label>
+                <div style="text-align:center;">{{ form.preco }}</div>
+              </div>
+            </div>
+            <div></div>
+          </div>
+        </div>
+        {% endfor %}
+        {{ acomodacaoformset.management_form }}             
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -174,7 +201,10 @@
 </form>
 </div>
 </div>
+
+<div id="select_aux" style="display:none;"></div>
 {% endblock %}
+
 
 {% block javascript %}
 
@@ -185,16 +215,96 @@
 </script>
 <script src="{% static 'js/default/bootstrap-datepicker.js' %}" type="text/javascript"></script>
 <script>
-$(document).ready(function() {
+  $(document).ready(function() {
 
-  $("#id_id_opcional").val({{ opcionais }}).select2();
+    $("#id_id_opcional").val({{ opcionais }}).select2();
 
-  // multiple fields
-  $(function() {
-    $('#id_cidade_table .tr').formset()
-  })
 
-});
+    // multiple fields
+    $(function() {
+
+      $('#id_cidade_table .tr').formset();
+      $('#id_acomodacao_table .tr').formset();
+      $(".acomodacao").focus(function(){
+        aux_select(this.value, this.options[this.selectedIndex].text)
+      });
+      $(".acomodacao").change(function(){
+        update_select();
+      });
+      $(".add-row").click(function(){
+        add_select();
+      });
+
+    });
+
+  });
+
+  function aux_select(value, text){
+    console.log("SET SELECT AUX VALUES")
+    document.getElementById("select_aux").innerHTML = value + "|" + text
+  }
+
+  function add_select(){
+      console.log("ADD NEW SELECT")
+      var options = document.getElementsByClassName("acomodacao");
+      for(x=0;x<options.length;x++) {
+        var selected = $('option:selected', options[x]).text();
+
+        for(i=1;i<options.length;i++){
+          var list = options[i]
+
+          for(j=0;j<list.length;j++){
+            var option = list[j].text
+
+            console.log("++++++++++++++++++++++")
+            console.log("selected:" + selected)
+            console.log("i=" + String(i))
+            console.log("option:" + option)
+
+            if(selected == option && option != '---------' && x != i){
+              list.remove(j)
+              console.log("removed")
+              break
+            }
+
+          }
+        }
+      }
+  }
+
+  function update_select(){
+      console.log("UPDATE SELECTS")
+      var options = document.getElementsByClassName("acomodacao");
+      var last_values = document.getElementById("select_aux").innerHTML.split('|')
+      var aux = document.createElement("option");
+      aux.value = last_values[0]
+      aux.text = last_values[1] 
+
+      for(x=0;x<options.length;x++) {
+        var selected = $('option:selected', options[x]).text();
+
+        for(i=1;i<options.length;i++){
+          var list = options[i]
+
+          for(j=0;j<list.length;j++){
+            var option = list[j].text
+
+            console.log("++++++++++++++++++++++")
+            console.log("selected:" + selected)
+            console.log("i=" + String(i))
+            console.log("option:" + option)
+
+            if(selected == option && option != '---------' && x != i){
+              list.add(aux)
+              list.remove(j)
+              console.log("removed")
+              break
+            }
+
+          }
+        }
+      }
+  }
 
   //Submit form
   $( ".finish" ).click(function() {
