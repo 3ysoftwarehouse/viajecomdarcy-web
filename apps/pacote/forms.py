@@ -90,7 +90,7 @@ class PacoteAcomodacaoRegisterForm(forms.Form):
 	def __init__(self, *args, **kwargs):
 		super(PacoteAcomodacaoRegisterForm, self).__init__(*args, **kwargs)
 		# id_acomodacao Fields widget
-		self.fields['id_acomodacao'].widget.attrs['class'] = 'form-control select'
+		self.fields['id_acomodacao'].widget.attrs['class'] = 'form-control select acomodacao'
 
 		# preco Fields widget
 		self.fields['preco'].widget.attrs['class'] = 'form-control'

@@ -86,6 +86,13 @@
                         row.hide();
                         forms = $('.' + options.formCssClass).not(':hidden');
                     } else {
+                        try{
+                            var selectbox_value = row.find('select')[0]
+                            aux_select(selectbox_value.value, selectbox_value.options[selectbox_value.selectedIndex].text)
+                            update_select()
+                        }catch(err){
+                            console.log(err)
+                        }                     
                         row.remove();
                         // Update the TOTAL_FORMS count:
                         forms = $('.' + options.formCssClass).not('.formset-custom-template');
