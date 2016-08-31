@@ -201,7 +201,10 @@
 </form>
 </div>
 </div>
+
+<div id="select_aux" style="display:none;"></div>
 {% endblock %}
+
 
 {% block javascript %}
 
@@ -222,36 +225,86 @@
 
       $('#id_cidade_table .tr').formset();
       $('#id_acomodacao_table .tr').formset();
+      $(".acomodacao").focus(function(){
+        aux_select(this.value, this.options[this.selectedIndex].text)
+      });
+      $(".acomodacao").change(function(){
+        update_select();
+      });
       $(".add-row").click(function(){
-        var options = document.getElementsByClassName("acomodacao");
-        for(x=0;x<options.length;x++) {
-          var selected = $('option:selected', options[x]).text();
-
-          for(i=1;i<options.length;i++){
-            var list = options[i]
-
-            for(j=0;j<list.length;j++){
-              var option = list[j].text
-
-              console.log("++++++++++++++++++++++")
-              console.log("selected:" + selected)
-              console.log("i=" + String(i))
-              console.log("option:" + option)
-
-              if(selected == option && option != '---------' && x != i){
-                list.remove(j)
-                console.log("removed")
-                break
-              }
-
-            }
-          }
-        }
+        add_select();
       });
 
     });
 
   });
+
+  function aux_select(value, text){
+    console.log("SET SELECT AUX VALUES")
+    document.getElementById("select_aux").innerHTML = value + "|" + text
+  }
+
+  function add_select(){
+      console.log("ADD NEW SELECT")
+      var options = document.getElementsByClassName("acomodacao");
+      for(x=0;x<options.length;x++) {
+        var selected = $('option:selected', options[x]).text();
+
+        for(i=1;i<options.length;i++){
+          var list = options[i]
+
+          for(j=0;j<list.length;j++){
+            var option = list[j].text
+
+            console.log("++++++++++++++++++++++")
+            console.log("selected:" + selected)
+            console.log("i=" + String(i))
+            console.log("option:" + option)
+
+            if(selected == option && option != '---------' && x != i){
+              list.remove(j)
+              console.log("removed")
+              break
+            }
+
+          }
+        }
+      }
+  }
+
+  function update_select(){
+      console.log("UPDATE SELECTS")
+      var options = document.getElementsByClassName("acomodacao");
+      var last_values = document.getElementById("select_aux").innerHTML.split('|')
+      var aux = document.createElement("option");
+      aux.value = last_values[0]
+      aux.text = last_values[1] 
+
+      for(x=0;x<options.length;x++) {
+        var selected = $('option:selected', options[x]).text();
+
+        for(i=1;i<options.length;i++){
+          var list = options[i]
+
+          for(j=0;j<list.length;j++){
+            var option = list[j].text
+
+            console.log("++++++++++++++++++++++")
+            console.log("selected:" + selected)
+            console.log("i=" + String(i))
+            console.log("option:" + option)
+
+            if(selected == option && option != '---------' && x != i){
+              list.add(aux)
+              list.remove(j)
+              console.log("removed")
+              break
+            }
+
+          }
+        }
+      }
+  }
 
   //Submit form
   $( ".finish" ).click(function() {
