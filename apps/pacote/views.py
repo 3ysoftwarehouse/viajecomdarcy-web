@@ -19,26 +19,35 @@ from django.forms import formset_factory
 ##################################################
 #				CUSTOM IMPORTS                   #
 ##################################################
-from .models import Pacote, PacoteOpcional, PacoteCidade # MODELS
+from .models import Pacote, PacoteOpcional, PacoteCidade, PacoteAcomadacao # MODELS
 from apps.moeda.models import Moeda
+from apps.acomodacao.models import Acomodacao
 from apps.excursao.models import Excursao, Opcional, Cidade
 from apps.default.views import JSONResponseMixin
-from .forms import PacoteRegisterForm, PacoteCidadeRegisterForm # USER FORMS
+from .forms import PacoteRegisterForm, PacoteCidadeRegisterForm, PacoteAcomodacaoRegisterForm # USER FORMS
 ##################################################
 
 
 class PacoteRegister(JSONResponseMixin,View):
     def get(self, request):
         form = PacoteRegisterForm
-        formset = formset_factory(PacoteCidadeRegisterForm)
-        return render (request, 'pacote/register.html', {'form':form, 'formset':formset})
+        cidadeformset = formset_factory(PacoteCidadeRegisterForm)
+        acomodacaoformset = formset_factory(PacoteAcomodacaoRegisterForm)
+        return render (request, 'pacote/register.html', {'form':form, 'cidadeformset':cidadeformset, 'acomodacaoformset':acomodacaoformset})
 
     def post(self, request, *args, **kwargs):
         context = {}
         if request.method == 'POST':            
             form = PacoteRegisterForm(request.POST)
+
             PacoteCidadeFormSet = formset_factory(PacoteCidadeRegisterForm)       
-            formset = PacoteCidadeFormSet(request.POST, request.FILES)
+            cidadeformset = PacoteCidadeFormSet(request.POST, request.FILES)
+
+            PacoteAcomodacaoFormSet = formset_factory(PacoteAcomodacaoRegisterForm)       
+            acomodacaoformset = PacoteAcomodacaoFormSet(request.POST, request.FILES)
+
+
+
 
             id_excursao = request.POST['id_excursao']
             id_moeda = request.POST['id_moeda']
@@ -75,8 +84,8 @@ class PacoteRegister(JSONResponseMixin,View):
 
             listcidades = []
 
-            if formset.is_valid():
-                for f in formset:
+            if cidadeformset.is_valid():
+                for f in cidadeformset:
                     cidade = f.cleaned_data
                     listcidades.append([cidade.get('id_cidade'),cidade.get('qtd_dias')])
 
@@ -85,10 +94,25 @@ class PacoteRegister(JSONResponseMixin,View):
                     if not cidade.get('qtd_dias'):
                         context['Dias'] = ' cannot be empty !'
             else:
-                for erro in formset.errors:                 
+                for erro in cidadeformset.errors:                 
                     context['error'] = erro
                 pass
-            
+
+            listacomodacoes = []
+
+            if acomodacaoformset.is_valid():
+                for f in acomodacaoformset:
+                    acomodacao = f.cleaned_data
+                    listacomodacoes.append([acomodacao.get('id_acomodacao'),acomodacao.get('preco')])
+
+                    if not acomodacao.get('id_acomodacao'):
+                        context['Acomodação'] = ' cannot be empty !'
+                    if not acomodacao.get('preco'):
+                        context['Preço'] = ' cannot be empty !'
+            else:
+                for erro in acomodacaoformset.errors:                 
+                    context['error'] = erro
+                pass
 
             if not context:
               
@@ -118,15 +142,28 @@ class PacoteRegister(JSONResponseMixin,View):
                     pacotecidade.qtd_dias = listcidade[1]
                     pacotecidade.ordem = i
                     pacotecidade.save()
+
+                for listacomodacao in listacomodacoes:
+                    pacoteacomodacao = PacoteAcomadacao()
+                    pacoteacomodacao.id_pacote = Pacote.objects.get(pk=pacote.pk)
+                    pacoteacomodacao.id_acomodacao = Acomodacao.objects.get(acomodacao_desc=listacomodacao[0])
+                    pacoteacomodacao.id_moeda = Moeda.objects.get(pk=id_moeda)
+                    pacoteacomodacao.preco = listacomodacao[1]
+                    pacoteacomodacao.save()
+
                 
                 return redirect(reverse_lazy('pacote-list'))
 
             else:
                 form = PacoteRegisterForm(request.POST)
-                PacoteCidadeFormSet = formset_factory(PacoteCidadeRegisterForm)       
-                formset = PacoteCidadeFormSet(request.POST, request.FILES)
 
-        return render(request, 'pacote/register.html', {'form': form, 'formset': formset, 'context':context})
+                PacoteCidadeFormSet = formset_factory(PacoteCidadeRegisterForm)       
+                cidadeformset = PacoteCidadeFormSet(request.POST, request.FILES)
+
+                PacoteAcomodacaoFormSet = formset_factory(PacoteAcomodacaoRegisterForm)       
+                acomodacaoformset = PacoteAcomodacaoFormSet(request.POST, request.FILES)
+
+        return render(request, 'pacote/register.html', {'form': form, 'cidadeformset': cidadeformset, 'acomodacaoformset':acomodacaoformset, 'context':context})
 
 
 
@@ -134,21 +171,34 @@ class PacoteEdit(JSONResponseMixin,View):
     def get(self, request, pk=None):
         pacote = Pacote.objects.get(pk=pk)
         pacoteopcional = PacoteOpcional.objects.filter(id_pacote=pk)
-        cidades = PacoteCidade.objects.filter(id_pacote=pk)
+        pacoteacomodacao = PacoteAcomadacao.objects.filter(id_pacote=pk)
+        pacotecidades = PacoteCidade.objects.filter(id_pacote=pk)
+
+        PacoteCidadeFormSet = formset_factory(PacoteCidadeRegisterForm,extra=0)
+        PacoteAcomodacaoFormSet = formset_factory(PacoteAcomodacaoRegisterForm, extra=0)   
 
         opcionais = []
+        acomodacoes = []
+        cidades = []
+
         for value in pacoteopcional:
             opcionais.append(value.id_opcional.pk)
 
-        PacoteCidadeFormSet = formset_factory(PacoteCidadeRegisterForm,extra=0)
+       
+        for acomodacao in pacoteacomodacao:
+            acomodacoes.append({'id_acomodacao':acomodacao.id_acomodacao,'preco':acomodacao.preco})
+               
+        acomodacaoformset = PacoteAcomodacaoFormSet(
+            initial=acomodacoes
+            )
+
         
-        data = []
-        for cidade in cidades:
-            data.append({'id_cidade':cidade.id_cidade,'qtd_dias':cidade.qtd_dias})
+        for cidade in pacotecidades:
+            cidades.append({'id_cidade':cidade.id_cidade,'qtd_dias':cidade.qtd_dias})
         
                 
-        formset = PacoteCidadeFormSet(
-            initial=data
+        cidadeformset = PacoteCidadeFormSet(
+            initial=cidades
             )
 
         form = PacoteRegisterForm(
@@ -164,14 +214,19 @@ class PacoteEdit(JSONResponseMixin,View):
             'pacote_obs': pacote.pacote_obs,
             }
         )
-        return render (request, 'pacote/edit.html', {'form':form, 'opcionais':opcionais,'formset':formset})
+        return render (request, 'pacote/edit.html', {'form':form, 'opcionais':opcionais,'cidadeformset':cidadeformset, 'acomodacaoformset':acomodacaoformset})
 
     def post(self, request, pk=None, *args, **kwargs):
         context = {}
-        if request.method == 'POST':            
+        if request.method == 'POST':  
+
             form = PacoteRegisterForm(request.POST)
+
             PacoteCidadeFormSet = formset_factory(PacoteCidadeRegisterForm)       
-            formset = PacoteCidadeFormSet(request.POST, request.FILES)
+            cidadeformset = PacoteCidadeFormSet(request.POST, request.FILES)
+
+            PacoteAcomodacaoFormSet = formset_factory(PacoteAcomodacaoRegisterForm)       
+            acomodacaoformset = PacoteAcomodacaoFormSet(request.POST, request.FILES)
             
             id_excursao = request.POST['id_excursao']
             id_moeda = request.POST['id_moeda']
@@ -207,8 +262,8 @@ class PacoteEdit(JSONResponseMixin,View):
             
             listcidades = []
 
-            if formset.is_valid():
-                for f in formset:
+            if cidadeformset.is_valid():
+                for f in cidadeformset:
                     cidade = f.cleaned_data
                     listcidades.append([cidade.get('id_cidade'),cidade.get('qtd_dias'),cidade.get('id_pacote_cidade')])
 
@@ -217,7 +272,24 @@ class PacoteEdit(JSONResponseMixin,View):
                     if not cidade.get('qtd_dias'):
                         context['Dias'] = ' cannot be empty !'
             else:
-                for erro in formset.errors:                 
+                for erro in cidadeformset.errors:                 
+                    context['error'] = erro
+                pass
+
+
+            listacomodacoes = []
+
+            if acomodacaoformset.is_valid():
+                for f in acomodacaoformset:
+                    acomodacao = f.cleaned_data
+                    listacomodacoes.append([acomodacao.get('id_acomodacao'),acomodacao.get('preco')])
+
+                    if not acomodacao.get('id_acomodacao'):
+                        context['Acomodação'] = ' cannot be empty !'
+                    if not acomodacao.get('preco'):
+                        context['Preço'] = ' cannot be empty !'
+            else:
+                for erro in acomodacaoformset.errors:                 
                     context['error'] = erro
                 pass
 
@@ -239,10 +311,15 @@ class PacoteEdit(JSONResponseMixin,View):
 
                 pacoteopcional = PacoteOpcional.objects.filter(id_pacote=pk)
                 pacotecidade = PacoteCidade.objects.filter(id_pacote=pk)
+                pacoteacomodacao = PacoteAcomadacao.objects.filter(id_pacote=pk)
 
                 for value in pacoteopcional:
                     value.delete()
+
                 for value in pacotecidade:
+                    value.delete()
+
+                for value in pacoteacomodacao:
                     value.delete()
 
 
@@ -259,15 +336,28 @@ class PacoteEdit(JSONResponseMixin,View):
                     pacotecidade.qtd_dias = listcidade[1]
                     pacotecidade.ordem = i
                     pacotecidade.save()
+
+                for listacomodacao in listacomodacoes:
+                    pacoteacomodacao = PacoteAcomadacao()
+                    pacoteacomodacao.id_pacote = Pacote.objects.get(pk=pacote.pk)
+                    pacoteacomodacao.id_acomodacao = Acomodacao.objects.get(acomodacao_desc=listacomodacao[0])
+                    pacoteacomodacao.id_moeda = Moeda.objects.get(pk=id_moeda)
+                    pacoteacomodacao.preco = listacomodacao[1]
+                    pacoteacomodacao.save()
                 
                 return redirect(reverse_lazy('pacote-list'))
 
             else:
                 form = PacoteRegisterForm(request.POST)
-                PacoteCidadeFormSet = formset_factory(PacoteCidadeRegisterForm)       
-                formset = PacoteCidadeFormSet(request.POST, request.FILES)
 
-        return render(request, 'pacote/edit.html', {'form': form, 'formset':formset, 'context':context})
+                PacoteCidadeFormSet = formset_factory(PacoteCidadeRegisterForm)       
+                cidadeformset = PacoteCidadeFormSet(request.POST, request.FILES)
+
+                PacoteAcomodacaoFormSet = formset_factory(PacoteAcomodacaoRegisterForm)       
+                acomodacaoformset = PacoteAcomodacaoFormSet(request.POST, request.FILES)
+
+        return render(request, 'pacote/edit.html', {'form': form, 'cidadeformset': cidadeformset, 'acomodacaoformset':acomodacaoformset, 'context':context})
+
 
 
 class PacoteList(JSONResponseMixin,ListView):
