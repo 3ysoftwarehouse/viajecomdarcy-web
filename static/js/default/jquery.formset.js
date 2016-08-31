@@ -89,7 +89,7 @@
                         try{
                             var selectbox_value = row.find('select')[0]
                             aux_select(selectbox_value.value, selectbox_value.options[selectbox_value.selectedIndex].text)
-                            update_select()
+                            check_select('delete')
                         }catch(err){
                             console.log(err)
                         }                     

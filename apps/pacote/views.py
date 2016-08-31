@@ -31,8 +31,11 @@ from .forms import PacoteRegisterForm, PacoteCidadeRegisterForm, PacoteAcomodaca
 class PacoteRegister(JSONResponseMixin,View):
     def get(self, request):
         form = PacoteRegisterForm
-        cidadeformset = formset_factory(PacoteCidadeRegisterForm)
-        acomodacaoformset = formset_factory(PacoteAcomodacaoRegisterForm)
+        PacoteCidadeFormSet = formset_factory(PacoteCidadeRegisterForm)      
+        cidadeformset = PacoteCidadeFormSet(prefix='cidade')
+        PacoteAcomodacaoFormSet = formset_factory(PacoteAcomodacaoRegisterForm)      
+        acomodacaoformset = PacoteAcomodacaoFormSet(prefix='acomodacao')
+
         return render (request, 'pacote/register.html', {'form':form, 'cidadeformset':cidadeformset, 'acomodacaoformset':acomodacaoformset})
 
     def post(self, request, *args, **kwargs):
@@ -40,14 +43,10 @@ class PacoteRegister(JSONResponseMixin,View):
         if request.method == 'POST':            
             form = PacoteRegisterForm(request.POST)
 
-            PacoteCidadeFormSet = formset_factory(PacoteCidadeRegisterForm)       
-            cidadeformset = PacoteCidadeFormSet(request.POST, request.FILES)
-
-            PacoteAcomodacaoFormSet = formset_factory(PacoteAcomodacaoRegisterForm)       
-            acomodacaoformset = PacoteAcomodacaoFormSet(request.POST, request.FILES)
-
-
-
+            PacoteCidadeFormSet = formset_factory(PacoteCidadeRegisterForm)      
+            cidadeformset = PacoteCidadeFormSet(request.POST, request.FILES, prefix='cidade')
+            PacoteAcomodacaoFormSet = formset_factory(PacoteAcomodacaoRegisterForm)      
+            acomodacaoformset = PacoteAcomodacaoFormSet(request.POST, request.FILES, prefix='acomodacao')
 
             id_excursao = request.POST['id_excursao']
             id_moeda = request.POST['id_moeda']
@@ -105,10 +104,12 @@ class PacoteRegister(JSONResponseMixin,View):
                     acomodacao = f.cleaned_data
                     listacomodacoes.append([acomodacao.get('id_acomodacao'),acomodacao.get('preco')])
 
+                    '''
                     if not acomodacao.get('id_acomodacao'):
                         context['Acomodação'] = ' cannot be empty !'
                     if not acomodacao.get('preco'):
                         context['Preço'] = ' cannot be empty !'
+                    '''
             else:
                 for erro in acomodacaoformset.errors:                 
                     context['error'] = erro
@@ -155,13 +156,13 @@ class PacoteRegister(JSONResponseMixin,View):
                 return redirect(reverse_lazy('pacote-list'))
 
             else:
-                form = PacoteRegisterForm(request.POST)
+                form = PacoteRegisterForm(request.POST, request.FILES)
 
-                PacoteCidadeFormSet = formset_factory(PacoteCidadeRegisterForm)       
-                cidadeformset = PacoteCidadeFormSet(request.POST, request.FILES)
+                PacoteCidadeFormSet = formset_factory(PacoteCidadeRegisterForm)      
+                cidadeformset = PacoteCidadeFormSet(request.POST, request.FILES, prefix='cidade')
+                PacoteAcomodacaoFormSet = formset_factory(PacoteAcomodacaoRegisterForm)      
+                acomodacaoformset = PacoteAcomodacaoFormSet(request.POST, request.FILES, prefix='acomodacao')
 
-                PacoteAcomodacaoFormSet = formset_factory(PacoteAcomodacaoRegisterForm)       
-                acomodacaoformset = PacoteAcomodacaoFormSet(request.POST, request.FILES)
 
         return render(request, 'pacote/register.html', {'form': form, 'cidadeformset': cidadeformset, 'acomodacaoformset':acomodacaoformset, 'context':context})
 
@@ -189,7 +190,8 @@ class PacoteEdit(JSONResponseMixin,View):
             acomodacoes.append({'id_acomodacao':acomodacao.id_acomodacao,'preco':acomodacao.preco})
                
         acomodacaoformset = PacoteAcomodacaoFormSet(
-            initial=acomodacoes
+            initial=acomodacoes,
+            prefix='acomodacao'
             )
 
         
@@ -198,7 +200,8 @@ class PacoteEdit(JSONResponseMixin,View):
         
                 
         cidadeformset = PacoteCidadeFormSet(
-            initial=cidades
+            initial=cidades,
+            prefix='cidade'
             )
 
         form = PacoteRegisterForm(
@@ -222,11 +225,11 @@ class PacoteEdit(JSONResponseMixin,View):
 
             form = PacoteRegisterForm(request.POST)
 
-            PacoteCidadeFormSet = formset_factory(PacoteCidadeRegisterForm)       
-            cidadeformset = PacoteCidadeFormSet(request.POST, request.FILES)
+            PacoteCidadeFormSet = formset_factory(PacoteCidadeRegisterForm)      
+            cidadeformset = PacoteCidadeFormSet(request.POST, request.FILES, prefix='cidade')
+            PacoteAcomodacaoFormSet = formset_factory(PacoteAcomodacaoRegisterForm)      
+            acomodacaoformset = PacoteAcomodacaoFormSet(request.POST, request.FILES, prefix='acomodacao')
 
-            PacoteAcomodacaoFormSet = formset_factory(PacoteAcomodacaoRegisterForm)       
-            acomodacaoformset = PacoteAcomodacaoFormSet(request.POST, request.FILES)
             
             id_excursao = request.POST['id_excursao']
             id_moeda = request.POST['id_moeda']
@@ -296,7 +299,6 @@ class PacoteEdit(JSONResponseMixin,View):
             if not context:
 
                 
-
                 pacote = Pacote.objects.get(pk=pk)
                 pacote.id_excursao = Excursao.objects.get(pk=id_excursao)
                 pacote.id_moeda = Moeda.objects.get(pk=id_moeda)
@@ -350,11 +352,11 @@ class PacoteEdit(JSONResponseMixin,View):
             else:
                 form = PacoteRegisterForm(request.POST)
 
-                PacoteCidadeFormSet = formset_factory(PacoteCidadeRegisterForm)       
-                cidadeformset = PacoteCidadeFormSet(request.POST, request.FILES)
+                PacoteCidadeFormSet = formset_factory(PacoteCidadeRegisterForm)      
+                cidadeformset = PacoteCidadeFormSet(request.POST, request.FILES, prefix='cidade')
+                PacoteAcomodacaoFormSet = formset_factory(PacoteAcomodacaoRegisterForm)      
+                acomodacaoformset = PacoteAcomodacaoFormSet(request.POST, request.FILES, prefix='acomodacao')
 
-                PacoteAcomodacaoFormSet = formset_factory(PacoteAcomodacaoRegisterForm)       
-                acomodacaoformset = PacoteAcomodacaoFormSet(request.POST, request.FILES)
 
         return render(request, 'pacote/edit.html', {'form': form, 'cidadeformset': cidadeformset, 'acomodacaoformset':acomodacaoformset, 'context':context})
 
