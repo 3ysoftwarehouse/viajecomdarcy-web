@@ -372,12 +372,15 @@ class PacoteList(JSONResponseMixin,ListView):
 
 
 class PacoteDetail(JSONResponseMixin,DetailView):
-	model = Pacote
-	template_name = 'pacote/detail.html'
+    model = Pacote
+    template_name = 'pacote/detail.html'
 
-	def get_context_data(self, **kwargs):
-		context = super(PacoteDetail, self).get_context_data(**kwargs)
-		return context
+    def get_context_data(self, **kwargs):
+        context = super(PacoteDetail, self).get_context_data(**kwargs)
+        context['list_opcionais'] = PacoteOpcional.objects.filter(id_pacote=self.kwargs['pk'])
+        context['list_cidades'] = PacoteCidade.objects.filter(id_pacote=self.kwargs['pk'])
+        context['list_acomodacoes'] = PacoteAcomadacao.objects.filter(id_pacote=self.kwargs['pk'])
+        return context
 
 
 class PacoteDelete(JSONResponseMixin,DeleteView):
