@@ -77,6 +77,11 @@ class PassageiroRegister(JSONResponseMixin,View):
 			natularidade = request.POST['natularidade']
 			observacao = request.POST['observacao']
 
+			if data_nascimento:
+				data_nascimento = datetime.strptime(data_nascimento, '%d/%m/%Y').strftime('%Y-%m-%d')
+			else:
+				data_nascimento = None
+
 			
 			if not nome:
 				context['error_msg'] = 'nome cannot be empty !'
@@ -434,7 +439,20 @@ class PassageiroList(JSONResponseMixin,ListView):
 	template_name = 'subclasses/usuario/passageiro/list.html'
 
 	def get_context_data(self, **kwargs):
+
 		context = super(PassageiroList, self).get_context_data(**kwargs)
+		passageiros = Passageiro.objects.all()
+		lists = []
+
+		for value in passageiros:
+			telefone = TelefoneUsuario.objects.filter(id_usuario=value.id_usuario)
+			if telefone:
+				lists.append([value,telefone[0]])
+			else:
+				lists.append([value,telefone])
+
+		context["passageiros"] = lists
+
 		return context
 
 

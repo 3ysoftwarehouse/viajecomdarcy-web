@@ -20,7 +20,7 @@ from apps.subclasses.empresa.escola.models import Escola
 class PassageiroRegisterForm(UserRegisterForm, forms.Form):
 
 	id_escola = forms.ModelChoiceField (label='Escola:', queryset = Escola.objects.all())
-	matricula = forms.IntegerField(label='Matricula:')
+	matricula = forms.IntegerField(label='Matricula CN:')
 	natularidade = forms.CharField(label='Natularidade:', max_length=30)
 	observacao = forms.CharField(label='Obs:', max_length=250, widget=forms.Textarea)
 
