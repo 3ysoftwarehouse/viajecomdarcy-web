@@ -74,6 +74,10 @@ class EmissorRegister(JSONResponseMixin,View):
 			# EXTRAS
 			id_agencia = request.POST['id_agencia']
 
+			if data_nascimento:
+				data_nascimento = datetime.strptime(data_nascimento, '%d/%m/%Y').strftime('%Y-%m-%d')
+			else:
+				data_nascimento = None
 			
 			if not nome:
 				context['error_msg'] = 'nome cannot be empty !'
@@ -404,7 +408,20 @@ class EmissorList(JSONResponseMixin,ListView):
 	template_name = 'subclasses/usuario/emissor/list.html'
 
 	def get_context_data(self, **kwargs):
+
 		context = super(EmissorList, self).get_context_data(**kwargs)
+		emissores = Emissor.objects.all()
+		lists = []
+
+		for value in emissores:
+			telefone = TelefoneUsuario.objects.filter(id_usuario=value.id_usuario)
+			if telefone:
+				lists.append([value,telefone[0]])
+			else:
+				lists.append([value,telefone])
+
+		context["emissores"] = lists
+
 		return context
 
 

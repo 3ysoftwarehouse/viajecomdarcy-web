@@ -27,7 +27,7 @@ from apps.default.views import JSONResponseMixin
 class AcomodacaoRegister(JSONResponseMixin,CreateView):
     model = Acomodacao
     template_name = 'acomodacao/register.html'
-    fields = ['acomodacao_desc']
+    fields = ['acomodacao_desc', 'sigla', 'numero']
     success_url = reverse_lazy('acomodacao-list')
 
 

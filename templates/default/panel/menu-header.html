@@ -2,12 +2,12 @@
 
 {% if PROJECT_VALID %}
     {% if PROJECT_DATA.logo %}
-        <img src="{{MEDIA_URL}}{{PROJECT_DATA.logo}}" alt="logo" data-src="{{MEDIA_URL}}{{PROJECT_DATA.logo}}" data-src-retina="{{MEDIA_URL}}{{PROJECT_DATA.logo}}" width="100" height="50">
+        <img src="{{MEDIA_URL}}{{PROJECT_DATA.logo}}" alt="logo" data-src="{{MEDIA_URL}}{{PROJECT_DATA.logo}}" data-src-retina="{{MEDIA_URL}}{{PROJECT_DATA.logo}}" width="100" height="auto">
     {% else %}
         <h1 style="color:white;"><b>{{PROJECT_DATA.nome}}</b></h1>
     {% endif %}
 {% else %}
-    <img src="{% static 'img/default/logo.png' %}" alt="logo" data-src="{% static 'img/default/logo.png' %}" data-src-retina="{% static 'img/default/logo_2x.png' %}" width="78" height="22">
+    <img src="{% static 'img/default/logo.png' %}" alt="logo" data-src="{% static 'img/default/logo.png' %}" data-src-retina="{% static 'img/default/logo_2x.png' %}" width="78" height="auto">
 {% endif %}
 
 <div class="sidebar-header-controls">
