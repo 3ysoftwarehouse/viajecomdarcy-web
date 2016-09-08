@@ -27,7 +27,7 @@ class ClienteRegisterForm(UserRegisterForm, forms.Form):
 	tempo_residencia = forms.CharField(label='Tempo de residência:', max_length=45, required=False)
 	empresa = forms.CharField(label='Nome da Empresa:', max_length=45, required=False)
 	telefone_empresa = forms.CharField(label='Telefone da Empresa:', max_length=45, required=False)
-	dt_admissao = forms.DateField(label='Data de adminissão:',input_formats=settings.DATE_INPUT_FORMATS, required=False)
+	dt_admissao = forms.CharField(label='Data de admissão:', required=False)
 	cargo = forms.CharField(label='Cargo ou Função:', max_length=45, required=False)
 	principal_renda = forms.CharField(label='Renda Principal:', max_length=45, required=False)
 	outra_renda = forms.CharField(label='Outras Rendas:', max_length=45, required=False)

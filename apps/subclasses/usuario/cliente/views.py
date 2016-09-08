@@ -12,6 +12,7 @@ from django.http import (HttpResponse,
                          HttpResponseForbidden,
                          HttpResponseBadRequest)
 from django.forms import formset_factory
+from datetime import datetime
 ##################################################
 
 
@@ -111,6 +112,22 @@ class ClienteRegister(JSONResponseMixin,View):
 			else:
 				data_nascimento = None
 
+			if dt_emissao_rg:
+				dt_emissao_rg = datetime.strptime(dt_emissao_rg, '%d/%m/%Y').strftime('%Y-%m-%d')
+			else:
+				dt_emissao_rg = None
+
+			if dt_admissao:
+				dt_admissao = "01/" + dt_admissao
+				dt_admissao = datetime.strptime(dt_admissao, '%d/%m/%Y').strftime('%Y-%m-%d')
+			else:
+				dt_admissao = None
+
+			if dt_banco:
+				dt_banco = datetime.strptime(dt_banco, '%d/%m/%Y').strftime('%Y-%m-%d')
+			else:
+				dt_banco = None	
+
 			if not nome:
 				context['error_msg'] = 'nome cannot be empty !'
 			#if not sobrenome:
@@ -202,14 +219,7 @@ class ClienteRegister(JSONResponseMixin,View):
 			if not telefone_banco:
 				context['error_msg'] = 'telefone_banco cannot be empty !'
 			'''
-			if not nome_pai:
-				context['error_msg'] = 'nome_pai cannot be empty !'
-			if not nome_mae:
-				context['error_msg'] = 'nome_mae cannot be empty !'
-			if not naturalidade:
-				context['error_msg'] = 'naturalidade cannot be empty !'
-			if not tipo_residencia:
-				context['error_msg'] = 'tipo_residencia cannot be empty !'
+			
 			if not numero_dependentes:
 				numero_dependentes = 0
 
@@ -313,14 +323,14 @@ class ClienteRegister(JSONResponseMixin,View):
 				cliente.cnpj_empresa = cnpj_empresa
 				cliente.save()
 
-				return redirect(reverse_lazy("employee-list"))
+				return redirect(reverse_lazy("cliente-list"))
 
 			else:
 				form = ClienteRegisterForm(request.POST,request.FILES)
 				PhoneFormSet = formset_factory(PhoneForm)		
 				formset = PhoneFormSet(request.POST, request.FILES)
 
-		return render(request, 'subclasses/usuario/cliente/register.html', {'form': form, 'formset':formset})
+		return render(request, 'subclasses/usuario/cliente/register.html', {'form': form, 'formset':formset, 'context': context})
 
 
 class ClienteEdit(JSONResponseMixin,View):
