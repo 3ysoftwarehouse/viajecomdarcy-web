@@ -1,1 +1,7 @@
 {% extends "default/company/register.html" %}
+{% block field_logo %}
+<div class="form-group form-group-default required">
+    <label>{{form.logo.label_tag}}</label>
+    {{form.logo}}
+</div>
+{% endblock %}

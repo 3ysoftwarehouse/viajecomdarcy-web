@@ -73,6 +73,11 @@ class EmployeeRegister(JSONResponseMixin,View):
 			# EXTRAS
 			nickname = request.POST['nickname']
 
+			if data_nascimento:
+				data_nascimento = datetime.strptime(data_nascimento, '%d/%m/%Y').strftime('%Y-%m-%d')
+			else:
+				data_nascimento = None
+
 			
 			if not nome:
 				context['error_msg'] = 'nome cannot be empty !'

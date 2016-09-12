@@ -1,136 +1,228 @@
-{% extends "default/user/register.html" %}
-{% block subclass_itens %}
+{% extends "default/user/register.html" %} {% load staticfiles %} {% block subclass_itens %}
 <li class="">
-   <a data-toggle="tab" href="#tab3"><i class="fa fa-truck tab-icon"></i> 
+    <a data-toggle="tab" href="#tab3"><i class="fa fa-truck tab-icon"></i> 
    <span>
    Extras
    </span>
    </a>
 </li>
-{% endblock %}
-{% block subclass_form %}
+<li class="">
+    <a data-toggle="tab" href="#tab4"><i class="fa fa-map-marker tab-icon"></i> 
+   <span>
+   Endereço Empresa
+   </span>
+   </a>
+</li>
+{% endblock %} {% block subclass_form %}
+{{form.errors}}
 <div class="tab-pane slide-left padding-20" id="tab3">
-   <div class="row row-same-height">
-      <div class="col-md-12">
-         <div class="padding-10">
-
-            <div class="row clearfix">
-               <div class="col-sm-4">
-                  <div class="form-group form-group-default required">
-                     <label>{{form.dt_emissao_rg.label_tag}}</label>
-                     {{form.dt_emissao_rg}}
-                  </div>
-               </div>
-               <div class="col-sm-4">
-                  <div class="form-group form-group-default required">
-                     <label>{{form.tempo_residencia.label_tag}}</label>
-                     {{form.tempo_residencia}}
-                  </div>
-               </div>
-               <div class="col-sm-4">
-                  <div class="form-group form-group-default required">
-                     <label>{{form.empresa.label_tag}}</label>
-                     {{form.empresa}}
-                  </div>
-               </div>
+    <div class="row row-same-height">
+        <div class="col-md-12">
+            <div class="padding-10">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group form-group-default">
+                            <label>{{form.nome_pai.label_tag}}</label>
+                            {{form.nome_pai}}
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group form-group-default">
+                            <label>{{form.nome_mae.label_tag}}</label>
+                            {{form.nome_mae}}
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group form-group-default">
+                            <label>{{form.naturalidade.label_tag}}</label>
+                            {{form.naturalidade}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-sm-4">
+                        <div class="form-group form-group-default">
+                            <label>{{form.numero_dependentes.label_tag}}</label>
+                            {{form.numero_dependentes}}
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group form-group-default">
+                            <label>{{form.tempo_residencia.label_tag}}</label>
+                            {{form.tempo_residencia}}
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group form-group-default">
+                            <label>{{form.tipo_residencia.label_tag}}</label>
+                            {{form.tipo_residencia}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group form-group-default">
+                            <label>{{form.empresa.label_tag}}</label>
+                            {{form.empresa}}
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group form-group-default">
+                            <label>{{form.cnpj_empresa.label_tag}}</label>
+                            {{form.cnpj_empresa}}
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group form-group-default">
+                            <label>{{form.telefone_empresa.label_tag}}</label>
+                            {{form.telefone_empresa}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group form-group-default">
+                            <label>{{form.dt_emissao_rg.label_tag}}</label>
+                            {{form.dt_emissao_rg}}
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group form-group-default">
+                            <label>{{form.dt_admissao.label_tag}}</label>
+                            {{form.dt_admissao}}
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group form-group-default">
+                            <label>{{form.cargo.label_tag}}</label>
+                            {{form.cargo}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group form-group-default">
+                            <label>{{form.patrimonio.label_tag}}</label>
+                            {{form.patrimonio}}
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group form-group-default">
+                            <label>{{form.principal_renda.label_tag}}</label>
+                            {{form.principal_renda}}
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group form-group-default">
+                            <label>{{form.outra_renda.label_tag}}</label>
+                            {{form.outra_renda}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group form-group-default">
+                            <label>{{form.agencia.label_tag}}</label>
+                            {{form.agencia}}
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group form-group-default">
+                            <label>{{form.conta.label_tag}}</label>
+                            {{form.conta}}
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group form-group-default">
+                            <label>{{form.banco.label_tag}}</label>
+                            {{form.banco}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group form-group-default">
+                            <label>{{form.dt_banco.label_tag}}</label>
+                            {{form.dt_banco}}
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group form-group-default">
+                            <label>{{form.telefone_banco.label_tag}}</label>
+                            {{form.telefone_banco}}
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="row">
-               <div class="col-sm-4">
-                  <div class="form-group form-group-default required">
-                     <label>{{form.cep_empresa.label_tag}}</label>
-                     {{form.cep_empresa}}
-                  </div>
-               </div>
-               <div class="col-sm-4">
-                  <div class="form-group form-group-default required">
-                     <label>{{form.endereco_empresa.label_tag}}</label>
-                     {{form.endereco_empresa}}
-                  </div>
-               </div>
-               <div class="col-sm-4">
-                  <div class="form-group form-group-default required">
-                     <label>{{form.telefone_empresa.label_tag}}</label>
-                     {{form.telefone_empresa}}
-                  </div>
-               </div>
+        </div>
+    </div>
+</div>
+<div class="tab-pane slide-left padding-20" id="tab4">
+    <div class="row row-same-height">
+        <div class="col-md-12">
+            <div class="padding-10">
+                <div class="row clearfix">
+                    <div class="col-sm-3">
+                        <div class="form-group form-group-default required">
+                            <label>{{form.cep_empresa_cliente.label_tag}}</label>
+                            {{form.cep_empresa_cliente}}
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group form-group-default required">
+                            <label>{{form.pais_empresa.label_tag}}</label>
+                            {{form.pais_empresa}}
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group form-group-default required required">
+                            <label>{{form.estado_empresa.label_tag}}</label>
+                            {{form.estado_empresa}}
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group form-group-default required required">
+                            <label>{{form.cidade_empresa.label_tag}}</label>
+                            {{form.cidade_empresa}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-sm-6">
+                        <div class="form-group form-group-default required">
+                            <label>{{form.rua_empresa.label_tag}}</label>
+                            {{form.rua_empresa}}
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group form-group-default">
+                            <label>{{form.numero_empresa.label_tag}}</label>
+                            {{form.numero_empresa}}
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group form-group-default required">
+                            <label>{{form.bairro_empresa.label_tag}}</label>
+                            {{form.bairro_empresa}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-sm-6">
+                        <div class="form-group form-group-default">
+                            <label>{{form.complemento_empresa.label_tag}}</label>
+                            {{form.complemento_empresa}}
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group form-group-default">
+                            <label>{{form.pontoreferencia_empresa.label_tag}}</label>
+                            {{form.pontoreferencia_empresa}}
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="row">
-               <div class="col-sm-4">
-                  <div class="form-group form-group-default required">
-                     <label>{{form.dt_admissao.label_tag}}</label>
-                     {{form.dt_admissao}}
-                  </div>
-               </div>
-               <div class="col-sm-4">
-                  <div class="form-group form-group-default required">
-                     <label>{{form.dt_emissao_rg.label_tag}}</label>
-                     {{form.dt_emissao_rg}}
-                  </div>
-               </div>
-               <div class="col-sm-4">
-                  <div class="form-group form-group-default required">
-                     <label>{{form.cargo.label_tag}}</label>
-                     {{form.cargo}}
-                  </div>
-               </div>
-            </div>
-            <div class="row">
-               <div class="col-sm-4">
-                  <div class="form-group form-group-default required">
-                     <label>{{form.principal_renda.label_tag}}</label>
-                     {{form.principal_renda}}
-                  </div>
-               </div>
-               <div class="col-sm-4">
-                  <div class="form-group form-group-default required">
-                     <label>{{form.outra_renda.label_tag}}</label>
-                     {{form.outra_renda}}
-                  </div>
-               </div>
-               <div class="col-sm-4">
-                  <div class="form-group form-group-default required">
-                     <label>{{form.patrimonio.label_tag}}</label>
-                     {{form.patrimonio}}
-                  </div>
-               </div>
-            </div>
-            <div class="row">
-               <div class="col-sm-4">
-                  <div class="form-group form-group-default required">
-                     <label>{{form.banco.label_tag}}</label>
-                     {{form.banco}}
-                  </div>
-               </div>
-               <div class="col-sm-4">
-                  <div class="form-group form-group-default required">
-                     <label>{{form.agencia.label_tag}}</label>
-                     {{form.agencia}}
-                  </div>
-               </div>
-               <div class="col-sm-4">
-                  <div class="form-group form-group-default required">
-                     <label>{{form.conta.label_tag}}</label>
-                     {{form.conta}}
-                  </div>
-               </div>
-            </div>
-            <div class="row">
-               <div class="col-sm-4">
-                  <div class="form-group form-group-default required">
-                     <label>{{form.dt_banco.label_tag}}</label>
-                     {{form.dt_banco}}
-                  </div>
-               </div>
-               <div class="col-sm-4">
-                  <div class="form-group form-group-default required">
-                     <label>{{form.telefone_banco.label_tag}}</label>
-                     {{form.telefone_banco}}
-                  </div>
-               </div>
-            </div>
-
-         </div>
-      </div>
-   </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

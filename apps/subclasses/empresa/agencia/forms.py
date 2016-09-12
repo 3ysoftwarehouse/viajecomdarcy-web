@@ -17,7 +17,14 @@ from apps.default.forms import CompanyRegisterForm
 ##################################################
 
 class AgenciaRegisterForm(CompanyRegisterForm, forms.Form):
+    logo = forms.ImageField(label='Logo:', required=False)
 
-	#representante = forms.CharField(label='Representante:', max_length=150, required=True)
-	pass
-	
+
+    def __init__(self, *args, **kwargs):
+        super(AgenciaRegisterForm, self).__init__(*args, **kwargs)
+       
+        self.fields['logo'].widget.attrs['class'] = 'form-control'
+        self.fields['logo'].widget.attrs['placeholder'] = 'Escolha uma logo'
+
+       
+        pass

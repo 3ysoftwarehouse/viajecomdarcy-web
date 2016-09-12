@@ -53,6 +53,7 @@ class AgenciaRegister(JSONResponseMixin,View):
 			cnpj = request.POST['cnpj']
 			ie = request.POST['ie']
 			id_tipo_empresa = request.POST['tipo_empresa']
+			logo = request.FILES.get('logo', None)
 
 			cep = request.POST['cep']
 			rua = request.POST['rua']
@@ -179,6 +180,7 @@ class AgenciaRegister(JSONResponseMixin,View):
 				# EXTRAS
 				agencia = Agencia()
 				agencia.id_empresa = empresa
+				agencia.logo = logo
 				agencia.save()
 					
 				return redirect(reverse_lazy("agencia-list"))

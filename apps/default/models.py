@@ -36,10 +36,10 @@ class Endereco(models.Model):
 	id_endereco = models.AutoField(primary_key=True)
 	id_logradouro = models.ForeignKey('Logradouro', on_delete=models.DO_NOTHING)
 	numero = models.IntegerField()
-	complemento = models.CharField(max_length=45)
-	pontoreferencia = models.CharField(max_length=45)
+	complemento = models.CharField(max_length=45, null=True, blank=True)
+	pontoreferencia = models.CharField(max_length=45, null=True, blank=True)
 	def __str__(self):
-		return self.complemento
+		return self.id_logradouro.nome
 		
 class TipoEmpresa(models.Model):
 	id_tipo_empresa = models.AutoField(primary_key=True)

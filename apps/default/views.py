@@ -186,7 +186,7 @@ class UserRegister(JSONResponseMixin,View):
 			formset = PhoneFormSet(request.POST, request.FILES)
 			
 			nome = request.POST['nome']
-			sobrenome = request.POST['sobrenome']
+			#sobrenome = request.POST['sobrenome']
 			email = request.POST['email']
 			password = request.POST['password']
 			tipo_usuario = request.POST['tipo_usuario']
@@ -209,14 +209,14 @@ class UserRegister(JSONResponseMixin,View):
 			pontoreferencia = request.POST['pontoreferencia']
 
 			if data_nascimento:
-				data_nascimento = datetime.strptime(data_nascimento, '%d/%m/%Y')
+				data_nascimento = datetime.strptime(data_nascimento, '%d/%m/%Y').strftime('%Y-%m-%d')
 			else:
 				data_nascimento = None
 
 			if not nome:
 				context['error_msg'] = 'nome cannot be empty !'
-			if not sobrenome:
-				context['error_msg'] = 'sobrenome cannot be empty !'
+			#if not sobrenome:
+			#	context['error_msg'] = 'sobrenome cannot be empty !'
 			if not email:
 				context['error_msg'] = 'email cannot be empty !'
 			if not password:
@@ -226,8 +226,8 @@ class UserRegister(JSONResponseMixin,View):
 				context['error_msg'] = 'tipo_usuario cannot be empty !'
 			if not genero:
 				context['error_msg'] = 'genero cannot be empty !'
-			if not data_nascimento:
-				context['error_msg'] = 'data_nascimento cannot be empty !'
+			#if not data_nascimento:
+			#	context['error_msg'] = 'data_nascimento cannot be empty !'
 			if not cpf:
 				context['error_msg'] = 'cpf cannot be empty !'
 			if not rg:
@@ -250,12 +250,15 @@ class UserRegister(JSONResponseMixin,View):
 				context['error_msg'] = 'estado cannot be empty !'
 			if not pais:
 				context['error_msg'] = 'pais cannot be empty !'
+			
 			if not numero:
 				context['error_msg'] = 'numero cannot be empty !'
+			'''
 			if not complemento:
 				context['error_msg'] = 'complemento cannot be empty !'
 			if not pontoreferencia:
 				context['error_msg'] = 'pontoreferencia cannot be empty !'
+			'''
 
 			listphones = []
 
@@ -277,7 +280,7 @@ class UserRegister(JSONResponseMixin,View):
 
 				id_logradouro = Logradouro()
 				id_logradouro.cep = cep
-				id_logradouro.nome = nome
+				id_logradouro.nome = rua
 				id_logradouro.bairro = bairro
 				id_logradouro.cidade = cidade
 				id_logradouro.estado = estado
@@ -292,9 +295,10 @@ class UserRegister(JSONResponseMixin,View):
 				id_endereco.save()
 
 				usuario = Usuario.objects.create_user(email, password)
-				usuario.nome = nome
-				usuario.sobrenome = sobrenome
-				usuario.nomecompleto = nome +" "+sobrenome
+				nomeSeparado = nome.split(" ", 1)
+				usuario.nome = nomeSeparado[0]
+				usuario.sobrenome = nomeSeparado[1]
+				usuario.nomecompleto = nomeSeparado[0] +" "+nomeSeparado[1]
 				usuario.id_tipo_usuario = TipoUsuario.objects.get(pk=tipo_usuario)
 				usuario.id_genero = Genero.objects.get(pk=genero)
 				usuario.data_nascimento = data_nascimento
