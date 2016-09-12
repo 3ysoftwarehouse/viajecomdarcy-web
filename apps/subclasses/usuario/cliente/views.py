@@ -12,6 +12,7 @@ from django.http import (HttpResponse,
                          HttpResponseForbidden,
                          HttpResponseBadRequest)
 from django.forms import formset_factory
+from datetime import datetime
 ##################################################
 
 
@@ -35,6 +36,7 @@ from apps.default.views import JSONResponseMixin
 ''' 
 
 class ClienteRegister(JSONResponseMixin,View):
+	
 	def get(self, request):
 		form = ClienteRegisterForm
 		formset = formset_factory(PhoneForm)
@@ -48,7 +50,7 @@ class ClienteRegister(JSONResponseMixin,View):
 			formset = PhoneFormSet(request.POST, request.FILES)
 			
 			nome = request.POST['nome']
-			sobrenome = request.POST['sobrenome']
+			#sobrenome = request.POST['sobrenome']
 			email = request.POST['email']
 			password = request.POST['password']
 			tipo_usuario = request.POST['tipo_usuario']
@@ -71,11 +73,15 @@ class ClienteRegister(JSONResponseMixin,View):
 			pontoreferencia = request.POST['pontoreferencia']
 
 			# EXTRAS
+			
+			nome_mae = request.POST['nome_mae']
+			nome_pai = request.POST['nome_pai']
+			naturalidade = request.POST['naturalidade']
+			numero_dependentes = request.POST['numero_dependentes']
+			tipo_residencia = request.POST['tipo_residencia']
 			dt_emissao_rg = request.POST['dt_emissao_rg']
 			tempo_residencia = request.POST['tempo_residencia']
 			empresa = request.POST['empresa']
-			cep_empresa = request.POST['cep']
-			endereco_empresa = request.POST['endereco_empresa']
 			telefone_empresa = request.POST['telefone_empresa']
 			dt_admissao = request.POST['dt_admissao']
 			cargo = request.POST['cargo']
@@ -87,11 +93,45 @@ class ClienteRegister(JSONResponseMixin,View):
 			conta = request.POST['conta']
 			dt_banco = request.POST['dt_banco']
 			telefone_banco = request.POST['telefone_banco']
+			cnpj_empresa = request.POST['cnpj_empresa']
 			
+
+			cep_empresa_cliente = request.POST['cep_empresa_cliente']
+			rua_empresa = request.POST['rua_empresa']
+			cidade_empresa = request.POST['cidade_empresa']
+			bairro_empresa = request.POST['bairro_empresa']
+			estado_empresa = request.POST['estado_empresa']
+			pais_empresa = request.POST['pais_empresa']
+			numero_empresa = request.POST['numero_empresa']
+			complemento_empresa = request.POST['complemento_empresa']
+			pontoreferencia_empresa = request.POST['pontoreferencia_empresa']
+
+
+			if data_nascimento:
+				data_nascimento = datetime.strptime(data_nascimento, '%d/%m/%Y').strftime('%Y-%m-%d')
+			else:
+				data_nascimento = None
+
+			if dt_emissao_rg:
+				dt_emissao_rg = datetime.strptime(dt_emissao_rg, '%d/%m/%Y').strftime('%Y-%m-%d')
+			else:
+				dt_emissao_rg = None
+
+			if dt_admissao:
+				dt_admissao = "01/" + dt_admissao
+				dt_admissao = datetime.strptime(dt_admissao, '%d/%m/%Y').strftime('%Y-%m-%d')
+			else:
+				dt_admissao = None
+
+			if dt_banco:
+				dt_banco = datetime.strptime(dt_banco, '%d/%m/%Y').strftime('%Y-%m-%d')
+			else:
+				dt_banco = None	
+
 			if not nome:
 				context['error_msg'] = 'nome cannot be empty !'
-			if not sobrenome:
-				context['error_msg'] = 'sobrenome cannot be empty !'
+			#if not sobrenome:
+			#	context['error_msg'] = 'sobrenome cannot be empty !'
 			if not email:
 				context['error_msg'] = 'email cannot be empty !'
 			if not password:
@@ -127,10 +167,22 @@ class ClienteRegister(JSONResponseMixin,View):
 				context['error_msg'] = 'pais cannot be empty !'
 			if not numero:
 				context['error_msg'] = 'numero cannot be empty !'
-			if not complemento:
-				context['error_msg'] = 'complemento cannot be empty !'
-			if not pontoreferencia:
-				context['error_msg'] = 'pontoreferencia cannot be empty !'
+
+			if not cep_empresa_cliente:
+				context['error_msg'] = 'cep cannot be empty !'
+			if not rua_empresa:
+				context['error_msg'] = 'rua cannot be empty !'
+			if not bairro_empresa:
+				context['error_msg'] = 'bairro cannot be empty !'
+			if not cidade_empresa:
+				context['error_msg'] = 'cidade cannot be empty !'
+			if not estado_empresa:
+				context['error_msg'] = 'estado cannot be empty !'
+			if not pais_empresa:
+				context['error_msg'] = 'pais cannot be empty !'
+			if not numero_empresa:
+				context['error_msg'] = 'numero cannot be empty !'
+			
 
 			# EXTRAS
 			'''
@@ -167,6 +219,9 @@ class ClienteRegister(JSONResponseMixin,View):
 			if not telefone_banco:
 				context['error_msg'] = 'telefone_banco cannot be empty !'
 			'''
+			
+			if not numero_dependentes:
+				numero_dependentes = 0
 
 			listphones = []
 
@@ -188,7 +243,7 @@ class ClienteRegister(JSONResponseMixin,View):
 
 				id_logradouro = Logradouro()
 				id_logradouro.cep = cep
-				id_logradouro.nome = nome
+				id_logradouro.nome = rua
 				id_logradouro.bairro = bairro
 				id_logradouro.cidade = cidade
 				id_logradouro.estado = estado
@@ -202,10 +257,28 @@ class ClienteRegister(JSONResponseMixin,View):
 				id_endereco.pontoreferencia = pontoreferencia
 				id_endereco.save()
 
+				id_logradouro_empresa = Logradouro()
+				id_logradouro_empresa.cep = cep_empresa_cliente
+				id_logradouro_empresa.nome = rua_empresa
+				id_logradouro_empresa.bairro = bairro_empresa
+				id_logradouro_empresa.cidade = cidade_empresa
+				id_logradouro_empresa.estado = estado_empresa
+				id_logradouro_empresa.pais = pais_empresa
+				id_logradouro_empresa.save()
+
+				id_endereco_empresa = Endereco()
+				id_endereco_empresa.id_logradouro = id_logradouro_empresa
+				id_endereco_empresa.numero = numero_empresa
+				id_endereco_empresa.complemento = complemento_empresa
+				id_endereco_empresa.pontoreferencia = pontoreferencia_empresa
+				id_endereco_empresa.save()
+
+
 				usuario = Usuario.objects.create_user(email, password)
-				usuario.nome = nome
-				usuario.sobrenome = sobrenome
-				usuario.nomecompleto = nome +" "+sobrenome
+				nomeSeparado = nome.split(" ", 1)
+				usuario.nome = nomeSeparado[0]
+				usuario.sobrenome = nomeSeparado[1]
+				usuario.nomecompleto = nomeSeparado[0] +" "+nomeSeparado[1]
 				usuario.id_tipo_usuario = TipoUsuario.objects.get(pk=tipo_usuario)
 				usuario.id_genero = Genero.objects.get(pk=genero)
 				usuario.data_nascimento = data_nascimento
@@ -226,12 +299,15 @@ class ClienteRegister(JSONResponseMixin,View):
 					teluser.save()
 
 				cliente = Cliente()
+				cliente.nome_pai = nome_pai
+				cliente.nome_mae = nome_mae
+				cliente.tipo_residencia = tipo_residencia
+				cliente.naturalidade = naturalidade
+				cliente.numero_dependentes = numero_dependentes
 				cliente.usuario = usuario
 				cliente.dt_emissao_rg = dt_emissao_rg
 				cliente.tempo_residencia = tempo_residencia
 				cliente.empresa = empresa
-				cliente.cep = cep_empresa
-				cliente.endereco = endereco_empresa
 				cliente.telefone = telefone_empresa
 				cliente.dt_admissao = dt_admissao
 				cliente.cargo = cargo
@@ -243,16 +319,18 @@ class ClienteRegister(JSONResponseMixin,View):
 				cliente.conta = conta
 				cliente.dt_banco = dt_banco
 				cliente.telefone_banco = telefone_banco
+				cliente.id_endereco_empresa = id_endereco_empresa
+				cliente.cnpj_empresa = cnpj_empresa
 				cliente.save()
 
-				return redirect(reverse_lazy("employee-list"))
+				return redirect(reverse_lazy("cliente-list"))
 
 			else:
 				form = ClienteRegisterForm(request.POST,request.FILES)
 				PhoneFormSet = formset_factory(PhoneForm)		
 				formset = PhoneFormSet(request.POST, request.FILES)
 
-		return render(request, 'subclasses/usuario/cliente/register.html', {'form': form, 'formset':formset})
+		return render(request, 'subclasses/usuario/cliente/register.html', {'form': form, 'formset':formset, 'context': context})
 
 
 class ClienteEdit(JSONResponseMixin,View):
@@ -323,7 +401,7 @@ class ClienteEdit(JSONResponseMixin,View):
 			formset = PhoneFormSet(request.POST, request.FILES)
 
 			nome = request.POST['nome']
-			sobrenome = request.POST['sobrenome']
+			#sobrenome = request.POST['sobrenome']
 			email = request.POST['email']
 			tipo_usuario = request.POST['tipo_usuario']
 			genero = request.POST['genero']
@@ -362,6 +440,17 @@ class ClienteEdit(JSONResponseMixin,View):
 			dt_banco = request.POST['dt_banco']
 			telefone_banco = request.POST['telefone_banco']
 
+			#Empresa
+			cep_empresa_cliente = request.POST['cep_empresa_cliente']
+			pais_empresa = request.POST['pais_empresa']
+			estado_empresa = request.POST['estado_empresa']
+			cidade_empresa = request.POST['cidade_empresa']
+			rua_empresa = request.POST['rua_empresa']
+			bairro_empresa = request.POST['bairro_empresa']
+			complemento_empresa = request.POST['complemento_empresa']
+			pontoreferencia_empresa = request.POST['pontoreferencia_empresa']
+			numero_empresa = request.POST['numero_empresa']
+
 			listphones = []
 
 			if formset.is_valid():
@@ -379,8 +468,8 @@ class ClienteEdit(JSONResponseMixin,View):
 				pass
 
 			
-			if not nome:
-				context['Nome'] = ' cannot be empty !'
+			#if not nome:
+			#	context['Nome'] = ' cannot be empty !'
 			if not sobrenome:
 				context['Sobrenome'] = ' cannot be empty !'
 			if not email:
@@ -462,30 +551,47 @@ class ClienteEdit(JSONResponseMixin,View):
 				usuario = Usuario.objects.get(pk=cliente.usuario.pk)
 				id_endereco = Endereco.objects.get(pk=usuario.id_endereco.pk)
 				id_logradouro = Logradouro.objects.get(pk=id_endereco.id_logradouro.pk)
+				id_endereco_empresa = Endereco.objects.get(pk=usuario.id_endereco.pk)
+				id_logradouro_empresa = Logradouro.objects.get(pk=id_endereco.id_logradouro.pk)
 
 				telefones = TelefoneUsuario.objects.filter(id_usuario=usuario.pk)
 				for telefone in telefones:
 					telefone.delete()
 	
 				id_logradouro.cep = cep
-				id_logradouro.nome = nome
+				id_logradouro.nome = rua
 				id_logradouro.bairro = bairro
 				id_logradouro.cidade = cidade
 				id_logradouro.estado = estado
 				id_logradouro.pais = pais
 				id_logradouro.save()
 
-				
 				id_endereco.id_logradouro = id_logradouro
 				id_endereco.numero = numero
 				id_endereco.complemento = complemento
 				id_endereco.pontoreferencia = pontoreferencia
 				id_endereco.save()
 
+				id_logradouro_empresa.cep = cep_empresa_cliente
+				id_logradouro_empresa.nome = rua_empresa
+				id_logradouro_empresa.bairro = bairro_empresa
+				id_logradouro_empresa.cidade = cidade_empresa
+				id_logradouro_empresa.estado = estado_empresa
+				id_logradouro_empresa.pais = pais_empresa
+				id_logradouro_empresa.save()
+
+
+				id_endereco_empresa.id_logradouro = id_logradouro
+				id_endereco_empresa.numero = numero_empresa
+				id_endereco_empresa.complemento = complemento_empresa
+				id_endereco_empresa.pontoreferencia = pontoreferencia_empresa
+				id_endereco_empresa.save()
+
 				
-				usuario.nome = nome
-				usuario.sobrenome = sobrenome
-				usuario.nomecompleto = nome +" "+sobrenome
+				nomeSeparado = nome.split(" ", 1);
+				usuario.nome = nomeSeparado[0]
+				usuario.sobrenome = nomeSeparado[1]
+				usuario.nomecompleto = nomeSeparado[0] +" "+nomeSeparado[1]
 				usuario.id_tipo_usuario = TipoUsuario.objects.get(pk=tipo_usuario)
 				usuario.id_genero = Genero.objects.get(pk=genero)
 				usuario.data_nascimento = data_nascimento

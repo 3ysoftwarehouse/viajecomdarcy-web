@@ -7,6 +7,7 @@
 from django import forms
 from django.conf import settings
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+
 ##################################################
 
 
@@ -206,13 +207,13 @@ class UserRegisterForm(forms.Form):
 
     # FIELDS USUARIO
     nome = forms.CharField(label='Nome:', max_length=45)
-    sobrenome = forms.CharField(label='Sobrenome:', max_length=45)
+    sobrenome = forms.CharField(label='Sobrenome:', max_length=45, required=False)
     email = forms.CharField(label='Email:', max_length=75)
     password = forms.CharField(label='Senha', widget=forms.PasswordInput)
     repetir_password = forms.CharField(label='Confirmação de Senha', widget=forms.PasswordInput)
     tipo_usuario = forms.ModelChoiceField (TipoUsuario, label='Tipo de Usuário:', widget=forms.Select())
     genero = forms.ModelChoiceField(Genero, label='Genero:', widget=forms.Select())
-    data_nascimento = forms.DateField(label='Data de Nascimento:',input_formats=settings.DATE_INPUT_FORMATS)
+    data_nascimento = forms.DateField(label='Data de Nascimento:',input_formats=settings.DATE_INPUT_FORMATS, required=False)
     cpf = forms.CharField(label='CPF:', max_length=14)
     rg = forms.CharField(label='RG:', max_length=12)
     orgaoemissor = forms.CharField(label='Orgão Emissor:', max_length=45)
@@ -227,9 +228,9 @@ class UserRegisterForm(forms.Form):
     pais = forms.CharField(label='País:', max_length=45)
 
     # FIELDS ENDERECO
-    numero = forms.IntegerField(label='Numero:')
-    complemento = forms.CharField(label='Complemento:', max_length=45)
-    pontoreferencia = forms.CharField(label='Ponto de referência:', max_length=45, widget=forms.Textarea)
+    numero = forms.IntegerField(label='Numero:', required=False)
+    complemento = forms.CharField(label='Complemento:', max_length=45,required=False)
+    pontoreferencia = forms.CharField(label='Ponto de referência:', max_length=45, widget=forms.Textarea, required=False)
 
 
     def __init__(self, *args, **kwargs):
@@ -274,6 +275,7 @@ class UserRegisterForm(forms.Form):
         # CPF Fields widget
         self.fields['cpf'].widget.attrs['class'] = 'form-control'
         self.fields['cpf'].widget.attrs['placeholder'] = 'Digite o CPF'
+        self.fields['cpf'].widget.attrs['onblur'] = 'validar_cpf(this.value)'
 
         # RG Fields widget
         self.fields['rg'].widget.attrs['class'] = 'form-control'

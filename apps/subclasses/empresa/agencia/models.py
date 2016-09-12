@@ -7,7 +7,8 @@ from apps.default.models import Empresa
 class Agencia(models.Model):
 	id_agencia = models.AutoField(primary_key=True)
 	id_empresa = models.OneToOneField(Empresa, on_delete = models.CASCADE,related_name='agencia_name')
-	
+	logo = models.ImageField(upload_to="default/project",null=True, blank=True)
+
 	def __str__(self):
 		return self.id_empresa.nomefantasia
 	def __unicode__(self):
