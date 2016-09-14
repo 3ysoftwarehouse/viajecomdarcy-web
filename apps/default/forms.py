@@ -7,6 +7,7 @@
 from django import forms
 from django.conf import settings
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+
 ##################################################
 
 
@@ -274,6 +275,7 @@ class UserRegisterForm(forms.Form):
         # CPF Fields widget
         self.fields['cpf'].widget.attrs['class'] = 'form-control'
         self.fields['cpf'].widget.attrs['placeholder'] = 'Digite o CPF'
+        self.fields['cpf'].widget.attrs['onblur'] = 'validar_cpf(this.value)'
 
         # RG Fields widget
         self.fields['rg'].widget.attrs['class'] = 'form-control'
