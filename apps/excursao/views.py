@@ -199,7 +199,7 @@ class OpcionalRegister(JSONResponseMixin,CreateView):
     model = Opcional
     template_name = 'excursao/opcional/register.html'
     fields = [
-    'opcional_desc', 'opcional_preco','id_moeda'
+    'opcional_desc', 'opcional_preco','id_moeda', 'taxa_remessa',
     ]
     success_url = reverse_lazy('opcional-list')
 
@@ -209,7 +209,7 @@ class OpcionalEdit(JSONResponseMixin,UpdateView):
     model = Opcional
     template_name = 'excursao/opcional/edit.html'
     fields = [
-    'opcional_desc', 'opcional_preco','id_moeda'
+    'opcional_desc', 'opcional_preco','id_moeda', 'taxa_remessa',
     ]
     success_url = reverse_lazy('opcional-list')
 
