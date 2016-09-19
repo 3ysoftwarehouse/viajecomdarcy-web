@@ -45,6 +45,7 @@ class PacoteRegisterForm(forms.Form):
 	pacote_daybyday = forms.CharField(max_length=200,widget=forms.Textarea)
 	pacote_obs = forms.CharField(max_length=200,widget=forms.Textarea)
 	id_opcional = forms.ModelMultipleChoiceField(queryset=Opcional.objects.all())
+	taxa_remessa = forms.DecimalField(max_digits=6, decimal_places=3)
 
 	def __init__(self, *args, **kwargs):
 		super(PacoteRegisterForm, self).__init__(*args, **kwargs)
@@ -70,6 +71,9 @@ class PacoteRegisterForm(forms.Form):
 
 		# pacote_taxa Fields widget
 		self.fields['pacote_taxa'].widget.attrs['class'] = 'form-control'
+
+		# pacote_taxa Fields widget
+		self.fields['taxa_remessa'].widget.attrs['class'] = 'form-control'
 
 		# pacote_daybyday Fields widget
 		self.fields['pacote_daybyday'].widget.attrs['class'] = 'form-control'

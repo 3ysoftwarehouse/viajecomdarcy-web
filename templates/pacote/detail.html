@@ -52,16 +52,22 @@
                            </div>
                         </div>
                         <div class="row">
-                           <div class="col-sm-6">
+                           <div class="col-sm-4">
                               <div class="form-group form-group-default">
                                  <label>Preço</label>
                                  {{object.id_moeda.moeda_simbolo}} {{object.pacote_preco}}
                               </div>
                            </div>
-                           <div class="col-sm-6">
+                           <div class="col-sm-4">
                               <div class="form-group form-group-default">
                                  <label>Taxa</label>
                                  {{object.id_moeda.moeda_simbolo}} {{object.pacote_taxa}}
+                              </div>
+                           </div>
+                           <div class="col-sm-4">
+                              <div class="form-group form-group-default">
+                                 <label>Taxa remessa</label>
+                                 {{object.percentage}} %
                               </div>
                            </div>
                         </div>

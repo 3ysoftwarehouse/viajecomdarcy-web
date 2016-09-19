@@ -16,11 +16,20 @@ class Pacote(models.Model):
 	pacote_taxa = models.DecimalField(max_digits=10, decimal_places=2)
 	pacote_daybyday = models.TextField()
 	pacote_obs = models.TextField()
+	taxa_remessa = models.DecimalField(max_digits=6, decimal_places=3)
 	
 	def __str__(self):
 		return self.pacote_nome
+		
 	def __unicode__(self):
 		return unicode(self.pacote_nome)
+
+	def percentage(self):
+		if self.taxa_remessa:
+			taxa = self.taxa_remessa * 100;
+			return "%.1f" % taxa
+		else:
+			return 0
 
 
 class PacoteOpcional(models.Model):

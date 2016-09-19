@@ -58,6 +58,7 @@ class PacoteRegister(JSONResponseMixin,View):
             pacote_daybyday = request.POST['pacote_daybyday']
             pacote_obs = request.POST['pacote_obs']
             id_opcional = request.POST.getlist('id_opcional')
+            taxa_remessa = request.POST.getlist('taxa_remessa')
 
             if not id_excursao:
                 context['error_msg'] = 'id_excursao cannot be empty !'
@@ -79,6 +80,8 @@ class PacoteRegister(JSONResponseMixin,View):
                 context['error_msg'] = 'pacote_obs cannot be empty !'
             if not id_opcional:
                 context['error_msg'] = 'id_opcional cannot be empty !'
+            if not taxa_remessa:
+                context['error_msg'] = 'pacote_taxa cannot be empty !'
 
 
             listcidades = []
@@ -127,6 +130,7 @@ class PacoteRegister(JSONResponseMixin,View):
                 pacote.pacote_taxa = pacote_taxa
                 pacote.pacote_daybyday = pacote_daybyday
                 pacote.pacote_obs = pacote_obs
+                pacote.taxa_remessa = taxa_remessa
                 pacote.save()
 
                 for value in id_opcional:
@@ -215,6 +219,7 @@ class PacoteEdit(JSONResponseMixin,View):
             'pacote_taxa': pacote.pacote_taxa,
             'pacote_daybyday': pacote.pacote_daybyday,
             'pacote_obs': pacote.pacote_obs,
+            'taxa_remessa' : pacote.taxa_remessa,
             }
         )
         return render (request, 'pacote/edit.html', {'form':form, 'opcionais':opcionais,'cidadeformset':cidadeformset, 'acomodacaoformset':acomodacaoformset})
@@ -241,6 +246,7 @@ class PacoteEdit(JSONResponseMixin,View):
             pacote_daybyday = request.POST['pacote_daybyday']
             pacote_obs = request.POST['pacote_obs']
             id_opcional = request.POST.getlist('id_opcional')
+            taxa_remessa = request.POST.getlist('taxa_remessa')
 
             if not id_excursao:
                 context['error_msg'] = 'id_excursao cannot be empty !'
@@ -262,6 +268,8 @@ class PacoteEdit(JSONResponseMixin,View):
                 context['error_msg'] = 'pacote_obs cannot be empty !'
             if not id_opcional:
                 context['error_msg'] = 'id_opcional cannot be empty !'
+            if not taxa_remessa:
+                context['error_msg'] = 'pacote_taxa cannot be empty !'
             
             listcidades = []
 
@@ -309,6 +317,7 @@ class PacoteEdit(JSONResponseMixin,View):
                 pacote.pacote_taxa = pacote_taxa
                 pacote.pacote_daybyday = pacote_daybyday
                 pacote.pacote_obs = pacote_obs
+                pacote.taxa_remessa = taxa_remessa
                 pacote.save()
 
                 pacoteopcional = PacoteOpcional.objects.filter(id_pacote=pk)
