@@ -22,5 +22,13 @@ class Opcional(models.Model):
 	opcional_desc = models.CharField(max_length=46, null=False, unique=True)
 	opcional_preco = models.DecimalField(max_digits=10, decimal_places=2, null=False)
 	id_moeda = models.ForeignKey('moeda.Moeda', on_delete=models.CASCADE)
+	taxa_remessa = models.DecimalField(max_digits=6, decimal_places=3)
 	def __str__(self):
 		return self.opcional_desc
+
+	def percentage(self):
+		if self.taxa_remessa:
+			taxa = self.taxa_remessa * 100;
+			return "%.1f" % taxa
+		else:
+			return 0
