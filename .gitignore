@@ -1,1 +1,6 @@
 *.pyc
+framework/setting.py
+.venv/
+venv/
+ENV/
+myenv/
