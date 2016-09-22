@@ -32,6 +32,7 @@ urlpatterns += i18n_patterns(
 	url(r'^framework/', include('apps.moeda.urls')),
 	url(r'^framework/', include('apps.pacote.urls')),
 	url(r'^framework/', include('apps.acomodacao.urls')),
+	url(r'^framework/', include('apps.venda.urls')),
 	#url(r'^framework/', include('apps.subclasses.empresa.startup.urls')),
 	url(r'^framework/', include('apps.subclasses.empresa.escola.urls')),
 	url(r'^framework/', include('apps.subclasses.empresa.agencia.urls')),
