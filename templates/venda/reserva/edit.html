@@ -5,7 +5,7 @@
 <li>
     <a class="active">Editar</a>
 </li>
-{% endblock %} {% block content %} {% if context %} {% for title, value in context.items %} {{title}} : {{value}}
+{% endblock %} {% block content %} {% if context %} {% for title, value in context.items %} {{ title }} : {{ value }}
 <br> {% endfor %} {% endif %}
 <div id="rootwizard">
     <!-- Nav tabs -->
@@ -99,7 +99,7 @@
                                     <br>
                                 </div>
                                 {% endfor %}
-                                {{formset.management_form}}      
+                                {{ formset.management_form }}      
                             </div>
                         </div>
 
@@ -135,6 +135,7 @@
     </div>
 </div>
 {% endblock %} {% block javascript %}
+
 <script src="{% static 'js/default/jquery.inputmask.min.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/default/form_wizard.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/default/jquery.bootstrap.wizard.min.js' %}" type="text/javascript">
