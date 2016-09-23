@@ -41,20 +41,6 @@
                                     </div>
                                 </div>                                
                             </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group form-group-default">
-                                        <label>Agência</label>
-                                        {{ form.id_agencia }}
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group form-group-default">
-                                        <label>Emissor</label>
-                                        {{ form.id_emissor }}
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                         
                         <div class="padding-10">
@@ -157,41 +143,6 @@
 <script src="{% static 'js/venda/custom.js' %}" type="text/javascript"></script>
 
 <script>
-//Submit form
-
-$(document).ready(function() {
-
-    // multiple fields
-    var lenForm= 1;
-    $(function() {
-        $('#id_passageiro_table .tr').formset()
-        $('.add-row').on('click', function(event) {
-            lenForm += 1
-            for (i=0; i< lenForm; i++){
-                $("#id_form-"+i+"-id_excursao").select2();
-               
-            }
-        });
-        $('.delete-row').on('click', function(event) {
-            lenForm -= 1
-            for (i=0; i< lenForm; i++){
-                $("#id_form-"+i+"-id_excursao").select2();
-               
-            }
-        });
-    })
-
-
-
-    $(function() {
-        $("#id_form-0-id_excursao").select2();
-        
-    })
-    
-});
-
-
-
 $(".finish").click(function() {
     $("#form-personal").submit();
 });
