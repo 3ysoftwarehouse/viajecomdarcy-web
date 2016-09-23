@@ -27,14 +27,14 @@ class Reserva(models.Model):
 	id_status_reserva = models.ForeignKey('StatusReserva', on_delete=models.DO_NOTHING)
 
 	def __str__(self):
-		return self.id_status_reserva
+		return self.id_emissor.id_usuario.nome
 
 
 class ReservaPassageiro(models.Model):
 
     id_reserva_passageiro = models.AutoField(primary_key=True)
-    id_reserva = models.ForeignKey('Reserva', on_delete=models.DO_NOTHING)
-    id_passageiro = models.ForeignKey('cliente.Cliente', on_delete=models.DO_NOTHING)
+    id_reserva = models.ForeignKey('Reserva', on_delete=models.CASCADE)
+    id_passageiro = models.ForeignKey('passageiro.Passageiro', on_delete=models.DO_NOTHING)
     id_pacote = models.ForeignKey('pacote.Pacote', on_delete=models.DO_NOTHING)
     id_status_reserva_passageiro = models.ForeignKey('StatusReservaPassageiro', on_delete=models.DO_NOTHING)
     id_escola = models.ForeignKey('escola.Escola', on_delete=models.DO_NOTHING)

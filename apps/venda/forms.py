@@ -37,7 +37,7 @@ class ReservaForm(forms.ModelForm):
 class ReservaPassageiroForm(forms.ModelForm):
 
     id_excursao = forms.ModelChoiceField (queryset=Excursao.objects.all())
-    id_pacote = forms.ModelChoiceField (queryset=Pacote.objects.filter(pk=0))
+    id_pacote = forms.ModelChoiceField (queryset=Pacote.objects.all())
     class Meta:
         model = ReservaPassageiro
         fields = (

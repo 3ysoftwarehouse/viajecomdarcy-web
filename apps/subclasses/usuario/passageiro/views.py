@@ -12,6 +12,7 @@ from django.http import (HttpResponse,
                          HttpResponseForbidden,
                          HttpResponseBadRequest)
 from django.forms import formset_factory
+from datetime import datetime
 ##################################################
 
 
@@ -49,7 +50,6 @@ class PassageiroRegister(JSONResponseMixin,View):
 			formset = PhoneFormSet(request.POST, request.FILES)
 			
 			nome = request.POST['nome']
-			sobrenome = request.POST['sobrenome']
 			email = request.POST['email']
 			password = request.POST['password']
 			tipo_usuario = request.POST['tipo_usuario']
@@ -85,8 +85,6 @@ class PassageiroRegister(JSONResponseMixin,View):
 			
 			if not nome:
 				context['error_msg'] = 'nome cannot be empty !'
-			if not sobrenome:
-				context['error_msg'] = 'sobrenome cannot be empty !'
 			if not email:
 				context['error_msg'] = 'email cannot be empty !'
 			if not password:
@@ -155,7 +153,7 @@ class PassageiroRegister(JSONResponseMixin,View):
 
 				id_logradouro = Logradouro()
 				id_logradouro.cep = cep
-				id_logradouro.nome = nome
+				id_logradouro.nome = rua
 				id_logradouro.bairro = bairro
 				id_logradouro.cidade = cidade
 				id_logradouro.estado = estado
@@ -171,8 +169,8 @@ class PassageiroRegister(JSONResponseMixin,View):
 
 				usuario = Usuario.objects.create_user(email, password)
 				usuario.nome = nome
-				usuario.sobrenome = sobrenome
-				usuario.nomecompleto = nome +" "+sobrenome
+				usuario.sobrenome = None
+				usuario.nomecompleto = nome 
 				usuario.id_tipo_usuario = TipoUsuario.objects.get(pk=tipo_usuario)
 				usuario.id_genero = Genero.objects.get(pk=genero)
 				usuario.data_nascimento = data_nascimento
@@ -269,7 +267,6 @@ class PassageiroEdit(JSONResponseMixin,View):
 			formset = PhoneFormSet(request.POST, request.FILES)
 
 			nome = request.POST['nome']
-			sobrenome = request.POST['sobrenome']
 			email = request.POST['email']
 			tipo_usuario = request.POST['tipo_usuario']
 			genero = request.POST['genero']
@@ -316,8 +313,6 @@ class PassageiroEdit(JSONResponseMixin,View):
 			
 			if not nome:
 				context['Nome'] = ' cannot be empty !'
-			if not sobrenome:
-				context['Sobrenome'] = ' cannot be empty !'
 			if not email:
 				context['E-mail'] = ' cannot be empty !'
 			if not tipo_usuario:
@@ -375,7 +370,7 @@ class PassageiroEdit(JSONResponseMixin,View):
 					telefone.delete()
 	
 				id_logradouro.cep = cep
-				id_logradouro.nome = nome
+				id_logradouro.nome = rua
 				id_logradouro.bairro = bairro
 				id_logradouro.cidade = cidade
 				id_logradouro.estado = estado
@@ -391,8 +386,8 @@ class PassageiroEdit(JSONResponseMixin,View):
 
 				
 				usuario.nome = nome
-				usuario.sobrenome = sobrenome
-				usuario.nomecompleto = nome +" "+sobrenome
+				usuario.sobrenome = None
+				usuario.nomecompleto = nome 
 				usuario.id_tipo_usuario = TipoUsuario.objects.get(pk=tipo_usuario)
 				usuario.id_genero = Genero.objects.get(pk=genero)
 				usuario.data_nascimento = data_nascimento
