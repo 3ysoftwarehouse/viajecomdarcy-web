@@ -3,7 +3,7 @@
     <b>Reserva</b>
 </li>
 <li>
-    <a class="active">Cadastro</a>
+    <a class="active">Editar</a>
 </li>
 {% endblock %} {% block content %} {% if context %} {% for title, value in context.items %} {{title}} : {{value}}
 <br> {% endfor %} {% endif %}
@@ -59,7 +59,6 @@
                                             <div class="form-group form-group-default" value="">
                                                 <label for="id_valor_pago" class="fade">Excursão:</label>
                                                {{ form.id_excursao }}
-                                               <input type="text" value="true" class="hidden" id="edit-reserva" />
                                             </div>
                                         </div>
                                         <div class="col-sm-2">

@@ -1,4 +1,19 @@
 // multiple fields
+
+    var blockField = function setPacote(){
+      edit = $("#edit-reserva").val()
+      if(edit != "true"){
+        if($('.form-excursao').val()){
+          $('.form-excursao').val(" ");
+          $('.form-pacote').val(" ");
+        }
+      }
+      $('.form-pacote').prop('disabled', true);
+    }
+
+    blockField()
+
+
     var lenForm= 1;
     $(function() {
         $('#id_passageiro_table .tr').formset()
@@ -37,9 +52,9 @@ $( ".form-excursao" ).change(function() {
   var id = $(this).attr('id')
   id = id.split("-")
   id = id[1]
-
+$('.form-pacote').prop('disabled', false);
+$("#id_form-"+id+"-id_pacote").parent().children().find('.select2-choice').find('.select2-chosen').html('---------');
 setPacote(excursao,id);
-
 });
 
 
@@ -54,7 +69,7 @@ function setPacote(codigo,id){
         if (response.data !== 'error'){
           pacotes = response.data
           for(i=0; i < pacotes.length; i++){
-            htmlString += '<option value="'+pacotes[i].id_pacote+'">'+pacotes[i].pacote_nome+'</option>'
+            htmlString += '<option value="'+ String(pacotes[i].id_pacote)+'">'+pacotes[i].pacote_nome+'</option>'
             $("#id_form-"+id+"-id_pacote").html(htmlString);
           }
         }
@@ -65,7 +80,7 @@ function setPacote(codigo,id){
     });
   }else{
     htmlString = '<option selected="selected" value="">---------</option>'
-    $("#id_form-"+id+"-id_pacote").parent().children().find('a').find('.select2-chosen').remove()
+    $("#id_form-"+id+"-id_pacote").parent().children().find('a').find('.select2-chosen').html("---------")
     $("#id_form-"+id+"-id_pacote").html(htmlString);
     $('#id_form-'+id+'-reserva_passageiro_preco').val("");
     $('#id_form-'+id+'-reserva_passageiro_cambio').val("");
@@ -79,6 +94,7 @@ $( ".form-pacote" ).change(function() {
   id = id.split("-")
   id = id[1]
   setMoeda(pacote,id)
+  $(this).prop('selected', true);
 });
 
 
