@@ -105,8 +105,6 @@ class ReservaRegister(JSONResponseMixin,View):
 		except Emissor.DoesNotExist:
 			context['Emissor'] = "não encontrado"
 
-		print(listPassageiros);
-
 		if not context:
 
 			reserva = Reserva()
@@ -224,8 +222,6 @@ class ReservaEdit(JSONResponseMixin,View):
 		except Emissor.DoesNotExist:
 			context['Emissor'] = "não encontrado"
 
-		print(listPassageiros);
-
 		if not context:
 
 			reserva = Reserva.objects.get(pk=self.kwargs['pk'])
@@ -234,7 +230,6 @@ class ReservaEdit(JSONResponseMixin,View):
 			for value in reservapassageiros:
 				value.delete()
 
-			
 			reserva.id_cliente = id_cliente
 			reserva.id_emissor = emissor
 			reserva.id_agencia = emissor.id_agencia
@@ -267,7 +262,6 @@ class ReservaList(JSONResponseMixin,ListView):
 		context = super(ReservaList, self).get_context_data(**kwargs)
 		return context
 
-
 class ReservaDetail(JSONResponseMixin,DetailView):
 	model = Reserva
 	template_name = 'venda/reserva/detail.html'
@@ -281,7 +275,6 @@ class ReservaDelete(JSONResponseMixin,DeleteView):
 	success_url = reverse_lazy('reserva-list')
 	template_name = 'venda/reserva/delete.html' 
 
-
 class ExcursaoPacoteJson(JSONResponseMixin,View):
     def get(self, request, *args, **kwargs):
         if self.kwargs:
@@ -293,7 +286,6 @@ class ExcursaoPacoteJson(JSONResponseMixin,View):
             return JsonResponse({'data':list(pacotes)})
         else:
             return JsonResponse({'data':'error'})
-
 
 class PacoteMoedaJson(JSONResponseMixin,View):
     def get(self, request, *args, **kwargs):
