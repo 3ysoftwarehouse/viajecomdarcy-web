@@ -25,6 +25,7 @@ from apps.subclasses.empresa.agencia.models import Agencia # MODELS
 from .forms import EmissorRegisterForm
 from apps.default.forms import PhoneForm # PHONE FORMS
 from apps.default.views import JSONResponseMixin
+from datetime import datetime, timedelta
 ##################################################
 
 
@@ -49,7 +50,6 @@ class EmissorRegister(JSONResponseMixin,View):
 			formset = PhoneFormSet(request.POST, request.FILES)
 			
 			nome = request.POST['nome']
-			sobrenome = request.POST['sobrenome']
 			email = request.POST['email']
 			password = request.POST['password']
 			tipo_usuario = request.POST['tipo_usuario']
@@ -81,8 +81,6 @@ class EmissorRegister(JSONResponseMixin,View):
 			
 			if not nome:
 				context['error_msg'] = 'nome cannot be empty !'
-			if not sobrenome:
-				context['error_msg'] = 'sobrenome cannot be empty !'
 			if not email:
 				context['error_msg'] = 'email cannot be empty !'
 			if not password:
@@ -147,7 +145,7 @@ class EmissorRegister(JSONResponseMixin,View):
 
 				id_logradouro = Logradouro()
 				id_logradouro.cep = cep
-				id_logradouro.nome = nome
+				id_logradouro.nome = rua
 				id_logradouro.bairro = bairro
 				id_logradouro.cidade = cidade
 				id_logradouro.estado = estado
@@ -163,8 +161,7 @@ class EmissorRegister(JSONResponseMixin,View):
 
 				usuario = Usuario.objects.create_user(email, password)
 				usuario.nome = nome
-				usuario.sobrenome = sobrenome
-				usuario.nomecompleto = nome +" "+sobrenome
+				usuario.nomecompleto = nome 
 				usuario.id_tipo_usuario = TipoUsuario.objects.get(pk=tipo_usuario)
 				usuario.id_genero = Genero.objects.get(pk=genero)
 				usuario.data_nascimento = data_nascimento
@@ -173,7 +170,7 @@ class EmissorRegister(JSONResponseMixin,View):
 				usuario.orgaoemissor = orgaoemissor
 				usuario.foto = foto
 				usuario.id_endereco = id_endereco
-				usuario.is_active =  False
+				usuario.is_active =  True
 				usuario.save()
 
 				for listphone in listphones:
@@ -223,7 +220,6 @@ class EmissorEdit(JSONResponseMixin,View):
 		form = EmissorRegisterForm(
 			initial={
 			'nome': usuario.nome,
-			'sobrenome': usuario.sobrenome,
 			'email': usuario.email,
 			'tipo_usuario' : usuario.id_tipo_usuario, 
 			'genero' : usuario.id_genero,
@@ -254,7 +250,6 @@ class EmissorEdit(JSONResponseMixin,View):
 			formset = PhoneFormSet(request.POST, request.FILES)
 
 			nome = request.POST['nome']
-			sobrenome = request.POST['sobrenome']
 			email = request.POST['email']
 			tipo_usuario = request.POST['tipo_usuario']
 			genero = request.POST['genero']
@@ -296,8 +291,6 @@ class EmissorEdit(JSONResponseMixin,View):
 			
 			if not nome:
 				context['Nome'] = ' cannot be empty !'
-			if not sobrenome:
-				context['Sobrenome'] = ' cannot be empty !'
 			if not email:
 				context['E-mail'] = ' cannot be empty !'
 			if not tipo_usuario:
@@ -349,7 +342,7 @@ class EmissorEdit(JSONResponseMixin,View):
 					telefone.delete()
 	
 				id_logradouro.cep = cep
-				id_logradouro.nome = nome
+				id_logradouro.nome = rua
 				id_logradouro.bairro = bairro
 				id_logradouro.cidade = cidade
 				id_logradouro.estado = estado
@@ -365,8 +358,7 @@ class EmissorEdit(JSONResponseMixin,View):
 
 				
 				usuario.nome = nome
-				usuario.sobrenome = sobrenome
-				usuario.nomecompleto = nome +" "+sobrenome
+				usuario.nomecompleto = nome 
 				usuario.id_tipo_usuario = TipoUsuario.objects.get(pk=tipo_usuario)
 				usuario.id_genero = Genero.objects.get(pk=genero)
 				usuario.data_nascimento = data_nascimento
@@ -375,7 +367,7 @@ class EmissorEdit(JSONResponseMixin,View):
 				usuario.orgaoemissor = orgaoemissor
 				usuario.foto = foto
 				usuario.id_endereco = id_endereco
-				usuario.is_active =  False
+				usuario.is_active =  True
 				usuario.save()
 
 				agencia = Agencia.objects.filter(id_agencia=id_agencia)[0]
