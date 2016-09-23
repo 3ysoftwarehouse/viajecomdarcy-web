@@ -1,0 +1,45 @@
+{% extends "default/panel/layout.html" %}
+
+{% block page_info %}
+<li>
+   <b>Reserva</b>
+</li>
+<li>
+   <a class="active">Deletar</a>
+</li>
+{% endblock %}
+
+{% block content %}
+  <div class="bg-white">
+     <!-- START PANEL -->
+     <div class="panel panel-transparent">
+        <div class="panel-heading">
+           <div class="panel-title">
+              Reserva
+           </div>
+           <div class="row">
+              <!-- BASIC DATA -->
+              <div class="col-lg-6 col-md-6 ">
+                 <!-- START PANEL -->
+                 <div class="panel panel-transparent">
+                    <div class="panel-body">
+                       <div class="row clearfix">
+                          <div class="col-sm-6">
+                             <form action="" method="post">
+                                {% csrf_token %}
+                                <p>Tem certeza que deseja deletar a Reserva "{{ object }}"?</p>
+                                <input type="submit" value="Confirm" />
+                             </form>
+                          </div>
+                       </div>
+                    </div>
+                 </div>
+                 <!-- END PANEL -->
+              </div>
+              <!-- END BASIC DATA -->
+           </div>
+        </div>
+     </div>
+     <!-- END PANEL -->
+  </div>
+{% endblock %}
