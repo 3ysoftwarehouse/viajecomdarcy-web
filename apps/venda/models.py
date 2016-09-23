@@ -41,7 +41,7 @@ class ReservaPassageiro(models.Model):
     reserva_passageiro_preco =  models.DecimalField(max_digits=10, decimal_places=2)
     id_moeda = models.ForeignKey('moeda.Moeda', on_delete=models.DO_NOTHING)
     reserva_passageiro_cambio = models.DecimalField(max_digits=5, decimal_places=4)
-    reserva_passageiro_obs = models.CharField(max_length=200)
+    reserva_passageiro_obs = models.CharField(max_length=200, null=True)
 
     def __str__(self):
         return self.reserva_passageiro_obs
