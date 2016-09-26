@@ -13,6 +13,6 @@ class Passageiro(models.Model):
 	matricula = models.IntegerField()
 	natularidade = models.CharField(max_length=30,null=True, blank=True)
 	observacao = models.CharField(max_length=250,null=True, blank=True)
-	def __unicode__(self):
-		return self.matricula
+	def __str__(self):
+		return str(self.matricula)
 

@@ -1,0 +1,64 @@
+{% extends "default/panel/layout.html" %}
+
+{% block page_info %}
+   <li>
+      <b>Reserva</b>
+   </li>
+   <li>
+      <a class="active">Detalhes</a>
+   </li>
+{% endblock %}
+
+{% block content %}
+   <div class="bg-white">
+      <!-- START PANEL -->
+      <div class="panel panel-transparent">
+         <div class="panel-heading">
+            <div class="panel-title">
+               Reserva
+            </div>
+            <div class="row">
+               <!-- BASIC DATA -->
+               <div class="col-lg-12 col-md-12 ">
+                  <!-- START PANEL -->
+                  <div class="panel panel-transparent">
+                     <div class="panel-body">
+                        <div class="row clearfix">
+                           <div class="col-sm-6">
+                              <div class="form-group form-group-default required" aria-required="true">
+                                 <label>Cliente</label>
+                                 {{ object.id_cliente }}
+                              </div>
+                           </div>
+                           <div class="col-sm-6">
+                              <div class="form-group form-group-default">
+                                 <label>Emissor</label>
+                                 {{ object.id_emissor }}
+                              </div>
+                           </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-sm-6">
+                              <div class="form-group form-group-default">
+                                 <label>Agência</label>
+                                 {{ object.id_agencia }}
+                              </div>
+                           </div>
+                           <div class="col-sm-6">
+                              <div class="form-group form-group-default">
+                                 <label>Status</label>
+                                 {{ object.id_status_reserva }}
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <!-- END PANEL -->
+               </div>
+               <!-- END BASIC DATA -->
+            </div>
+         </div>
+      </div>
+      <!-- END PANEL -->
+   </div>
+{% endblock %}
