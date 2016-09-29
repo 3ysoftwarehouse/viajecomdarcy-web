@@ -48,3 +48,11 @@
    </div>
 </div>
 {% endblock %}
+{% block javascript %}
+{{ block.super }}
+<script>
+$(function() {
+        $("#id_id_escola").select2();
+    })
+</script>
+{% endblock %}

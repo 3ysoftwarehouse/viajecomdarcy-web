@@ -26,8 +26,8 @@ from apps.subclasses.empresa.escola.models import Escola # MODELS
 from .forms import PassageiroRegisterForm
 from apps.default.forms import PhoneForm # PHONE FORMS
 from apps.default.views import JSONResponseMixin
+from apps.subclasses.usuario.emissor.views import get_emissor
 ##################################################
-
 
 
 '''
@@ -38,8 +38,9 @@ from apps.default.views import JSONResponseMixin
 
 class PassageiroRegister(JSONResponseMixin,View):
 	def get(self, request):
-		form = PassageiroRegisterForm
+		form = PassageiroRegisterForm		
 		formset = formset_factory(PhoneForm)
+		request.session["view"]="passageiro"
 		return render (request, 'subclasses/usuario/passageiro/register.html', {'form':form, 'formset':formset})
 
 	def post(self, request, *args, **kwargs):
@@ -48,11 +49,12 @@ class PassageiroRegister(JSONResponseMixin,View):
 			form = PassageiroRegisterForm(request.POST,request.FILES)
 			PhoneFormSet = formset_factory(PhoneForm)		
 			formset = PhoneFormSet(request.POST, request.FILES)
+
+			emissor = get_emissor(self)
 			
 			nome = request.POST['nome']
 			email = request.POST['email']
 			password = request.POST['password']
-			tipo_usuario = request.POST['tipo_usuario']
 			genero = request.POST['genero']
 			data_nascimento = request.POST['data_nascimento']
 			cpf = request.POST['cpf']
@@ -90,8 +92,6 @@ class PassageiroRegister(JSONResponseMixin,View):
 			if not password:
 				context['error_msg'] = 'password cannot be empty !'
 
-			if not tipo_usuario:
-				context['error_msg'] = 'tipo_usuario cannot be empty !'
 			if not genero:
 				context['error_msg'] = 'genero cannot be empty !'
 			if not data_nascimento:
@@ -171,7 +171,11 @@ class PassageiroRegister(JSONResponseMixin,View):
 				usuario.nome = nome
 				usuario.sobrenome = None
 				usuario.nomecompleto = nome 
-				usuario.id_tipo_usuario = TipoUsuario.objects.get(pk=tipo_usuario)
+				try:
+					tipo_usuario = TipoUsuario.objects.get(descricao__icontains='CLIENTE')
+				except:
+					tipo_usuario = TipoUsuario.objects.create(descricao="CLIENTE")
+				usuario.id_tipo_usuario = tipo_usuario
 				usuario.id_genero = Genero.objects.get(pk=genero)
 				usuario.data_nascimento = data_nascimento
 				usuario.cpf = cpf
@@ -199,6 +203,9 @@ class PassageiroRegister(JSONResponseMixin,View):
 				passageiro.matricula = matricula
 				passageiro.natularidade = natularidade
 				passageiro.observacao = observacao
+				if emissor:
+					passageiro.id_emissor = emissor
+					passageiro.id_agencia = emissor.id_agencia
 				passageiro.save()
 
 				return redirect(reverse_lazy("passageiro-list"))
@@ -235,7 +242,6 @@ class PassageiroEdit(JSONResponseMixin,View):
 			'nome': usuario.nome,
 			'sobrenome': usuario.sobrenome,
 			'email': usuario.email,
-			'tipo_usuario' : usuario.id_tipo_usuario, 
 			'genero' : usuario.id_genero,
 			'data_nascimento' : usuario.data_nascimento,
 			'cpf' : usuario.cpf,
@@ -266,9 +272,10 @@ class PassageiroEdit(JSONResponseMixin,View):
 			PhoneFormSet = formset_factory(PhoneForm)		
 			formset = PhoneFormSet(request.POST, request.FILES)
 
+			emissor = get_emissor(self)
+
 			nome = request.POST['nome']
 			email = request.POST['email']
-			tipo_usuario = request.POST['tipo_usuario']
 			genero = request.POST['genero']
 			data_nascimento = request.POST['data_nascimento']
 			cpf = request.POST['cpf']
@@ -293,6 +300,11 @@ class PassageiroEdit(JSONResponseMixin,View):
 			natularidade = request.POST['natularidade']
 			observacao = request.POST['observacao']
 
+			if data_nascimento:
+				data_nascimento = datetime.strptime(data_nascimento, '%d/%m/%Y').strftime('%Y-%m-%d')
+			else:
+				data_nascimento = None
+
 
 			listphones = []
 
@@ -315,8 +327,6 @@ class PassageiroEdit(JSONResponseMixin,View):
 				context['Nome'] = ' cannot be empty !'
 			if not email:
 				context['E-mail'] = ' cannot be empty !'
-			if not tipo_usuario:
-				context['Tipo'] = ' cannot be empty !'
 			if not genero:
 				context['Genero'] = ' cannot be empty !'
 			if not data_nascimento:
@@ -352,11 +362,11 @@ class PassageiroEdit(JSONResponseMixin,View):
 			
 			# EXTRAS
 			if not matricula:
-				context['error_msg'] = 'matricula cannot be empty !'
+				matricula = None
 			if not natularidade:
-				context['error_msg'] = 'natularidade cannot be empty !'
+				natularidade = None
 			if not observacao:
-				context['error_msg'] = 'observacao cannot be empty !'
+				observacao = None
 
 			if not context:
 
@@ -388,7 +398,11 @@ class PassageiroEdit(JSONResponseMixin,View):
 				usuario.nome = nome
 				usuario.sobrenome = None
 				usuario.nomecompleto = nome 
-				usuario.id_tipo_usuario = TipoUsuario.objects.get(pk=tipo_usuario)
+				try:
+					tipo_usuario = TipoUsuario.objects.get(descricao__icontains='CLIENTE')
+				except:
+					tipo_usuario = TipoUsuario.objects.create(descricao="CLIENTE")
+				usuario.id_tipo_usuario = tipo_usuario
 				usuario.id_genero = Genero.objects.get(pk=genero)
 				usuario.data_nascimento = data_nascimento
 				usuario.cpf = cpf
@@ -408,6 +422,9 @@ class PassageiroEdit(JSONResponseMixin,View):
 				passageiro.matricula = matricula
 				passageiro.natularidade = natularidade
 				passageiro.observacao = observacao
+				if emissor:
+					passageiro.id_emissor = emissor
+					passageiro.id_agencia = emissor.id_agencia
 				passageiro.save()
 
 				for listphone in listphones:
@@ -436,7 +453,11 @@ class PassageiroList(JSONResponseMixin,ListView):
 	def get_context_data(self, **kwargs):
 
 		context = super(PassageiroList, self).get_context_data(**kwargs)
-		passageiros = Passageiro.objects.all()
+		emissor = get_emissor(self)
+		if emissor:
+			passageiros = Passageiro.objects.filter(id_agencia=emissor.id_agencia.pk)
+		else:
+			passageiros = Passageiro.objects.all()
 		lists = []
 
 		for value in passageiros:

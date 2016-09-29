@@ -36,10 +36,20 @@ from datetime import datetime, timedelta
 ----------------------------------------
 ''' 
 
+def get_emissor(self):
+	emissor = []
+	try:
+		emissor = Emissor.objects.get(id_usuario=self.request.user.pk)
+		return emissor
+	except:
+		return emissor
+		pass
+
 class EmissorRegister(JSONResponseMixin,View):
 	def get(self, request):
 		form = EmissorRegisterForm
 		formset = formset_factory(PhoneForm)
+		request.session["view"]="emissor"
 		return render (request, 'subclasses/usuario/emissor/register.html', {'form':form, 'formset':formset})
 
 	def post(self, request, *args, **kwargs):
@@ -52,7 +62,6 @@ class EmissorRegister(JSONResponseMixin,View):
 			nome = request.POST['nome']
 			email = request.POST['email']
 			password = request.POST['password']
-			tipo_usuario = request.POST['tipo_usuario']
 			genero = request.POST['genero']
 			data_nascimento = request.POST['data_nascimento']
 			cpf = request.POST['cpf']
@@ -86,8 +95,6 @@ class EmissorRegister(JSONResponseMixin,View):
 			if not password:
 				context['error_msg'] = 'password cannot be empty !'
 
-			if not tipo_usuario:
-				context['error_msg'] = 'tipo_usuario cannot be empty !'
 			if not genero:
 				context['error_msg'] = 'genero cannot be empty !'
 			if not data_nascimento:
@@ -162,7 +169,11 @@ class EmissorRegister(JSONResponseMixin,View):
 				usuario = Usuario.objects.create_user(email, password)
 				usuario.nome = nome
 				usuario.nomecompleto = nome 
-				usuario.id_tipo_usuario = TipoUsuario.objects.get(pk=tipo_usuario)
+				try:
+					tipo_usuario = TipoUsuario.objects.get(descricao__icontains='EMISSOR')
+				except:
+					tipo_usuario = TipoUsuario.objects.create(descricao="EMISSOR")
+				usuario.id_tipo_usuario = tipo_usuario
 				usuario.id_genero = Genero.objects.get(pk=genero)
 				usuario.data_nascimento = data_nascimento
 				usuario.cpf = cpf
@@ -221,7 +232,6 @@ class EmissorEdit(JSONResponseMixin,View):
 			initial={
 			'nome': usuario.nome,
 			'email': usuario.email,
-			'tipo_usuario' : usuario.id_tipo_usuario, 
 			'genero' : usuario.id_genero,
 			'data_nascimento' : usuario.data_nascimento,
 			'cpf' : usuario.cpf,
@@ -251,7 +261,6 @@ class EmissorEdit(JSONResponseMixin,View):
 
 			nome = request.POST['nome']
 			email = request.POST['email']
-			tipo_usuario = request.POST['tipo_usuario']
 			genero = request.POST['genero']
 			data_nascimento = request.POST['data_nascimento']
 			cpf = request.POST['cpf']
@@ -293,8 +302,6 @@ class EmissorEdit(JSONResponseMixin,View):
 				context['Nome'] = ' cannot be empty !'
 			if not email:
 				context['E-mail'] = ' cannot be empty !'
-			if not tipo_usuario:
-				context['Tipo'] = ' cannot be empty !'
 			if not genero:
 				context['Genero'] = ' cannot be empty !'
 			if not data_nascimento:
@@ -359,7 +366,11 @@ class EmissorEdit(JSONResponseMixin,View):
 				
 				usuario.nome = nome
 				usuario.nomecompleto = nome 
-				usuario.id_tipo_usuario = TipoUsuario.objects.get(pk=tipo_usuario)
+				try:
+					tipo_usuario = TipoUsuario.objects.get(descricao__icontains='EMISSOR')
+				except:
+					tipo_usuario = TipoUsuario.objects.create(descricao="EMISSOR")
+				usuario.id_tipo_usuario = tipo_usuario
 				usuario.id_genero = Genero.objects.get(pk=genero)
 				usuario.data_nascimento = data_nascimento
 				usuario.cpf = cpf

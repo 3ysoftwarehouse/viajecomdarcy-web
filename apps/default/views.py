@@ -176,6 +176,7 @@ class UserRegister(JSONResponseMixin,View):
 	def get(self, request):
 		form = UserRegisterForm
 		formset = formset_factory(PhoneForm)
+		request.session["view"]="usuario"
 		return render (request, 'default/user/register.html', {'form':form, 'formset':formset})
 
 	def post(self, request, *args, **kwargs):

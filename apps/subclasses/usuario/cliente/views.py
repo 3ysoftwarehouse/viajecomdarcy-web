@@ -25,6 +25,7 @@ from .models import Cliente # MODELS
 from .forms import ClienteRegisterForm
 from apps.default.forms import PhoneForm # PHONE FORMS
 from apps.default.views import JSONResponseMixin
+from apps.subclasses.usuario.emissor.views import get_emissor
 ##################################################
 
 
@@ -40,6 +41,7 @@ class ClienteRegister(JSONResponseMixin,View):
 	def get(self, request):
 		form = ClienteRegisterForm
 		formset = formset_factory(PhoneForm)
+		request.session["view"]="cliente"
 		return render (request, 'subclasses/usuario/cliente/register.html', {'form':form, 'formset':formset})
 
 	def post(self, request, *args, **kwargs):
@@ -48,12 +50,13 @@ class ClienteRegister(JSONResponseMixin,View):
 			form = ClienteRegisterForm(request.POST,request.FILES)
 			PhoneFormSet = formset_factory(PhoneForm)		
 			formset = PhoneFormSet(request.POST, request.FILES)
+
+			emissor = get_emissor(self)
 			
 			nome = request.POST['nome']
 			#sobrenome = request.POST['sobrenome']
 			email = request.POST['email']
 			password = request.POST['password']
-			tipo_usuario = request.POST['tipo_usuario']
 			genero = request.POST['genero']
 			data_nascimento = request.POST['data_nascimento']
 			cpf = request.POST['cpf']
@@ -136,9 +139,6 @@ class ClienteRegister(JSONResponseMixin,View):
 				context['error_msg'] = 'email cannot be empty !'
 			if not password:
 				context['error_msg'] = 'password cannot be empty !'
-
-			if not tipo_usuario:
-				context['error_msg'] = 'tipo_usuario cannot be empty !'
 			if not genero:
 				context['error_msg'] = 'genero cannot be empty !'
 			if not data_nascimento:
@@ -168,21 +168,6 @@ class ClienteRegister(JSONResponseMixin,View):
 			if not numero:
 				context['error_msg'] = 'numero cannot be empty !'
 
-			if not cep_empresa_cliente:
-				context['error_msg'] = 'cep cannot be empty !'
-			if not rua_empresa:
-				context['error_msg'] = 'rua cannot be empty !'
-			if not bairro_empresa:
-				context['error_msg'] = 'bairro cannot be empty !'
-			if not cidade_empresa:
-				context['error_msg'] = 'cidade cannot be empty !'
-			if not estado_empresa:
-				context['error_msg'] = 'estado cannot be empty !'
-			if not pais_empresa:
-				context['error_msg'] = 'pais cannot be empty !'
-			if not numero_empresa:
-				context['error_msg'] = 'numero cannot be empty !'
-			
 
 			# EXTRAS
 			'''
@@ -257,21 +242,25 @@ class ClienteRegister(JSONResponseMixin,View):
 				id_endereco.pontoreferencia = pontoreferencia
 				id_endereco.save()
 
-				id_logradouro_empresa = Logradouro()
-				id_logradouro_empresa.cep = cep_empresa_cliente
-				id_logradouro_empresa.nome = rua_empresa
-				id_logradouro_empresa.bairro = bairro_empresa
-				id_logradouro_empresa.cidade = cidade_empresa
-				id_logradouro_empresa.estado = estado_empresa
-				id_logradouro_empresa.pais = pais_empresa
-				id_logradouro_empresa.save()
+				if cep_empresa_cliente:
 
-				id_endereco_empresa = Endereco()
-				id_endereco_empresa.id_logradouro = id_logradouro_empresa
-				id_endereco_empresa.numero = numero_empresa
-				id_endereco_empresa.complemento = complemento_empresa
-				id_endereco_empresa.pontoreferencia = pontoreferencia_empresa
-				id_endereco_empresa.save()
+					id_logradouro_empresa = Logradouro()
+					id_logradouro_empresa.cep = cep_empresa_cliente
+					id_logradouro_empresa.nome = rua_empresa
+					id_logradouro_empresa.bairro = bairro_empresa
+					id_logradouro_empresa.cidade = cidade_empresa
+					id_logradouro_empresa.estado = estado_empresa
+					id_logradouro_empresa.pais = pais_empresa
+					id_logradouro_empresa.save()
+
+					id_endereco_empresa = Endereco()
+					id_endereco_empresa.id_logradouro = id_logradouro_empresa
+					id_endereco_empresa.numero = numero_empresa
+					id_endereco_empresa.complemento = complemento_empresa
+					id_endereco_empresa.pontoreferencia = pontoreferencia_empresa
+					id_endereco_empresa.save()
+				else:
+					id_endereco_empresa = None
 
 
 				usuario = Usuario.objects.create_user(email, password)
@@ -279,7 +268,11 @@ class ClienteRegister(JSONResponseMixin,View):
 				usuario.nome = nomeSeparado[0]
 				usuario.sobrenome = nomeSeparado[1]
 				usuario.nomecompleto = nomeSeparado[0] +" "+nomeSeparado[1]
-				usuario.id_tipo_usuario = TipoUsuario.objects.get(pk=tipo_usuario)
+				try:
+					tipo_usuario = TipoUsuario.objects.get(descricao__icontains='CLIENTE')
+				except:
+					tipo_usuario = TipoUsuario.objects.create(descricao="CLIENTE")
+				usuario.id_tipo_usuario = tipo_usuario
 				usuario.id_genero = Genero.objects.get(pk=genero)
 				usuario.data_nascimento = data_nascimento
 				usuario.cpf = cpf
@@ -321,6 +314,9 @@ class ClienteRegister(JSONResponseMixin,View):
 				cliente.telefone_banco = telefone_banco
 				cliente.id_endereco_empresa = id_endereco_empresa
 				cliente.cnpj_empresa = cnpj_empresa
+				if emissor:
+					cliente.id_emissor = emissor
+					cliente.id_agencia = emissor.id_agencia
 				cliente.save()
 
 				return redirect(reverse_lazy("cliente-list"))
@@ -356,8 +352,7 @@ class ClienteEdit(JSONResponseMixin,View):
 			initial={
 			'nome': usuario.nome,
 			'sobrenome': usuario.sobrenome,
-			'email': usuario.email,
-			'tipo_usuario' : usuario.id_tipo_usuario, 
+			'email': usuario.email,			
 			'genero' : usuario.id_genero,
 			'data_nascimento' : usuario.data_nascimento,
 			'cpf' : usuario.cpf,
@@ -400,10 +395,11 @@ class ClienteEdit(JSONResponseMixin,View):
 			PhoneFormSet = formset_factory(PhoneForm)		
 			formset = PhoneFormSet(request.POST, request.FILES)
 
+			emissor = get_emissor(self)
+
 			nome = request.POST['nome']
 			#sobrenome = request.POST['sobrenome']
-			email = request.POST['email']
-			tipo_usuario = request.POST['tipo_usuario']
+			email = request.POST['email']			
 			genero = request.POST['genero']
 			data_nascimento = request.POST['data_nascimento']
 			cpf = request.POST['cpf']
@@ -473,9 +469,7 @@ class ClienteEdit(JSONResponseMixin,View):
 			if not sobrenome:
 				context['Sobrenome'] = ' cannot be empty !'
 			if not email:
-				context['E-mail'] = ' cannot be empty !'
-			if not tipo_usuario:
-				context['Tipo'] = ' cannot be empty !'
+				context['E-mail'] = ' cannot be empty !'			
 			if not genero:
 				context['Genero'] = ' cannot be empty !'
 			if not data_nascimento:
@@ -592,7 +586,11 @@ class ClienteEdit(JSONResponseMixin,View):
 				usuario.nome = nomeSeparado[0]
 				usuario.sobrenome = nomeSeparado[1]
 				usuario.nomecompleto = nomeSeparado[0] +" "+nomeSeparado[1]
-				usuario.id_tipo_usuario = TipoUsuario.objects.get(pk=tipo_usuario)
+				try:
+					tipo_usuario = TipoUsuario.objects.get(descricao__icontains='CLIENTE')
+				except:
+					tipo_usuario = TipoUsuario.objects.create(descricao="CLIENTE")
+				usuario.id_tipo_usuario = tipo_usuario
 				usuario.id_genero = Genero.objects.get(pk=genero)
 				usuario.data_nascimento = data_nascimento
 				usuario.cpf = cpf
@@ -621,6 +619,9 @@ class ClienteEdit(JSONResponseMixin,View):
 				cliente.conta = conta
 				cliente.dt_banco = dt_banco
 				cliente.telefone_banco = telefone_banco
+				if emissor:
+					cliente.id_emissor = emissor
+					cliente.id_agencia = emissor.id_agencia
 				cliente.save()
 
 				for listphone in listphones:
@@ -643,8 +644,15 @@ class ClienteEdit(JSONResponseMixin,View):
 
 
 class ClienteList(JSONResponseMixin,ListView):
-	queryset = Cliente.objects.all()
 	template_name = 'subclasses/usuario/cliente/list.html'
+
+
+	def get_queryset(self):
+		emissor = get_emissor(self)
+		if emissor:
+			return Cliente.objects.filter(id_agencia=emissor.id_agencia.pk)
+		else:
+			return Cliente.objects.all()
 
 	def get_context_data(self, **kwargs):
 		context = super(ClienteList, self).get_context_data(**kwargs)
