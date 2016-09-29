@@ -1,6 +1,7 @@
 from django.db import models
 from apps.default.models import Usuario, Endereco
 
+
 class Cliente(models.Model):
 	id_cliente = models.AutoField(primary_key=True)
 	nome_pai = models.CharField(max_length=45,null=True, blank=True)
@@ -25,6 +26,7 @@ class Cliente(models.Model):
 	telefone_banco = models.CharField(max_length=20,null=True, blank=True)
 	cnpj_empresa = models.CharField(max_length=20,null=True, blank=True)
 	id_endereco_empresa = models.ForeignKey('default.Endereco', on_delete=models.DO_NOTHING, null=True, blank=True)
-
+	id_emissor = models.ForeignKey('emissor.Emissor', on_delete=models.DO_NOTHING, null=True, blank=True)
+	id_agencia = models.ForeignKey('agencia.Agencia', on_delete=models.DO_NOTHING, null=True, blank=True)
 	def __str__(self):
 		return self.usuario.nome
