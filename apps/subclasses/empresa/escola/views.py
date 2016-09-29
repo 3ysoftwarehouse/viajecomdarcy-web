@@ -38,10 +38,12 @@ class EscolaRegister(JSONResponseMixin,View):
 	def get(self, request):
 		form = EscolaRegisterForm
 		formset = formset_factory(PhoneForm)
+		request.session["view"]="escola"
 		return render (request, 'subclasses/empresa/escola/register.html', {'form':form,'formset':formset})
 
 	def post(self, request, *args, **kwargs):
 		context = {}
+		request.session["view"]="escola"
 		if request.method == 'POST':
 
 			PhoneFormSet = formset_factory(PhoneForm)		
@@ -52,7 +54,7 @@ class EscolaRegister(JSONResponseMixin,View):
 			nomefantasia = request.POST['nomefantasia']
 			cnpj = request.POST['cnpj']
 			ie = request.POST['ie']
-			id_tipo_empresa = request.POST['tipo_empresa']
+			#id_tipo_empresa = request.POST['tipo_empresa']
 
 			cep = request.POST['cep']
 			rua = request.POST['rua']
@@ -85,9 +87,12 @@ class EscolaRegister(JSONResponseMixin,View):
 				
 			if not ie:
 				context['IE'] = ' cannot be empty !'
+
+			'''
 			if not id_tipo_empresa:
 				context['Tipo de Empresa'] = ' cannot be empty !'
-			
+			'''
+
 			'''
 			if not foto:
 				context['error_msg'] = 'foto cannot be empty !'
@@ -153,8 +158,11 @@ class EscolaRegister(JSONResponseMixin,View):
 				id_endereco.pontoreferencia = pontoreferencia
 				id_endereco.save()
 
-				id_tipo_empresa = TipoEmpresa.objects.get(pk=id_tipo_empresa)
-
+				try:
+					id_tipo_empresa = TipoEmpresa.objects.get(descricao__icontains = "Escola")
+				except:
+					id_tipo_empresa = TipoEmpresa.objects.create(descricao = "Escola")
+					
 				empresa = Empresa()
 				empresa.razaosocial = razaosocial
 				empresa.nomefantasia = nomefantasia 
@@ -192,6 +200,7 @@ class EscolaRegister(JSONResponseMixin,View):
 
 class EscolaEdit(JSONResponseMixin,View):
 	def get(self, request, pk=None):
+		request.session["view"]="escola"
 		escola = Escola.objects.get(pk=pk)
 		empresa = Empresa.objects.get(pk=escola.id_empresa.pk)
 		telefones = TelefoneEmpresa.objects.filter(id_empresa=empresa.pk)
@@ -235,6 +244,7 @@ class EscolaEdit(JSONResponseMixin,View):
 
 	def post(self, request, pk=None, *args, **kwargs):
 		context = {}
+		request.session["view"]="escola"
 		if request.method == 'POST':		    
 			form = EscolaRegisterForm(request.POST, request.FILES)
 			PhoneFormSet = formset_factory(PhoneForm)		
@@ -246,7 +256,7 @@ class EscolaEdit(JSONResponseMixin,View):
 			nomefantasia = request.POST['nomefantasia']
 			cnpj = request.POST['cnpj']
 			ie = request.POST['ie']
-			id_tipo_empresa = request.POST['tipo_empresa']
+			#id_tipo_empresa = request.POST['tipo_empresa']
 
 
 			cep = request.POST['cep']
@@ -293,9 +303,12 @@ class EscolaEdit(JSONResponseMixin,View):
 				context['CNPJ'] = ' cannot be empty !'			
 			if not ie:
 				context['IE'] = ' cannot be empty !'
+
+			'''
 			if not id_tipo_empresa:
 				context['Tipo de Empresa'] = ' cannot be empty !'
-			
+			'''
+
 			'''
 			if not foto:
 				context['error_msg'] = 'foto cannot be empty !'
@@ -351,8 +364,11 @@ class EscolaEdit(JSONResponseMixin,View):
 				id_endereco.pontoreferencia = pontoreferencia
 				id_endereco.save()
 
-				id_tipo_empresa = TipoEmpresa.objects.get(pk=id_tipo_empresa)
-				
+				try:
+					id_tipo_empresa = TipoEmpresa.objects.get(descricao__icontains = "Escola")
+				except:
+					id_tipo_empresa = TipoEmpresa.objects.create(descricao = "Escola")
+
 				empresa.razaosocial = razaosocial
 				empresa.nomefantasia = nomefantasia 
 				empresa.cnpj = cnpj
