@@ -79,6 +79,8 @@
                    {% endblock %}
                  </div>
                  <br>
+
+                 {% if request.session.view != "escola" %}
                  <p>TIpo</p>
                  <div class="form-group-attached">
                    <div class="row clearfix">
@@ -89,6 +91,10 @@
                        </div>
                      </div>
                    </div>
+                {% else %}
+                <div class="form-group-attached">
+                {% endif %}
+
                    <p>Telefone</p>
                     <table id="id_phone_table" >
                       <thead>
