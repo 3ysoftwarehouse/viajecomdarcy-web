@@ -27,6 +27,7 @@ from apps.subclasses.usuario.cliente.models import Cliente
 from apps.subclasses.usuario.passageiro.models import Passageiro
 from apps.excursao.models import Excursao
 from apps.pacote.models import Pacote
+from apps.subclasses.usuario.emissor.views import get_emissor
 ##################################################
 
 class ReservaRegister(JSONResponseMixin,View):
@@ -255,8 +256,14 @@ class ReservaEdit(JSONResponseMixin,View):
 		return render (request, 'venda/reserva/edit.html', { 'form':form, 'formset':formset, 'context':context })
 
 class ReservaList(JSONResponseMixin,ListView):
-	model = Reserva
 	template_name = 'venda/reserva/list.html'
+
+	def get_queryset(self):
+		emissor = get_emissor(self)
+		if emissor:
+			return Reserva.objects.filter(id_agencia=emissor.id_agencia.pk)
+		else:
+			return Reserva.objects.all()
 
 	def get_context_data(self, **kwargs):
 		context = super(ReservaList, self).get_context_data(**kwargs)
