@@ -36,20 +36,24 @@
                     <div class="col-md-8">
                         <div class="padding-10">
                             <div class="row clearfix p-t-10">
+                                {% if request.session.view == "usuario" %}
                                 <div class="col-sm-8">
+                                {% else %}
+                                <div class="col-sm-12">
+                                {% endif %}
                                     <div class="form-group form-group-default required">
-                                        <label>{{form.nome.label_tag}}</label>
+                                        <label>Nome Completo</label>
                                         {{form.nome}}
                                     </div>
                                 </div>
+                                 {% if request.session.view == "usuario" %}
                                 <div class="col-sm-4">
-                                    <div class="form-group form-group-default">
-                                        <label>{{form.tipo_usuario.label_tag}}</label>
-                                        <select class="form-control" id="tipo_usuario" name="tipo_usuario">
-                                            <option value={{form.tipo_usuario}}</option>
-                                        </select>
+                                    <div class="form-group form-group-default required">
+                                        <label>Tipo de Usuario</label>
+                                        {{form.tipo_usuario}}
                                     </div>
                                 </div>
+                                {% endif %}
                             </div>
                             <div class="row">
                                 <div class="col-sm-4">
