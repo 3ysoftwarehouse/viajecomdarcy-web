@@ -66,7 +66,8 @@ class ReservaRegister(JSONResponseMixin,View):
 		else:
 			id_cliente = Cliente.objects.get(pk=data['id_cliente'])
 		if not data.get('id_status_reserva', None):
-			context['Status da Reserva'] = "não pode ser vazio"
+			#context['Status da Reserva'] = "não pode ser vazio"
+			pass
 		else:
 			id_status_reserva = StatusReserva.objects.get(pk=data['id_status_reserva'])
 
@@ -88,8 +89,8 @@ class ReservaRegister(JSONResponseMixin,View):
 					context['Passagerio'] = "não pode ser vazio"
 				if not value.get('id_pacote'):
 					context['Pacote'] = "não pode ser vazio"
-				if not value.get('id_status_reserva_passageiro'):
-					context['Status da Reserva do Passafeiro'] = "não pode ser vazio"
+				#if not value.get('id_status_reserva_passageiro'):
+				#	context['Status da Reserva do Passafeiro'] = "não pode ser vazio"
 				if not value.get('reserva_passageiro_preco'):
 					context['Preço'] = "não pode ser vazio"
 				if not value.get('reserva_passageiro_cambio'):
@@ -183,7 +184,8 @@ class ReservaEdit(JSONResponseMixin,View):
 		else:
 			id_cliente = Cliente.objects.get(pk=data['id_cliente'])
 		if not data.get('id_status_reserva', None):
-			context['Status da Reserva'] = "não pode ser vazio"
+			#context['Status da Reserva'] = "não pode ser vazio"
+			pass
 		else:
 			id_status_reserva = StatusReserva.objects.get(pk=data['id_status_reserva'])
 
@@ -205,8 +207,8 @@ class ReservaEdit(JSONResponseMixin,View):
 					context['Passagerio'] = "não pode ser vazio"
 				if not value.get('id_pacote'):
 					context['Pacote'] = "não pode ser vazio"
-				if not value.get('id_status_reserva_passageiro'):
-					context['Status da Reserva do Passafeiro'] = "não pode ser vazio"
+				#if not value.get('id_status_reserva_passageiro'):
+				#	context['Status da Reserva do Passafeiro'] = "não pode ser vazio"
 				if not value.get('reserva_passageiro_preco'):
 					context['Preço'] = "não pode ser vazio"
 				if not value.get('reserva_passageiro_cambio'):
