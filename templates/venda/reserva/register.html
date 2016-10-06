@@ -28,13 +28,13 @@
                     <div class="col-md-12">
                         <div class="padding-10">
                             <div class="row clearfix p-t-10">
-                                <div class="col-sm-8">
+                                <div class="col-sm-12">
                                     <div class="form-group form-group-default required">
                                         <label>Cliente</label>
                                         {{ form.id_cliente }}
                                     </div>
                                 </div>
-                                <div class="col-sm-4">
+                                <div class="col-sm-4" style="display:none;">
                                     <div class="form-group form-group-default required">
                                         <label>Status</label>
                                         {{ form.id_status_reserva }}
@@ -70,19 +70,19 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-4" style="display:none;">
                                             <div class="form-group form-group-default" value="">
                                                 <label for="id_valor_pago" class="fade">Status Reserva:</label>
                                                {{ form.id_status_reserva_passageiro }}
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-6">
                                             <div class="form-group form-group-default" value="">
-                                                <label for="id_valor_pago" class="fade">Preço:</label>
+                                                <label for="id_valor_pago" class="fade">Taxa:</label>
                                                {{ form.reserva_passageiro_preco }}
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-6">
                                             <div class="form-group form-group-default" value="">
                                                 <label for="id_valor_pago" class="fade">Cambio:</label>
                                                {{ form.reserva_passageiro_cambio  }}
