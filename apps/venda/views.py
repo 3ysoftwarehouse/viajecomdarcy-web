@@ -26,7 +26,7 @@ from apps.subclasses.usuario.emissor.models import Emissor
 from apps.subclasses.usuario.cliente.models import Cliente
 from apps.subclasses.usuario.passageiro.models import Passageiro
 from apps.excursao.models import Excursao
-from apps.pacote.models import Pacote
+from apps.pacote.models import Pacote, PacoteAcomadacao
 from apps.subclasses.usuario.emissor.views import get_emissor
 ##################################################
 
@@ -81,9 +81,16 @@ class ReservaRegister(JSONResponseMixin,View):
 					value.get('id_status_reserva_passageiro'),
 					value.get('reserva_passageiro_preco'),
 					value.get('reserva_passageiro_cambio'),
-					value.get('reserva_passageiro_obs')
+					value.get('reserva_passageiro_obs'),
+
+					# FEATURE 805 MODIFICAÇÔES
+					value.get('id_acomodacao_pacote'),
+					value.get('preco_acomodacao'),
+					value.get('registro_interno'),
+					value.get('desconto')
 					]
 					)
+
 
 				if not value.get('id_passageiro'):
 					context['Passagerio'] = "não pode ser vazio"
@@ -97,6 +104,12 @@ class ReservaRegister(JSONResponseMixin,View):
 					context['Cambio'] = "não pode ser vazio"
 				if not value.get('reserva_passageiro_obs'):
 					context['Obs'] = "não pode ser vazio"
+
+				# FEATURE 805 MODIFICAÇÔES
+				if not value.get('id_acomodacao_pacote'):
+					context['Acomodação'] = "não pode ser vazio"
+				if not value.get('preco_acomodacao'):
+					context['Preço Acomodação'] = "não pode ser vazio"
 		else:
 			for erro in formset.errors:                 
 				context['error'] = erro
@@ -128,7 +141,15 @@ class ReservaRegister(JSONResponseMixin,View):
 				reservapassageiro.id_moeda = value[1].id_moeda
 				reservapassageiro.reserva_passageiro_cambio = value[4]
 				reservapassageiro.reserva_passageiro_obs = value[5]
+
+				# FEATURE 805 MODIFICAÇÔES
+				reservapassageiro.id_acomodacao_pacote = value[6]
+				reservapassageiro.preco_acomodacao = value[7]
+				reservapassageiro.registro_interno = value[8]
+				reservapassageiro.desconto = value[9]
+
 				reservapassageiro.save()
+
 
 			return redirect(reverse_lazy('reserva-list'))
 
@@ -148,10 +169,17 @@ class ReservaEdit(JSONResponseMixin,View):
 					'id_excursao':reservapassageiro.id_pacote.id_excursao,
 					'id_passageiro':reservapassageiro.id_passageiro,
 					'id_pacote':reservapassageiro.id_pacote,
+					'id_moeda':reservapassageiro.id_moeda,
 					'id_status_reserva_passageiro':reservapassageiro.id_status_reserva_passageiro,
 					'reserva_passageiro_preco':reservapassageiro.reserva_passageiro_preco,
 					'reserva_passageiro_cambio':reservapassageiro.reserva_passageiro_cambio,
 					'reserva_passageiro_obs':reservapassageiro.reserva_passageiro_obs,
+
+					# FEATURE 805 MODIFICAÇÔES
+					'id_acomodacao_pacote':reservapassageiro.id_acomodacao_pacote,
+					'registro_interno':reservapassageiro.registro_interno,
+					'desconto':reservapassageiro.desconto,
+					'preco_acomodacao':reservapassageiro.preco_acomodacao,
 				})
 			
 		
@@ -199,7 +227,13 @@ class ReservaEdit(JSONResponseMixin,View):
 					value.get('id_status_reserva_passageiro'),
 					value.get('reserva_passageiro_preco'),
 					value.get('reserva_passageiro_cambio'),
-					value.get('reserva_passageiro_obs')
+					value.get('reserva_passageiro_obs'),
+
+					# FEATURE 805 MODIFICAÇÔES
+					value.get('id_acomodacao_pacote'),
+					value.get('preco_acomodacao'),
+					value.get('registro_interno'),
+					value.get('desconto')
 					]
 					)
 
@@ -215,6 +249,12 @@ class ReservaEdit(JSONResponseMixin,View):
 					context['Cambio'] = "não pode ser vazio"
 				if not value.get('reserva_passageiro_obs'):
 					context['Obs'] = "não pode ser vazio"
+
+				# FEATURE 805 MODIFICAÇÔES
+				if not value.get('id_acomodacao_pacote'):
+					context['Acomodação'] = "não pode ser vazio"
+				if not value.get('preco_acomodacao'):
+					context['Preço Acomodação'] = "não pode ser vazio"
 		else:
 			for erro in formset.errors:                 
 				context['error'] = erro
@@ -251,6 +291,13 @@ class ReservaEdit(JSONResponseMixin,View):
 				reservapassageiro.id_moeda = value[1].id_moeda
 				reservapassageiro.reserva_passageiro_cambio = value[4]
 				reservapassageiro.reserva_passageiro_obs = value[5]
+
+				# FEATURE 805 MODIFICAÇÔES
+				reservapassageiro.id_acomodacao_pacote = value[6]
+				reservapassageiro.preco_acomodacao = value[7]
+				reservapassageiro.registro_interno = value[8]
+				reservapassageiro.desconto = value[9]
+
 				reservapassageiro.save()
 
 			return redirect(reverse_lazy('reserva-list'))
@@ -300,10 +347,12 @@ class PacoteMoedaJson(JSONResponseMixin,View):
     def get(self, request, *args, **kwargs):
         if self.kwargs:
             try:
-                pacote = Pacote.objects.filter(pk=self.kwargs['pk']).values('id_pacote','pacote_preco', 'id_moeda__moeda_cambio')
+                pacote = Pacote.objects.filter(pk=self.kwargs['pk']).values('id_pacote','pacote_preco', 'id_moeda','id_moeda__moeda_desc', 'id_moeda__moeda_cambio')
+                acomodacao = PacoteAcomadacao.objects.filter(id_pacote=self.kwargs['pk']).values('id_acomodacao','id_acomodacao__acomodacao_desc', 'preco')
             except:
                 pacotes = None
+                acomodacao = None
         if pacote:
-            return JsonResponse({'data':list(pacote)})
+            return JsonResponse({'pacote':list(pacote), 'acomodacao':list(acomodacao)})
         else:
-            return JsonResponse({'data':'error'})
+            return JsonResponse({'pacote':'error'})

@@ -6,9 +6,12 @@
         if($('.form-excursao').val()){
           $('.form-excursao').val(" ");
           $('.form-pacote').val(" ");
+          $('.form-acomodacao').val(" ");
         }
       }
       $('.form-pacote').prop('disabled', true);
+      $('.form-moeda').prop('disabled', true);
+      $('.form-acomodacao').prop('disabled', true);
     }
 
     blockField()
@@ -24,6 +27,7 @@
                 $("#id_form-"+i+"-id_pacote").select2();
                 $("#id_form-"+i+"-id_passageiro").select2();
                 $("#id_form-"+i+"-id_status_reserva_passageiro").select2();
+                $("#id_form-"+i+"-id_acomodacao_pacote").select2();
             }
         });
         $('.delete-row').on('click', function(event) {
@@ -33,6 +37,7 @@
                 $("#id_form-"+i+"-id_pacote").select2();
                 $("#id_form-"+i+"-id_passageiro").select2();
                 $("#id_form-"+i+"-id_status_reserva_passageiro").select2();
+                $("#id_form-"+i+"-id_acomodacao_pacote").select2();
             }
         });
     })
@@ -44,6 +49,7 @@
         $("#id_form-0-id_pacote").select2();
         $("#id_form-0-id_passageiro").select2();
         $("#id_form-0-id_status_reserva_passageiro").select2();
+        $("#id_form-0-id_acomodacao_pacote").select2();
     })
 
 
@@ -70,8 +76,8 @@ function setPacote(codigo,id){
           pacotes = response.data
           for(i=0; i < pacotes.length; i++){
             htmlString += '<option value="'+ String(pacotes[i].id_pacote)+'">'+pacotes[i].pacote_nome+'</option>'
-            $("#id_form-"+id+"-id_pacote").html(htmlString);
           }
+          $("#id_form-"+id+"-id_pacote").html(htmlString);
         }
       },
       error: function(error) {
@@ -82,7 +88,10 @@ function setPacote(codigo,id){
     htmlString = '<option selected="selected" value="">---------</option>'
     $("#id_form-"+id+"-id_pacote").parent().children().find('a').find('.select2-chosen').html("---------")
     $("#id_form-"+id+"-id_pacote").html(htmlString);
+    $("#id_form-"+id+"-id_acomodacao_pacote").parent().children().find('a').find('.select2-chosen').html("---------")
+    $("#id_form-"+id+"-id_acomodacao_pacote").html(htmlString);
     $('#id_form-'+id+'-reserva_passageiro_preco').val("");
+    $('#id_form-'+id+'-id_moeda').val("");
     $('#id_form-'+id+'-reserva_passageiro_cambio').val("");
   }
 }
@@ -91,10 +100,19 @@ function setPacote(codigo,id){
 $( ".form-pacote" ).change(function() {
   var pacote = $(this).val()
   var id = $(this).attr('id')
-  id = id.split("-")
-  id = id[1]
+  id = id.split("-")[1]
   setMoeda(pacote,id)
   $(this).prop('selected', true);
+  $('.form-acomodacao').prop('disabled', false);
+});
+
+
+$( ".form-acomodacao" ).change(function() {
+  var id = $(this).attr('id')
+  id = id.split("-")[1]
+  console.log($(this).data('preco'))
+  $(this).prop('selected', true);
+  $('#id_form'+id+'-preco_acomodacao').val($(this).data('preco'));
 });
 
 
@@ -106,10 +124,22 @@ function setMoeda(codigo,id){
       url: url,
       type: 'GET',
       success : function(response) { 
-        if (response.data !== 'error'){
-          pacote = response.data
-          $('#id_form-'+id+'-reserva_passageiro_preco').val(response.data[0].pacote_preco)
-          $('#id_form-'+id+'-reserva_passageiro_cambio').val(response.data[0].id_moeda__moeda_cambio)
+        if (response.pacote !== 'error'){
+
+          console.log(response)
+          pacote = response.pacote
+
+          $('#id_form-'+id+'-reserva_passageiro_preco').val(pacote[0].pacote_preco)
+          $("#id_form-"+id+"-id_moeda").html('<option selected="selected" value="'+pacote[0].id_moeda+'">'+pacote[0].id_moeda__moeda_desc+'</option>');
+          $('#id_form-'+id+'-reserva_passageiro_cambio').val(pacote[0].id_moeda__moeda_cambio)
+
+
+          acomodacao = response.acomodacao
+          for(i=0; i < acomodacao.length; i++){
+            htmlString += '<option data-preco="'+String(acomodacao[i].preco)+'" value="'+ String(acomodacao[i].id_acomodacao)+'">'+acomodacao[i].id_acomodacao__acomodacao_desc+'</option>'
+          }
+          $("#id_form-"+id+"-id_acomodacao_pacote").html(htmlString);
+
         }
       },
       error: function(error) {
