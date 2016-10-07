@@ -54,6 +54,7 @@ $(function() {
     $("#id_form-0-id_acomodacao_pacote").select2();
 })
 
+
 function setExcursaoPacote(select){
   console.log("setExcursaoPacote")
   var selected = select.options[select.selectedIndex]
@@ -81,7 +82,7 @@ function setPrecoAcomodacao(select){
   var selected = select.options[select.selectedIndex]
   var valor = selected.value
   var id = String(select.id).split('-')[1]
-  $('#id_form-'+id+'-preco_acomodacao').val(selected.data('preco'));
+  $('#id_form-'+id+'-preco_acomodacao').val(selected.getAttribute('data-preco'));
   $('#id_form-'+id+'-preco_acomodacao').prop('disabled', false);
 }
 
@@ -130,9 +131,9 @@ function setMoeda(codigo,id){
         if (response.pacote !== 'error'){
 
           pacote = response.pacote
-
+          htmlString = '<option selected="selected" value="">---------</option>'
           $('#id_form-'+id+'-reserva_passageiro_preco').val(pacote[0].pacote_preco)
-          $("#id_form-"+id+"-id_moeda").html('<option selected="selected" value="'+pacote[0].id_moeda+'">'+pacote[0].id_moeda__moeda_desc+'</option>');
+          $("#id_form-"+id+"-id_moeda").html(htmlString+'<option selected="selected" value="'+pacote[0].id_moeda+'">'+pacote[0].id_moeda__moeda_desc+'</option>');
           $('#id_form-'+id+'-reserva_passageiro_cambio').val(pacote[0].id_moeda__moeda_cambio)
 
 
