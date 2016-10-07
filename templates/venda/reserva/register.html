@@ -49,7 +49,7 @@
                                 {% for form in formset.forms %}
                                 <div id="{{ form.prefix }}-row" class="tr">
                                     <div class="row">
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-4">
                                             <div class="form-group form-group-default required" value="">
                                                 <label for="id_valor_servico" class="fade teste">Passageiro:</label>
                                                 {{ form.id_passageiro}}
@@ -62,7 +62,7 @@
                                                <input type="text" value="true" class="hidden" id="edit-reserva" />
                                             </div>
                                         </div>
-                                        <div class="col-sm-2">
+                                        <div class="col-sm-4">
                                             <div class="form-group form-group-default" value="">
                                                 <label for="id_valor_pago" class="fade">Pacote:</label>
                                                 {{ form.id_pacote }}
@@ -70,24 +70,50 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-sm-4" style="display:none;">
+                                        <div class="col-sm-4">
                                             <div class="form-group form-group-default" value="">
-                                                <label for="id_valor_pago" class="fade">Status Reserva:</label>
-                                               {{ form.id_status_reserva_passageiro }}
+                                                <label for="id_valor_pago" class="fade">Acomodação:</label>
+                                                {{ form.id_acomodacao_pacote }}
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-2">
+                                            <div class="form-group form-group-default" value="">
+                                                <label for="id_valor_pago" class="fade">Preço Acomodação:</label>
+                                                {{ form.preco_acomodacao }}
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2">
                                             <div class="form-group form-group-default" value="">
                                                 <label for="id_valor_pago" class="fade">Taxa:</label>
                                                {{ form.reserva_passageiro_preco }}
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-4">
+                                            <div class="form-group form-group-default" value="">
+                                                <label for="id_valor_pago" class="fade">Moeda:</label>
+                                                {{ form.id_moeda }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4">
                                             <div class="form-group form-group-default" value="">
                                                 <label for="id_valor_pago" class="fade">Cambio:</label>
                                                {{ form.reserva_passageiro_cambio  }}
                                             </div>
                                         </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group form-group-default" value="">
+                                                <label for="id_valor_pago" class="fade">Registro Interno:</label>
+                                                {{ form.registro_interno }}
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group form-group-default" value="">
+                                                <label for="id_valor_pago" class="fade">Desconto:</label>
+                                                {{ form.desconto }}
+                                            </div>
+                                        </div> 
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-12">
@@ -99,6 +125,11 @@
                                     </div>
                                     <br>
                                 </div>
+
+                                <div style="display:none;">
+                                    {{ form.id_status_reserva_passageiro }}
+                                </div>
+
                                 {% endfor %}
                                 {{formset.management_form}}      
                             </div>
