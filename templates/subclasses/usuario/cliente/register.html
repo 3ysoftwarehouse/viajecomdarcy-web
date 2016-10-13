@@ -1,15 +1,18 @@
-{% extends "default/user/register.html" %} {% load staticfiles %} {% block subclass_itens %}
+{% extends "default/user/register.html" %} {% load staticfiles %}
+{% block tab_01 %} Dados do Cliente {% endblock %}
+ {% block subclass_itens %}
+
 <li class="">
     <a data-toggle="tab" href="#tab3"><i class="fa fa-truck tab-icon"></i> 
    <span>
-   Extras
+   Trabalho do Cliente
    </span>
    </a>
 </li>
 <li class="">
     <a data-toggle="tab" href="#tab4"><i class="fa fa-map-marker tab-icon"></i> 
    <span>
-   Endereço Empresa
+   Endereço da Empresa
    </span>
    </a>
 </li>
@@ -163,25 +166,25 @@
             <div class="padding-10">
                 <div class="row clearfix">
                     <div class="col-sm-3">
-                        <div class="form-group form-group-default required">
+                        <div class="form-group form-group-default">
                             <label>{{form.cep_empresa_cliente.label_tag}}</label>
                             {{form.cep_empresa_cliente}}
                         </div>
                     </div>
                     <div class="col-sm-3">
-                        <div class="form-group form-group-default required">
+                        <div class="form-group form-group-default">
                             <label>{{form.pais_empresa.label_tag}}</label>
                             {{form.pais_empresa}}
                         </div>
                     </div>
                     <div class="col-sm-3">
-                        <div class="form-group form-group-default required required">
+                        <div class="form-group form-group-default  ">
                             <label>{{form.estado_empresa.label_tag}}</label>
                             {{form.estado_empresa}}
                         </div>
                     </div>
                     <div class="col-sm-3">
-                        <div class="form-group form-group-default required required">
+                        <div class="form-group form-group-default">
                             <label>{{form.cidade_empresa.label_tag}}</label>
                             {{form.cidade_empresa}}
                         </div>
@@ -189,7 +192,7 @@
                 </div>
                 <div class="row clearfix">
                     <div class="col-sm-6">
-                        <div class="form-group form-group-default required">
+                        <div class="form-group form-group-default">
                             <label>{{form.rua_empresa.label_tag}}</label>
                             {{form.rua_empresa}}
                         </div>
@@ -201,7 +204,7 @@
                         </div>
                     </div>
                     <div class="col-sm-3">
-                        <div class="form-group form-group-default required">
+                        <div class="form-group form-group-default">
                             <label>{{form.bairro_empresa.label_tag}}</label>
                             {{form.bairro_empresa}}
                         </div>
@@ -225,4 +228,12 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/cliente/custom.js' %}" type="text/javascript"></script>
+<script>
+
+</script>
 {% endblock %}

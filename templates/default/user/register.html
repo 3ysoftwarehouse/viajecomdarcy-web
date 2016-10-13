@@ -13,7 +13,7 @@
         <li class="active">
             <a data-toggle="tab" href="#tab1"><i class="fa fa-bars tab-icon"></i>
       <span>
-       Dados do usuário
+       {% block tab_01 %} Dados do Usuario{% endblock %}
      </span>
    </a>
         </li>
@@ -263,7 +263,6 @@ $(document).ready(function() {
     $("#id_cep").mask("99.999-999");
     $("#id_cep_empresa_cliente").mask("99.999-999");
     $('#id_data_nascimento').mask("99/99/9999");
-    $('#id_dt_admissao').mask('99/9999');
 
 
 });
