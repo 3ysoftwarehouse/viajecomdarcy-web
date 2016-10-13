@@ -120,8 +120,7 @@ class ClienteRegister(JSONResponseMixin,View):
 			else:
 				dt_emissao_rg = None
 
-			if dt_admissao:
-				dt_admissao = "01/" + dt_admissao
+			if dt_admissao:				
 				dt_admissao = datetime.strptime(dt_admissao, '%d/%m/%Y').strftime('%Y-%m-%d')
 			else:
 				dt_admissao = None

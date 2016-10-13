@@ -38,14 +38,14 @@
                 if ($current > 1 && $current < $total) {
 
                     var nextIcon = li.next().find('.fa');
-                    var nextIconClass = nextIcon.attr('class').match(/fa-[\w-]*/).join();
-
+                    //var nextIconClass = "nextIcon.attr('class').match(/fa-[\w-]*/).join();"
+                    var nextIconClass = "fa-arrow-right"
                     removeIcons(btnNext);
                     btnNext.addClass(nextIconClass + ' btn-animated from-left fa');
 
                     var prevIcon = li.prev().find('.fa');
-                    var prevIconClass = prevIcon.attr('class').match(/fa-[\w-]*/).join();
-
+                    //var prevIconClass = prevIcon.attr('class').match(/fa-[\w-]*/).join();
+                    var prevIconClass = "fa-arrow-left"
                     removeIcons(btnPrev);
                     btnPrev.addClass(prevIconClass + ' btn-animated from-left fa');
                 } else if ($current == 1) {
