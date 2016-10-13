@@ -6,8 +6,15 @@ $("#id_dt_banco").mask("99/99/9999"); // DATA
 
 $(document).ready(function() {
 	$(function() {
+		$('.delete-row').prepend('<i class="fs-14 pg-minus"></i> ')
+		$('.add-row').prepend('<i class="fs-14 pg-plus"></i> ')
 		$(".add-row").click(function(){
-			alert("dasdsa");
+			$('.delete-row').each(function (index, value) { 
+			  	if(typeof ($(this).children().attr('class')) === 'undefined'){
+			  		$(this).prepend('<i class="fs-14 pg-minus"></i> ')
+			  	}
+			  
+			});
 		});
 
 	});
