@@ -42,15 +42,17 @@ class ReservaPassageiroForm(forms.ModelForm):
     id_pacote = forms.ModelChoiceField (queryset=Pacote.objects.all())
     id_acomodacao_pacote = forms.ModelChoiceField (queryset=Acomodacao.objects.all())
     id_moeda = forms.ModelChoiceField (queryset=Moeda.objects.all(), required=False)
+    reserva_passageiro_obs = forms.CharField(required=False)
+    registro_interno = forms.CharField(required=False)
+    desconto = forms.DecimalField(required=False)
 
     class Meta:
         model = ReservaPassageiro
         fields = (
             'id_passageiro', 
             'id_status_reserva_passageiro',
-            'reserva_passageiro_preco','reserva_passageiro_cambio',
-            'reserva_passageiro_obs','registro_interno',
-            'desconto', 'preco_acomodacao'
+            'reserva_passageiro_preco','reserva_passageiro_cambio', 
+            'preco_acomodacao'
             )
 
 

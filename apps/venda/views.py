@@ -102,8 +102,8 @@ class ReservaRegister(JSONResponseMixin,View):
 					context['Preço'] = "não pode ser vazio"
 				if not value.get('reserva_passageiro_cambio'):
 					context['Cambio'] = "não pode ser vazio"
-				if not value.get('reserva_passageiro_obs'):
-					context['Obs'] = "não pode ser vazio"
+				#if not value.get('reserva_passageiro_obs'):
+				#	context['Obs'] = "não pode ser vazio"
 
 				# FEATURE 805 MODIFICAÇÔES
 				if not value.get('id_acomodacao_pacote'):
@@ -140,13 +140,16 @@ class ReservaRegister(JSONResponseMixin,View):
 				reservapassageiro.reserva_passageiro_preco = value[3]
 				reservapassageiro.id_moeda = value[1].id_moeda
 				reservapassageiro.reserva_passageiro_cambio = value[4]
-				reservapassageiro.reserva_passageiro_obs = value[5]
+				if value[5]:
+					reservapassageiro.reserva_passageiro_obs = value[5]
 
 				# FEATURE 805 MODIFICAÇÔES
 				reservapassageiro.id_acomodacao_pacote = value[6]
 				reservapassageiro.preco_acomodacao = value[7]
-				reservapassageiro.registro_interno = value[8]
-				reservapassageiro.desconto = value[9]
+				if value[8]:
+					reservapassageiro.registro_interno = value[8]
+				if value[9]:
+					reservapassageiro.desconto = value[9]
 
 				reservapassageiro.save()
 
@@ -247,8 +250,8 @@ class ReservaEdit(JSONResponseMixin,View):
 					context['Preço'] = "não pode ser vazio"
 				if not value.get('reserva_passageiro_cambio'):
 					context['Cambio'] = "não pode ser vazio"
-				if not value.get('reserva_passageiro_obs'):
-					context['Obs'] = "não pode ser vazio"
+				#if not value.get('reserva_passageiro_obs'):
+				#	context['Obs'] = "não pode ser vazio"
 
 				# FEATURE 805 MODIFICAÇÔES
 				if not value.get('id_acomodacao_pacote'):
@@ -290,13 +293,16 @@ class ReservaEdit(JSONResponseMixin,View):
 				reservapassageiro.reserva_passageiro_preco = value[3]
 				reservapassageiro.id_moeda = value[1].id_moeda
 				reservapassageiro.reserva_passageiro_cambio = value[4]
-				reservapassageiro.reserva_passageiro_obs = value[5]
+				if value[5]:
+					reservapassageiro.reserva_passageiro_obs = value[5]
 
 				# FEATURE 805 MODIFICAÇÔES
 				reservapassageiro.id_acomodacao_pacote = value[6]
 				reservapassageiro.preco_acomodacao = value[7]
-				reservapassageiro.registro_interno = value[8]
-				reservapassageiro.desconto = value[9]
+				if value[8]:
+					reservapassageiro.registro_interno = value[8]
+				if value[9]:
+					reservapassageiro.desconto = value[9]
 
 				reservapassageiro.save()
 
@@ -310,7 +316,7 @@ class ReservaList(JSONResponseMixin,ListView):
 	def get_queryset(self):
 		emissor = get_emissor(self)
 		if emissor:
-			return Reserva.objects.filter(id_agencia=emissor.id_agencia.pk)
+			return Reserva.objects.filter(id_emissor=emissor.pk, id_agencia=emissor.id_agencia.pk).order_by('-id_reserva')[:1]
 		else:
 			return Reserva.objects.all()
 
