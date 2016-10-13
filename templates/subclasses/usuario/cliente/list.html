@@ -18,7 +18,9 @@
       Cliente
     </div>
     <div class="btn-group pull-right m-b-10">
-      <a class="btn btn-default" href="/framework/dashboard/cliente/register/" type="button">Cadastrar</a>
+      <a class="btn btn-default" href="/framework/dashboard/cliente/register/" type="button"><i class="fs-14 pg-plus"></i>
+        Inserir
+      </a>
     </div>
     <div class="pull-right">
       <div class="col-xs-12">
@@ -32,11 +34,6 @@
    <table class="table table-hover table-condensed table-responsive" id="tableWithSearch">
         <thead>
           <tr>
-             <th style="width:1%">
-                <button class="btn">
-                <i class="pg-trash"></i>
-                </button>
-             </th>
              <th style="width:25%">Nome</th>
              <th style="width:25%">Email</th>
              <th style="width:25%">CPF</th>
@@ -46,12 +43,6 @@
        <tbody>
           {% for cliente in object_list %}
           <tr>
-             <td class="v-align-middle">
-                <div class="checkbox ">
-                   <input type="checkbox" value="1" id="checkbox1">
-                   <label for="checkbox1"></label>
-                </div>
-             </td>
              <td class="v-align-middle ">
                 <p>{{cliente.usuario.nomecompleto}}</p>
              </td>
