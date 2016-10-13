@@ -164,8 +164,15 @@ $(document).ready(function() {
         "tableTools": {
             "sSwfPath": "{% static 'js/dataTable/copy_csv_xls_pdf.swf' %}",
             "aButtons": [
-                "copy",
-                "print",
+                {
+                    "sExtends": "copy",
+                    "sButtonText": "Copiar"
+                },
+                {
+                    "sExtends": "print",
+                    "sButtonText": "Imprimir",
+                    "sAutoPrint": "true"
+                },
                 {
                     "sExtends":    "collection",
                     "sButtonText": "Salvar",
