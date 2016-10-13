@@ -3220,6 +3220,7 @@ Misc buttons
 .pager .disabled > span {
   cursor: not-allowed;
   opacity: .5;
+  display: none;
 }
 /*------------------------------------------------------------------
 [7. Alerts]

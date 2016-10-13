@@ -170,6 +170,19 @@
 <script src="{% static 'js/venda/custom.js' %}" type="text/javascript"></script>
 
 <script>
+$(document).ready(function() {
+    $(function() {
+        $('.delete-row').prepend('<i class="fs-14 pg-minus"></i> ')
+        $('.add-row').prepend('<i class="fs-14 pg-plus"></i> ')
+        $(".add-row").click(function(){
+            $('.delete-row').each(function (index, value) { 
+                if(typeof ($(this).children().attr('class')) === 'undefined'){
+                    $(this).prepend('<i class="fs-14 pg-minus"></i> ')
+                }
+            });
+        });
+    });
+});
 $(".finish").click(function() {
     $("#form-personal").submit();
 });

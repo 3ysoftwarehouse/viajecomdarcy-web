@@ -1,6 +1,6 @@
 {% extends "default/panel/layout.html" %} {% load staticfiles %} {% block page_info %}
 <li>
-    <b>Usuário</b>
+    <b>{% block title_top %}Usuário{% endblock %}</b>
 </li>
 <li>
     <a class="active">Editar</a>
@@ -13,7 +13,7 @@
         <li class="active">
             <a data-toggle="tab" href="#tab1"><i class="fa fa-bars tab-icon"></i>
       <span>
-       Dados do usuário
+       {% block tab_01 %} Dados do Usuario{% endblock %}
      </span>
    </a>
         </li>

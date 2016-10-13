@@ -20,14 +20,15 @@ class StatusReservaPassageiro(models.Model):
 
 class Reserva(models.Model):
 
-	id_reserva = models.AutoField(primary_key=True)
-	id_cliente = models.ForeignKey('cliente.Cliente', on_delete=models.DO_NOTHING)
-	id_emissor = models.ForeignKey('emissor.Emissor', on_delete=models.DO_NOTHING)
-	id_agencia = models.ForeignKey('agencia.Agencia', on_delete=models.DO_NOTHING)
-	id_status_reserva = models.ForeignKey('StatusReserva', on_delete=models.DO_NOTHING)
-
-	def __str__(self):
-		return self.id_emissor.id_usuario.nome
+    id_reserva = models.AutoField(primary_key=True)
+    id_cliente = models.ForeignKey('cliente.Cliente', on_delete=models.DO_NOTHING)
+    id_emissor = models.ForeignKey('emissor.Emissor', on_delete=models.DO_NOTHING)
+    id_agencia = models.ForeignKey('agencia.Agencia', on_delete=models.DO_NOTHING)
+    id_status_reserva = models.ForeignKey('StatusReserva', on_delete=models.DO_NOTHING)
+    data_reserva = models.DateField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.id_emissor.id_usuario.nome
 
 
 class ReservaPassageiro(models.Model):
