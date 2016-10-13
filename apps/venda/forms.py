@@ -19,6 +19,19 @@ from apps.moeda.models import Moeda
 ##################################################
 
 
+class FiltroReservaForm(forms.Form):
+
+    data_inicio = forms.DateField()
+    data_fim = forms.DateField()
+
+    def __init__(self, *args, **kwargs):
+        super(FiltroReservaForm, self).__init__(*args, **kwargs)
+
+        self.fields['data_inicio'].widget.attrs['class'] = 'form-control'
+        self.fields['data_fim'].widget.attrs['class'] = 'form-control'
+        self.fields['data_inicio'].widget.attrs['placeholder'] = 'Data de inicio'
+        self.fields['data_fim'].widget.attrs['placeholder'] = 'Data de término'
+
 class ReservaForm(forms.ModelForm):
 
     class Meta:

@@ -20,7 +20,7 @@ from django.forms import formset_factory
 #				CUSTOM IMPORTS                   #
 ##################################################
 from .models import Reserva, StatusReserva, StatusReservaPassageiro, ReservaPassageiro
-from .forms import ReservaForm, ReservaPassageiroForm
+from .forms import ReservaForm, ReservaPassageiroForm, FiltroReservaForm
 from apps.default.views import JSONResponseMixin
 from apps.subclasses.usuario.emissor.models import Emissor
 from apps.subclasses.usuario.cliente.models import Cliente
@@ -310,19 +310,48 @@ class ReservaEdit(JSONResponseMixin,View):
 
 		return render (request, 'venda/reserva/edit.html', { 'form':form, 'formset':formset, 'context':context })
 
-class ReservaList(JSONResponseMixin,ListView):
-	template_name = 'venda/reserva/list.html'
+class ReservaList(JSONResponseMixin, View):
+	def get(self, request, **kwargs):
+		form = FiltroReservaForm()
 
-	def get_queryset(self):
 		emissor = get_emissor(self)
 		if emissor:
-			return Reserva.objects.filter(id_emissor=emissor.pk, id_agencia=emissor.id_agencia.pk).order_by('-id_reserva')[:1]
+			object_list = Reserva.objects.filter(id_emissor=emissor.pk, id_agencia=emissor.id_agencia.pk).order_by('-id_reserva')[:1]
 		else:
-			return Reserva.objects.all()
+			object_list = Reserva.objects.all()
 
-	def get_context_data(self, **kwargs):
-		context = super(ReservaList, self).get_context_data(**kwargs)
-		return context
+		return render (request, 'venda/reserva/list.html', {'object_list':object_list,'form':form})
+
+	def post(self, request, pk=None, *args, **kwargs):
+		form = FiltroReservaForm(request.POST)
+		data_inicio = None
+		data_fim = None
+		if form.is_valid():
+			data_inicio = form.cleaned_data['data_inicio']
+			data_fim = form.cleaned_data['data_fim']
+
+		emissor = get_emissor(self)
+		if emissor:
+			if data_inicio and data_fim:
+				object_list = Reserva.objects.filter(id_emissor=emissor.pk, id_agencia=emissor.id_agencia.pk,data_reserva__gte=data_inicio, data_reserva__lte=data_fim)
+			elif data_inicio:
+				object_list = Reserva.objects.filter(id_emissor=emissor.pk, id_agencia=emissor.id_agencia.pk,data_reserva__gte=data_inicio)
+			elif data_fim:
+				object_list = Reserva.objects.filter(id_emissor=emissor.pk, id_agencia=emissor.id_agencia.pk,data_reserva__lte=data_fim)
+			else:
+				object_list = Reserva.objects.filter(id_emissor=emissor.pk, id_agencia=emissor.id_agencia.pk)
+		else:
+			if data_inicio and data_fim:
+				object_list = Reserva.objects.filter(data_reserva__gte=data_inicio, data_reserva__lte=data_fim)
+			elif data_inicio:
+				object_list = Reserva.objects.filter(data_reserva__gte=data_inicio)
+			elif data_fim:
+				object_list = Reserva.objects.filter(data_reserva__lte=data_fim)
+			else:
+				object_list = Reserva.objects.all()
+
+		return render (request, 'venda/reserva/list.html', {'object_list':object_list,'form':form})
+
 
 class ReservaDetail(JSONResponseMixin,DetailView):
 	model = Reserva
