@@ -227,7 +227,7 @@
                 "language": {
                   "url": "{% static 'js/datatable/Portuguese-Brasil.json' %}"
                 },
-                dom: 'Bfrtip',
+                dom: 'fBrtip',
                 buttons: [
                     {
                       extend:'copyHtml5',
@@ -261,14 +261,19 @@
                       orientation: 'landscape',
                       pageSize: 'LEGAL'
                     }
-                ]
+                ],
+                initComplete: function () {
+                    $('#datatable_filter input').addClass("form-control");
+                    $('#datatable_filter input').attr("placeholder", "Buscar");
+                }
             });
         });
       </script>
       <!-- END BASIC JAVASCRIPT -->
 
       <!-- EXTRA JAVASCRIPT -->
-      {% block javascript %}{% endblock %}
+      {% block javascript %}
+      {% endblock %}
       <!-- END EXTRA JAVASCRIPT -->
 
    </body>
