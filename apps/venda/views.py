@@ -154,7 +154,7 @@ class ReservaRegister(JSONResponseMixin,View):
 				reservapassageiro.save()
 
 
-			return redirect(reverse_lazy('reserva-list'))
+			return redirect(reverse_lazy('passageiro-opcional', kwargs = {'pk' : reservapassageiro.pk, }))
 
 		return render (request, 'venda/reserva/register.html', { 'form':form, 'formset':formset, 'context':context })
 
@@ -391,3 +391,9 @@ class PacoteMoedaJson(JSONResponseMixin,View):
             return JsonResponse({'pacote':list(pacote), 'acomodacao':list(acomodacao)})
         else:
             return JsonResponse({'pacote':'error'})
+
+
+class PassageiroOpc(JSONResponseMixin,View):
+	def get(self, request, pk=None):
+		
+		return render (request, 'venda/passageiro/register.html', {})
