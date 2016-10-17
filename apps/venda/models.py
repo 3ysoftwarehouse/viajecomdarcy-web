@@ -52,5 +52,16 @@ class ReservaPassageiro(models.Model):
     def __str__(self):
         return self.reserva_passageiro_obs
 
+class PassageiroOpcional(models.Model):
+
+    id_reserva_passageiro_opcional = models.AutoField(primary_key=True)
+    id_reserva_passageiro = models.ForeignKey('ReservaPassageiro', on_delete=models.CASCADE)
+    id_opcional = models.ForeignKey('excursao.Opcional', on_delete=models.DO_NOTHING)
+    id_moeda = models.ForeignKey('moeda.Moeda', on_delete=models.DO_NOTHING)
+    preco_reserva_opcional = models.DecimalField(max_digits=14, decimal_places=2)
+
+
+    def __str__(self):
+        return self.id_reserva_passageiro
 
 
