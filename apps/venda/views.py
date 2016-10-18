@@ -393,33 +393,20 @@ class PacoteMoedaJson(JSONResponseMixin,View):
             return JsonResponse({'pacote':'error'})
 
 
+
 class PassageiroOpc(JSONResponseMixin,View):
 	def get(self, request, pk=None):
 		reserva = Reserva.objects.get(pk=self.kwargs['pk'])
 		reservapassageiros = ReservaPassageiro.objects.filter(id_reserva=reserva.pk)
 
-		listpassageiros = []
+		id_passageiros = []
 		for passageiro in reservapassageiros:
-			listpassageiros.append(passageiro.id_passageiro)
+			id_passageiros.append({"id_passageiro":passageiro.id_passageiro.pk, "nome":passageiro.id_passageiro.id_usuario.nome})
 			pass
 
-		formset = formset_factory(ReservaPassageiroForm, extra=0)
-		formset = formset(form_kwargs={'listpassageiros': listpassageiros})
-
-		return render (request, 'venda/passageiro/register.html', {'formset':formset, 'reserva':reserva})
-
-	def post(self, request, pk=None, *args, **kwargs):
 		formset = formset_factory(ReservaPassageiroForm)
-		formset = formset(request.POST)
 
-		if formset.is_valid():
-
-			pass
-		else:
-			for erro in formset.errors:                 
-				context['error'] = erro
-				pass
-			pass
+		return render (request, 'venda/passageiro/register.html', {'formset':formset, 'reserva':reserva, 'id_passageiros':id_passageiros})
 
 class PassageiroOpcJson(JSONResponseMixin,View):
     def get(self, request, *args, **kwargs):

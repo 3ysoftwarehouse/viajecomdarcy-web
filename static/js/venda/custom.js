@@ -66,6 +66,7 @@ function setExcursaoPacote(select){
   setPacote(valor,id);
   $("#id_form-"+id+"-id_pacote").parent().children().find('.select2-choice').find('.select2-chosen').html('---------');
   $('#id_form-'+id+'-id_pacote').prop('disabled', false);
+  $('#id_form-'+id+'-id_status_reserva option[value="RESERVADO"]').prop('selected', true);
 }
 
 function setPacoteAcomodacao(select){
