@@ -26,7 +26,7 @@ from apps.subclasses.usuario.emissor.models import Emissor
 from apps.subclasses.usuario.cliente.models import Cliente
 from apps.subclasses.usuario.passageiro.models import Passageiro
 from apps.excursao.models import Excursao
-from apps.pacote.models import Pacote, PacoteAcomadacao
+from apps.pacote.models import Pacote, PacoteAcomadacao, PacoteOpcional
 from apps.subclasses.usuario.emissor.views import get_emissor
 ##################################################
 
@@ -405,5 +405,32 @@ class PassageiroOpc(JSONResponseMixin,View):
 
 		formset = formset_factory(ReservaPassageiroForm, extra=0)
 		formset = formset(form_kwargs={'listpassageiros': listpassageiros})
-		
+
 		return render (request, 'venda/passageiro/register.html', {'formset':formset, 'reserva':reserva})
+
+	def post(self, request, pk=None, *args, **kwargs):
+		formset = formset_factory(ReservaPassageiroForm)
+		formset = formset(request.POST)
+
+		if formset.is_valid():
+
+			pass
+		else:
+			for erro in formset.errors:                 
+				context['error'] = erro
+				pass
+			pass
+
+class PassageiroOpcJson(JSONResponseMixin,View):
+    def get(self, request, *args, **kwargs):
+        if self.kwargs:
+            try:
+                reservapassageiro = ReservaPassageiro.objects.get(id_reserva=request.POST.get['id_reserva'],id_passageiro=request.POST.get['id_passageiro'])
+            except:
+                reservapassageiro = None
+
+        if reservapassageiro:
+            opicionais = PacoteOpcional.objects.filter(id_pacote=reservapassageiro.id_pacote).values('id_opcional','id_opcional__opcional_desc')
+            return JsonResponse({'data':{'opicionais':opicionais, 'moeda':reservapassageiro.id_pacote.id_moeda.moeda_desc}})
+        else:
+            return JsonResponse({'data':'error'})
