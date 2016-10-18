@@ -11,9 +11,10 @@ from django import forms
 ##################################################
 #               CUSTOM IMPORTS                   #
 ##################################################
-from .models import Reserva, ReservaPassageiro
-from apps.excursao.models import Excursao
+from .models import Reserva, ReservaPassageiro, PassageiroOpcional
+from apps.excursao.models import Excursao, Opcional
 from apps.pacote.models import Pacote
+from apps.subclasses.usuario.passageiro.models import Passageiro
 from apps.acomodacao.models import Acomodacao
 from apps.moeda.models import Moeda
 ##################################################
@@ -98,4 +99,33 @@ class ReservaPassageiroForm(forms.ModelForm):
         self.fields['id_acomodacao_pacote'].widget.attrs['onchange'] = 'setPrecoAcomodacao(this)'
         # preco_acomodacao  Fields widget
         self.fields['preco_acomodacao'].widget.attrs['class'] = 'form-control form-preco'
+    pass
+
+class ReservaOpcionaisForm(forms.ModelForm):
+
+    id_passageiro = forms.ModelChoiceField (queryset=Passageiro.objects.all())
+    id_moeda = forms.ModelChoiceField (queryset=Moeda.objects.all(), required=False)
+
+    class Meta:
+        model = PassageiroOpcional
+        fields = (
+            'id_reserva_passageiro',
+            'id_opcional',
+            'preco_reserva_opcional'
+            )
+
+
+    def __init__(self, *args, **kwargs):
+        super(ReservaOpcionaisForm, self).__init__(*args, **kwargs)
+        # id_reserva_passageiro Fields widget
+        self.fields['id_reserva_passageiro'].widget.attrs['class'] = 'form-control'
+        # id_opcional Fields widget
+        self.fields['id_opcional'].widget.attrs['class'] = 'form-control'
+        # preco_reserva_opcional Fields widget
+        self.fields['preco_reserva_opcional'].widget.attrs['class'] = 'form-control'
+        # id_passageiro Fields widget
+        self.fields['id_passageiro'].widget.attrs['class'] = 'form-control'
+        self.fields['id_passageiro'].queryset = models.Passageiro.objects.filter(pk__in=self.kwargs['listpassageiros'])
+        # id_moeda  Fields widget
+        self.fields['id_moeda'].widget.attrs['class'] = 'form-control form-moeda'
     pass

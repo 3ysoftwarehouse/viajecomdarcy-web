@@ -20,7 +20,7 @@ from django.forms import formset_factory
 #				CUSTOM IMPORTS                   #
 ##################################################
 from .models import Reserva, StatusReserva, StatusReservaPassageiro, ReservaPassageiro
-from .forms import ReservaForm, ReservaPassageiroForm, FiltroReservaForm
+from .forms import ReservaForm, ReservaPassageiroForm, FiltroReservaForm, ReservaOpcionaisForm
 from apps.default.views import JSONResponseMixin
 from apps.subclasses.usuario.emissor.models import Emissor
 from apps.subclasses.usuario.cliente.models import Cliente
@@ -154,7 +154,7 @@ class ReservaRegister(JSONResponseMixin,View):
 				reservapassageiro.save()
 
 
-			return redirect(reverse_lazy('passageiro-opcional', kwargs = {'pk' : reservapassageiro.pk, }))
+			return redirect(reverse_lazy('passageiro-opcional', kwargs = {'pk' : reserva.pk, }))
 
 		return render (request, 'venda/reserva/register.html', { 'form':form, 'formset':formset, 'context':context })
 
@@ -395,5 +395,15 @@ class PacoteMoedaJson(JSONResponseMixin,View):
 
 class PassageiroOpc(JSONResponseMixin,View):
 	def get(self, request, pk=None):
+		reserva = Reserva.objects.get(pk=self.kwargs['pk'])
+		reservapassageiros = ReservaPassageiro.objects.filter(id_reserva=reserva.pk)
+
+		listpassageiros = []
+		for passageiro in reservapassageiros:
+			listpassageiros.append(passageiro.id_passageiro)
+			pass
+
+		formset = formset_factory(ReservaPassageiroForm, extra=0)
+		formset = formset(form_kwargs={'listpassageiros': listpassageiros})
 		
-		return render (request, 'venda/passageiro/register.html', {})
+		return render (request, 'venda/passageiro/register.html', {'formset':formset, 'reserva':reserva})
