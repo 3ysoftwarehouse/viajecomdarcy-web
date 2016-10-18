@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 ##################################################
 #				CUSTOM IMPORTS                   #
 ##################################################
-from .views import ReservaRegister, ReservaList, ReservaDetail, ReservaEdit, ReservaDelete, ExcursaoPacoteJson, PacoteMoedaJson, PassageiroOpc
+from .views import ReservaRegister, ReservaList, ReservaDetail, ReservaEdit, ReservaDelete, ExcursaoPacoteJson, PacoteMoedaJson, PassageiroOpc, PassageiroOpcJson
 from apps.venda import views
 ##################################################
 
