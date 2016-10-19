@@ -14,6 +14,7 @@ var blockField = function setPacote(){
   $('.form-moeda').prop('disabled', true);
   $('.form-acomodacao').prop('disabled', true);
   $('.form-preco').prop('disabled', true);
+  $('.form-opcional').prop('disabled', true);
 }
 
 blockField()
@@ -30,6 +31,7 @@ $(function() {
             $("#id_form-"+i+"-id_passageiro").select2();
             $("#id_form-"+i+"-id_status_reserva_passageiro").select2();
             $("#id_form-"+i+"-id_acomodacao_pacote").select2();
+            $("#id_form-"+i+"-id_opcional").select2();
         }
     });
     $('.delete-row').on('click', function(event) {
@@ -40,6 +42,7 @@ $(function() {
             $("#id_form-"+i+"-id_passageiro").select2();
             $("#id_form-"+i+"-id_status_reserva_passageiro").select2();
             $("#id_form-"+i+"-id_acomodacao_pacote").select2();
+            $("#id_form-"+i+"-id_opcional").select2();
         }
     });
 })
@@ -63,8 +66,8 @@ function setExcursaoPacote(select){
   setPacote(valor,id);
   $("#id_form-"+id+"-id_pacote").parent().children().find('.select2-choice').find('.select2-chosen').html('---------');
   $('#id_form-'+id+'-id_pacote').prop('disabled', false);
+  $('#id_form-'+id+'-id_status_reserva option[value="RESERVADO"]').prop('selected', true);
 }
-
 
 function setPacoteAcomodacao(select){
   console.log("setPacoteAcomodacao")
@@ -153,4 +156,84 @@ function setMoeda(codigo,id){
     //htmlString = '<option value=""></option>'
     //$("#id_form-"+id+"-id_pacote").html(htmlString);
   }
+}
+
+function setPassageiroOpcional(select){
+  console.log("setPassageiroOpcional")
+  var selected = select.options[select.selectedIndex]
+  var id_passageiro = selected.value
+  var id = String(select.id).split('-')[1]
+  var id_reserva = $('#id_reserva').html()
+  setOpcional(id, id_reserva, id_passageiro);
+  $("#id_form-"+id+"-id_opcional").parent().children().find('.select2-choice').find('.select2-chosen').html('---------');
+  $('#id_form-'+id+'-id_opcional').prop('disabled', false);
+}
+
+function setOpcional(id, id_reserva, id_passageiro){
+  var url = '/framework/dashboard/passageiro/opcional/passageiro_opcional_json/' + String(id_reserva) + "/" + String(id_passageiro);
+  $.ajax({
+    url: url,
+    type: 'GET',
+
+    success : function(response) {
+      opicionais = response.opicionais
+
+      var htmlString = '<option selected="selected" value="">---------</option>';
+      for(i=0; i < opicionais.length; i++){
+        htmlString += '<option value="'+ String(opicionais[i].id_opcional)+'">'+opicionais[i].id_opcional__opcional_desc+'</option>'
+      }
+      $("#id_form-"+id+"-id_opcional").html(htmlString);
+
+      //var select = document.getElementById("id_form-"+id+"-id_moeda");
+      //for(i=0; i<select.options.length; i++){
+      //  if(select.options[i].text == response.moeda_desc){
+      //    select.options[i].selected = true;
+      //  }
+      //}
+
+      //htmlString = '<option value="">---------</option>';
+      //htmlString += '<option selected="selected" value="'+response.id_moeda+'">'+response.moeda_desc+'</option>';
+      //$("#id_form-"+id+"-id_moeda").html(htmlString);
+
+      htmlString = '<option value="">---------</option>';
+      htmlString += '<option selected="selected" value="'+response.id_reserva_passageiro+'">'+response.reserva_passageiro_obs+'</option>';
+      $("#id_form-"+id+"-id_reserva_passageiro").html(htmlString);
+
+    },
+
+    error: function(error) {
+      console.log(error);
+    }  
+
+  });
+}
+
+function setPassageiroMoedaOpcional(select){
+  console.log("setPassageiroMoedaOpcional")
+  var selected = select.options[select.selectedIndex]
+  var id_opcional = selected.value
+  var id = String(select.id).split('-')[1]
+  var id_reserva_passageiro = $("#id_form-"+id+"-id_reserva_passageiro").val()
+  
+  setMoedaOpcional(id, id_reserva_passageiro, id_opcional);
+}
+
+function setMoedaOpcional(id, id_reserva_passageiro, id_opcional){
+  var url = '/framework/dashboard/passageiro/opcional/passageiro_opcional_moeda_json/' + String(id_reserva_passageiro) + "/" + String(id_opcional);
+  $.ajax({
+    url: url,
+    type: 'GET',
+
+    success : function(response) {
+      $("#id_form-"+id+"-moeda_desc").val(response.moeda_desc);
+      htmlString = '<option value="">---------</option>';
+      htmlString += '<option selected="selected" value="'+response.id_moeda+'">'+response.moeda_desc+'</option>';
+      $("#id_form-"+id+"-id_moeda").html(htmlString);
+    },
+
+    error: function(error) {
+      console.log(error);
+    }  
+
+  });
 }

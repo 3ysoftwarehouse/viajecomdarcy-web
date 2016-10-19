@@ -1,0 +1,137 @@
+{% extends "default/panel/layout.html" %} {% load staticfiles %} {% block page_info %}
+<li>
+    <b>Reserva / Opcionais</b>
+</li>
+<li>
+    <a class="active">Cadastro</a>
+</li>
+{% endblock %} {% block content %} {% if context %} {% for title, value in context.items %} {{title}} : {{value}}
+<br> {% endfor %} {% endif %}
+<div id="rootwizard">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs nav-tabs-linetriangle nav-tabs-separator nav-stack-sm">
+        <li class="active">
+            <a data-toggle="tab" href="#tab1"><i class="fa fa-bars tab-icon"></i>
+                <span>
+                    Reserva / Opcionais
+                </span>
+            </a>
+        </li>
+    </ul>
+    <!-- Tab panes -->
+    <form autocomplete="off" method="post" enctype="multipart/form-data" role="form" id="form-personal" novalidate="novalidate">
+        {% csrf_token %}
+        <div class="tab-content">
+            <div class="tab-pane active slide-left" id="tab1">
+                <div class="row row-same-height">
+                    {{form.errors}}
+                    <div class="col-md-12">
+                        
+                        <div class="padding-10">
+                            <div id="id_passageiro_table">
+                                {% for form in formset.forms %}
+                                <div id="{{ form.prefix }}-row" class="tr">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group form-group-default required" value="">
+                                                <label for="id_passageiro" class="fade">
+                                                    Passageiro:
+                                                </label>
+                                                {{ form.id_passageiro}}
+                                            </div>                                        
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group form-group-default" value="">
+                                                <label for="id_opcional" class="fade">
+                                                    Opcionais:
+                                                </label>
+                                               {{ form.id_opcional }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group form-group-default" value="">
+                                                <label for="id_moeda" class="fade">
+                                                    Moeda:
+                                                </label>
+                                                {{ form.moeda_desc }}
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group form-group-default" value="">
+                                                <label for="preco_reserva_opcional" class="fade">
+                                                    Preço:
+                                                </label>
+                                                {{ form.preco_reserva_opcional }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+
+                                <div style="display:none;">
+                                    {{ form.id_moeda }}
+                                    {{ form.id_reserva_passageiro }}
+                                </div>
+
+                                {% endfor %}
+                                {{formset.management_form}}      
+                            </div>
+                        </div>
+
+                    </div>                    
+                </div>
+            </div>
+            
+            <div class="padding-20 bg-white">
+                <ul class="pager wizard">
+                    <li class="next">
+                        <button class="btn btn-primary btn-cons pull-right" type="button">
+                            <span>Próximo</span>
+                        </button>
+                    </li>
+                    <li class="next finish hidden">
+                        <button class="btn btn-primary pull-right" type="button">
+                            <span>Cadastrar</span>
+                        </button>
+                    </li>
+                    <li class="previous first hidden">
+                        <button class="btn btn-default btn-cons btn-animated from-left fa fa-cog pull-right" type="button">
+                            <span>Primeiro</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="id_reserva" style="display:none">{{reserva.id_reserva}}</div>
+
+{% endblock %} 
+
+{% block javascript %}
+<script src="{% static 'js/default/form_wizard.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/default/jquery.bootstrap.wizard.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'js/venda/custom.js' %}" type="text/javascript"></script>
+<script>
+$(document).ready(function() {
+    $(function() {
+        $('.delete-row').prepend('<i class="fs-14 pg-minus"></i> ')
+        $('.add-row').prepend('<i class="fs-14 pg-plus"></i> ')
+        $(".add-row").click(function(){
+            $('.delete-row').each(function (index, value) { 
+                if(typeof ($(this).children().attr('class')) === 'undefined'){
+                    $(this).prepend('<i class="fs-14 pg-minus"></i> ')
+                }
+            });
+        });
+    });
+});
+$(".finish").click(function() {
+    $("#form-personal").submit();
+});
+</script>
+{% endblock %}

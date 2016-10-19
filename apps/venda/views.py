@@ -19,14 +19,14 @@ from django.forms import formset_factory
 ##################################################
 #				CUSTOM IMPORTS                   #
 ##################################################
-from .models import Reserva, StatusReserva, StatusReservaPassageiro, ReservaPassageiro
-from .forms import ReservaForm, ReservaPassageiroForm, FiltroReservaForm
+from .models import Reserva, StatusReserva, StatusReservaPassageiro, ReservaPassageiro, PassageiroOpcional
+from .forms import ReservaForm, ReservaPassageiroForm, FiltroReservaForm, ReservaOpcionaisForm
 from apps.default.views import JSONResponseMixin
 from apps.subclasses.usuario.emissor.models import Emissor
 from apps.subclasses.usuario.cliente.models import Cliente
 from apps.subclasses.usuario.passageiro.models import Passageiro
-from apps.excursao.models import Excursao
-from apps.pacote.models import Pacote, PacoteAcomadacao
+from apps.excursao.models import Excursao, Opcional
+from apps.pacote.models import Pacote, PacoteAcomadacao, PacoteOpcional
 from apps.subclasses.usuario.emissor.views import get_emissor
 ##################################################
 
@@ -154,7 +154,7 @@ class ReservaRegister(JSONResponseMixin,View):
 				reservapassageiro.save()
 
 
-			return redirect(reverse_lazy('passageiro-opcional', kwargs = {'pk' : reservapassageiro.pk, }))
+			return redirect(reverse_lazy('passageiro-opcional', kwargs = {'pk' : reserva.pk, }))
 
 		return render (request, 'venda/reserva/register.html', { 'form':form, 'formset':formset, 'context':context })
 
@@ -393,7 +393,107 @@ class PacoteMoedaJson(JSONResponseMixin,View):
             return JsonResponse({'pacote':'error'})
 
 
+
 class PassageiroOpc(JSONResponseMixin,View):
 	def get(self, request, pk=None):
+		reserva = Reserva.objects.get(pk=self.kwargs['pk'])
+		reservapassageiros = ReservaPassageiro.objects.filter(id_reserva=reserva.pk)
+
+		id_passageiros = []
+		for passageiro in reservapassageiros:
+			id_passageiros.append(passageiro.id_passageiro.pk)
+			pass
+
+		formset = formset_factory(ReservaOpcionaisForm)
+		formset = formset(form_kwargs={'id_passageiros': id_passageiros})
+
+		return render (request, 'venda/passageiro/register.html', {'formset':formset, 'reserva':reserva})
+	
+	def post(self, request, pk=None, *args, **kwargs):
+		reserva = Reserva.objects.get(pk=self.kwargs['pk'])
+		reservapassageiros = ReservaPassageiro.objects.filter(id_reserva=reserva.pk)
+
+		id_passageiros = []
+		for passageiro in reservapassageiros:
+			id_passageiros.append(passageiro.id_passageiro.pk)
+			pass
+
+		formset = formset_factory(ReservaOpcionaisForm)
+		formset = formset(request.POST, form_kwargs={'id_passageiros': id_passageiros})
+
+		context = {}		
+
+		listOpcionais = []
+		if formset.is_valid():
+			for f in formset:
+				value = f.cleaned_data
+				print(value)
+				listOpcionais.append([
+					value.get('id_moeda'),
+					value.get('id_reserva_passageiro'),
+					value.get('id_opcional'),
+					value.get('preco_reserva_opcional')
+				])
+
+				if not value.get('id_passageiro'):
+					context['Passagerio'] = "não pode ser vazio"
+				#if not value.get('id_moeda'):
+				#	context['Moeda'] = "não pode ser vazio"
+				#if not value.get('id_reserva_passageiro'):
+				#	context['Reserva do Passageiro'] = "não pode ser vazio"
+				if not value.get('id_opcional'):
+					context['Opcional'] = "não pode ser vazio"
+				if not value.get('preco_reserva_opcional'):
+					context['Preço'] = "não pode ser vazio"
+		else:
+			for erro in formset.errors:                 
+				context['error'] = erro
+			pass
+
+		if not context:
+
+			for value in listOpcionais:
+
+				opcional = PassageiroOpcional() 
+				opcional.id_moeda = value[0]
+				opcional.id_reserva_passageiro = value[1]
+				opcional.id_opcional = value[2]
+				opcional.preco_reserva_opcional = value[3]
+				opcional.save()
+
+			return redirect(reverse_lazy('reserva-list'))
 		
-		return render (request, 'venda/passageiro/register.html', {})
+		return render (request, 'venda/passageiro/register.html', {'formset':formset, 'reserva':reserva, 'context':context})
+
+class PassageiroOpcJson(JSONResponseMixin,View):
+    def get(self, request, *args, **kwargs):
+    	id_reserva = self.kwargs['id_reserva']
+    	id_passageiro = self.kwargs['id_passageiro']
+    	reservapassageiro = ReservaPassageiro.objects.get(id_reserva=id_reserva,id_passageiro=id_passageiro)
+    	if reservapassageiro:
+    		opicionais = PacoteOpcional.objects.filter(id_pacote=reservapassageiro.id_pacote).values('id_opcional','id_opcional__opcional_desc')
+    		return JsonResponse({
+    			'id_reserva_passageiro':reservapassageiro.id_reserva_passageiro,
+    			'reserva_passageiro_obs':reservapassageiro.reserva_passageiro_obs, 
+    			'opicionais':list(opicionais)
+    		})
+    	else:
+    		return JsonResponse({'data':'error'})
+
+class PassageiroOpcMoedaJson(JSONResponseMixin,View):
+    def get(self, request, *args, **kwargs):
+    	id_reserva_passageiro = self.kwargs['id_reserva_passageiro']
+    	id_opcional = self.kwargs['id_opcional']
+
+    	opcional = Opcional.objects.get(id_opcional=id_opcional)
+    	reservapassageiro = ReservaPassageiro.objects.get(id_reserva_passageiro=id_reserva_passageiro)
+    	
+    	if reservapassageiro and opcional:
+    		pacoteopcional = PacoteOpcional.objects.get(id_pacote=reservapassageiro.id_pacote, id_opcional=opcional.id_opcional)
+    		moeda = pacoteopcional.id_pacote.id_moeda
+    		return JsonResponse({
+    			'id_moeda':moeda.id_moeda,
+    			'moeda_desc':moeda.moeda_desc
+    		})
+    	else:
+    		return JsonResponse({'data':'error'})
