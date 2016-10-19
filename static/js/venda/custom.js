@@ -225,6 +225,7 @@ function setMoedaOpcional(id, id_reserva_passageiro, id_opcional){
     type: 'GET',
 
     success : function(response) {
+      $("#id_form-"+id+"-moeda_desc").val(response.moeda_desc);
       htmlString = '<option value="">---------</option>';
       htmlString += '<option selected="selected" value="'+response.id_moeda+'">'+response.moeda_desc+'</option>';
       $("#id_form-"+id+"-id_moeda").html(htmlString);
