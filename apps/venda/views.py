@@ -25,7 +25,7 @@ from apps.default.views import JSONResponseMixin
 from apps.subclasses.usuario.emissor.models import Emissor
 from apps.subclasses.usuario.cliente.models import Cliente
 from apps.subclasses.usuario.passageiro.models import Passageiro
-from apps.excursao.models import Excursao
+from apps.excursao.models import Excursao, Opcional
 from apps.pacote.models import Pacote, PacoteAcomadacao, PacoteOpcional
 from apps.subclasses.usuario.emissor.views import get_emissor
 ##################################################
@@ -432,7 +432,7 @@ class PassageiroOpc(JSONResponseMixin,View):
 					value.get('id_moeda'),
 					value.get('id_reserva_passageiro'),
 					value.get('id_opcional'),
-					value.get('preco_reserva_opcional'),
+					value.get('preco_reserva_opcional')
 				])
 
 				if not value.get('id_passageiro'):
@@ -472,12 +472,27 @@ class PassageiroOpcJson(JSONResponseMixin,View):
     	reservapassageiro = ReservaPassageiro.objects.get(id_reserva=id_reserva,id_passageiro=id_passageiro)
     	if reservapassageiro:
     		opicionais = PacoteOpcional.objects.filter(id_pacote=reservapassageiro.id_pacote).values('id_opcional','id_opcional__opcional_desc')
-    		moeda = reservapassageiro.id_pacote.id_moeda
     		return JsonResponse({
     			'id_reserva_passageiro':reservapassageiro.id_reserva_passageiro,
     			'reserva_passageiro_obs':reservapassageiro.reserva_passageiro_obs, 
-    			'opicionais':list(opicionais), 
-    			'id_moeda':moeda.id_moeda, 
+    			'opicionais':list(opicionais)
+    		})
+    	else:
+    		return JsonResponse({'data':'error'})
+
+class PassageiroOpcMoedaJson(JSONResponseMixin,View):
+    def get(self, request, *args, **kwargs):
+    	id_reserva_passageiro = self.kwargs['id_reserva_passageiro']
+    	id_opcional = self.kwargs['id_opcional']
+
+    	opcional = Opcional.objects.get(id_opcional=id_opcional)
+    	reservapassageiro = ReservaPassageiro.objects.get(id_reserva_passageiro=id_reserva_passageiro)
+    	
+    	if reservapassageiro and opcional:
+    		pacoteopcional = PacoteOpcional.objects.get(id_pacote=reservapassageiro.id_pacote, id_opcional=opcional.id_opcional)
+    		moeda = pacoteopcional.id_pacote.id_moeda
+    		return JsonResponse({
+    			'id_moeda':moeda.id_moeda,
     			'moeda_desc':moeda.moeda_desc
     		})
     	else:

@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 ##################################################
 #				CUSTOM IMPORTS                   #
 ##################################################
-from .views import ReservaRegister, ReservaList, ReservaDetail, ReservaEdit, ReservaDelete, ExcursaoPacoteJson, PacoteMoedaJson, PassageiroOpc, PassageiroOpcJson
+from .views import ReservaRegister, ReservaList, ReservaDetail, ReservaEdit, ReservaDelete, ExcursaoPacoteJson, PacoteMoedaJson, PassageiroOpc, PassageiroOpcJson, PassageiroOpcMoedaJson
 from apps.venda import views
 ##################################################
 
@@ -27,4 +27,5 @@ urlpatterns = (
 	url(r'^dashboard/reserva/delete/(?P<pk>\d+)/$', login_required(ReservaDelete.as_view()), name="reserva-delete"),
 	url(r'^dashboard/passageiro/opcional/(?P<pk>\d+)/$', login_required(PassageiroOpc.as_view()), name="passageiro-opcional"),
 	url(r'^dashboard/passageiro/opcional/passageiro_opcional_json/(?P<id_reserva>\d+)/(?P<id_passageiro>\d+)$', login_required(PassageiroOpcJson.as_view()), name="passageiro-opcional-json"),
+	url(r'^dashboard/passageiro/opcional/passageiro_opcional_moeda_json/(?P<id_reserva_passageiro>\d+)/(?P<id_opcional>\d+)$', login_required(PassageiroOpcMoedaJson.as_view()), name="passageiro-opcional-moeda-json"),
 )
