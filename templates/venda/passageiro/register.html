@@ -34,7 +34,7 @@
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <div class="form-group form-group-default required" value="">
-                                                <label for="id_passageiro" class="fade teste">
+                                                <label for="id_passageiro" class="fade">
                                                     Passageiro:
                                                 </label>
                                                 {{ form.id_passageiro}}
@@ -126,34 +126,11 @@ $(document).ready(function() {
                     $(this).prepend('<i class="fs-14 pg-minus"></i> ')
                 }
             });
-            criarPassageiros()
         });
     });
-    criarPassageiros(0);
 });
 $(".finish").click(function() {
     $("#form-personal").submit();
 });
-
-function criarPassageiros(id){
-    var htmlString = '<option selected="selected" value="">---------</option>';
-    var passageiros = (("{{id_passageiros |safe}}").replace(/&(l|g|quo)t;/g, function(a,b){
-        return {
-            l   : '<',
-            g   : '>',
-            quo : '"'
-        }[b];
-    }));
-    passageiros = passageiros.replace(/u'/g, '\'')
-    passageiros = passageiros.replace(/'/g, '\"')
-    passageiros = JSON.parse(passageiros)
-    console.log(passageiros)
-
-    for(i=0; i < passageiros.length; i++){
-        htmlString += '<option value="'+ String(passageiros[i].id_passageiro)+'">'+passageiros[i].nome+'</option>'
-    }
-    $("#id_form-"+id+"-id_passageiro").html(htmlString);
-}
-
 </script>
 {% endblock %}

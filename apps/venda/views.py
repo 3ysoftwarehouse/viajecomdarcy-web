@@ -19,7 +19,7 @@ from django.forms import formset_factory
 ##################################################
 #				CUSTOM IMPORTS                   #
 ##################################################
-from .models import Reserva, StatusReserva, StatusReservaPassageiro, ReservaPassageiro
+from .models import Reserva, StatusReserva, StatusReservaPassageiro, ReservaPassageiro, PassageiroOpcional
 from .forms import ReservaForm, ReservaPassageiroForm, FiltroReservaForm, ReservaOpcionaisForm
 from apps.default.views import JSONResponseMixin
 from apps.subclasses.usuario.emissor.models import Emissor
@@ -401,23 +401,84 @@ class PassageiroOpc(JSONResponseMixin,View):
 
 		id_passageiros = []
 		for passageiro in reservapassageiros:
-			id_passageiros.append({"id_passageiro":passageiro.id_passageiro.pk, "nome":passageiro.id_passageiro.id_usuario.nome})
+			id_passageiros.append(passageiro.id_passageiro.pk)
 			pass
 
-		formset = formset_factory(ReservaPassageiroForm)
+		formset = formset_factory(ReservaOpcionaisForm)
+		formset = formset(form_kwargs={'id_passageiros': id_passageiros})
 
-		return render (request, 'venda/passageiro/register.html', {'formset':formset, 'reserva':reserva, 'id_passageiros':id_passageiros})
+		return render (request, 'venda/passageiro/register.html', {'formset':formset, 'reserva':reserva})
+	
+	def post(self, request, pk=None, *args, **kwargs):
+		reserva = Reserva.objects.get(pk=self.kwargs['pk'])
+		reservapassageiros = ReservaPassageiro.objects.filter(id_reserva=reserva.pk)
+
+		id_passageiros = []
+		for passageiro in reservapassageiros:
+			id_passageiros.append(passageiro.id_passageiro.pk)
+			pass
+
+		formset = formset_factory(ReservaOpcionaisForm)
+		formset = formset(request.POST, form_kwargs={'id_passageiros': id_passageiros})
+
+		context = {}		
+
+		listOpcionais = []
+		if formset.is_valid():
+			for f in formset:
+				value = f.cleaned_data
+				print(value)
+				listOpcionais.append([
+					value.get('id_moeda'),
+					value.get('id_reserva_passageiro'),
+					value.get('id_opcional'),
+					value.get('preco_reserva_opcional'),
+				])
+
+				if not value.get('id_passageiro'):
+					context['Passagerio'] = "não pode ser vazio"
+				#if not value.get('id_moeda'):
+				#	context['Moeda'] = "não pode ser vazio"
+				#if not value.get('id_reserva_passageiro'):
+				#	context['Reserva do Passageiro'] = "não pode ser vazio"
+				if not value.get('id_opcional'):
+					context['Opcional'] = "não pode ser vazio"
+				if not value.get('preco_reserva_opcional'):
+					context['Preço'] = "não pode ser vazio"
+		else:
+			for erro in formset.errors:                 
+				context['error'] = erro
+			pass
+
+		if not context:
+
+			for value in listOpcionais:
+
+				opcional = PassageiroOpcional() 
+				opcional.id_moeda = value[0]
+				opcional.id_reserva_passageiro = value[1]
+				opcional.id_opcional = value[2]
+				opcional.preco_reserva_opcional = value[3]
+				opcional.save()
+
+			return redirect(reverse_lazy('reserva-list'))
+		
+		return render (request, 'venda/passageiro/register.html', {'formset':formset, 'reserva':reserva, 'context':context})
 
 class PassageiroOpcJson(JSONResponseMixin,View):
     def get(self, request, *args, **kwargs):
-        if self.kwargs:
-            try:
-                reservapassageiro = ReservaPassageiro.objects.get(id_reserva=request.POST.get['id_reserva'],id_passageiro=request.POST.get['id_passageiro'])
-            except:
-                reservapassageiro = None
-
-        if reservapassageiro:
-            opicionais = PacoteOpcional.objects.filter(id_pacote=reservapassageiro.id_pacote).values('id_opcional','id_opcional__opcional_desc')
-            return JsonResponse({'data':{'opicionais':opicionais, 'moeda':reservapassageiro.id_pacote.id_moeda.moeda_desc}})
-        else:
-            return JsonResponse({'data':'error'})
+    	id_reserva = self.kwargs['id_reserva']
+    	id_passageiro = self.kwargs['id_passageiro']
+    	reservapassageiro = ReservaPassageiro.objects.get(id_reserva=id_reserva,id_passageiro=id_passageiro)
+    	if reservapassageiro:
+    		opicionais = PacoteOpcional.objects.filter(id_pacote=reservapassageiro.id_pacote).values('id_opcional','id_opcional__opcional_desc')
+    		moeda = reservapassageiro.id_pacote.id_moeda
+    		return JsonResponse({
+    			'id_reserva_passageiro':reservapassageiro.id_reserva_passageiro,
+    			'reserva_passageiro_obs':reservapassageiro.reserva_passageiro_obs, 
+    			'opicionais':list(opicionais), 
+    			'id_moeda':moeda.id_moeda, 
+    			'moeda_desc':moeda.moeda_desc
+    		})
+    	else:
+    		return JsonResponse({'data':'error'})
