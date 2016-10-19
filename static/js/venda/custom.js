@@ -171,24 +171,40 @@ function setMoeda(codigo,id){
 }
 
 function setOpcional(id, id_reserva, id_passageiro){
-  var url = '/framework/dashboard/opcional/passageiro_opcional_json/';
-  var htmlString = '<option selected="selected" value="">---------</option>';
+  var url = '/framework/dashboard/passageiro/opcional/passageiro_opcional_json/' + String(id_reserva) + "/" + String(id_passageiro);
   $.ajax({
     url: url,
-    data:{'id_reserva':id_reserva, 'id_passageiro':id_passageiro},
     type: 'GET',
-    success : function(response) {
 
-      opicionais = response.data.opicionais
+    success : function(response) {
+      opicionais = response.opicionais
+
+      var htmlString = '<option selected="selected" value="">---------</option>';
       for(i=0; i < opicionais.length; i++){
         htmlString += '<option value="'+ String(opicionais[i].id_opcional)+'">'+opicionais[i].id_opcional__opcional_desc+'</option>'
       }
       $("#id_form-"+id+"-id_opcional").html(htmlString);
-      $("#id_form-"+id+"-id_moeda").html(response.data.moeda);
+
+      //var select = document.getElementById("id_form-"+id+"-id_moeda");
+      //for(i=0; i<select.options.length; i++){
+      //  if(select.options[i].text == response.moeda_desc){
+      //    select.options[i].selected = true;
+      //  }
+      //}
+
+      htmlString = '<option value="">---------</option>';
+      htmlString += '<option selected="selected" value="'+response.id_moeda+'">'+response.moeda_desc+'</option>';
+      $("#id_form-"+id+"-id_moeda").html(htmlString);
+
+      htmlString = '<option value="">---------</option>';
+      htmlString += '<option selected="selected" value="'+response.id_reserva_passageiro+'">'+response.reserva_passageiro_obs+'</option>';
+      $("#id_form-"+id+"-id_reserva_passageiro").html(htmlString);
 
     },
+
     error: function(error) {
       console.log(error);
-    }    
+    }  
+
   });
 }
