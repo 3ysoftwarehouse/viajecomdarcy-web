@@ -122,6 +122,7 @@ class ReservaOpcionaisForm(forms.ModelForm):
         self.fields['id_reserva_passageiro'].widget.attrs['class'] = 'form-control'
         # id_opcional Fields widget
         self.fields['id_opcional'].widget.attrs['class'] = 'form-control form-opcional'
+        self.fields['id_opcional'].widget.attrs['onchange'] = 'setPassageiroMoedaOpcional(this)'
         # preco_reserva_opcional Fields widget
         self.fields['preco_reserva_opcional'].widget.attrs['class'] = 'form-control'
         # id_passageiro Fields widget
