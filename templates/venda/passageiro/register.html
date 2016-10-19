@@ -55,7 +55,7 @@
                                                 <label for="id_moeda" class="fade">
                                                     Moeda:
                                                 </label>
-                                                {{ form.id_moeda }}
+                                                {{ form.moeda_desc }}
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
@@ -71,6 +71,7 @@
                                 </div>
 
                                 <div style="display:none;">
+                                    {{ form.id_moeda }}
                                     {{ form.id_reserva_passageiro }}
                                 </div>
 

@@ -105,6 +105,7 @@ class ReservaOpcionaisForm(forms.ModelForm):
 
     id_passageiro = forms.ModelChoiceField (queryset=Passageiro.objects.all())
     id_moeda = forms.ModelChoiceField (queryset=Moeda.objects.all(), required=False)
+    moeda_desc = forms.CharField(required=False)
 
     class Meta:
         model = PassageiroOpcional
@@ -130,5 +131,6 @@ class ReservaOpcionaisForm(forms.ModelForm):
         self.fields['id_passageiro'].queryset = Passageiro.objects.filter(pk__in=self.id_passageiros)
         self.fields['id_passageiro'].widget.attrs['onchange'] = 'setPassageiroOpcional(this)'
         # id_moeda  Fields widget
-        self.fields['id_moeda'].widget.attrs['class'] = 'form-control form-moeda'
+        self.fields['id_moeda'].widget.attrs['class'] = 'form-control'
+        self.fields['moeda_desc'].widget.attrs['class'] = 'form-control form-moeda'
     pass
