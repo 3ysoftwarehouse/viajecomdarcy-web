@@ -49,8 +49,7 @@ class ReservaPassageiro(models.Model):
     preco_acomodacao = models.DecimalField(max_digits=14, decimal_places=2)
 
 
-    def __str__(self):
-        return self.reserva_passageiro_obs
+    
 
 class PassageiroOpcional(models.Model):
 
@@ -61,7 +60,6 @@ class PassageiroOpcional(models.Model):
     preco_reserva_opcional = models.DecimalField(max_digits=14, decimal_places=2)
 
 
-    def __str__(self):
-        return self.id_reserva_passageiro
+    
 
 
