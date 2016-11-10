@@ -21,7 +21,7 @@ class StatusReservaPassageiro(models.Model):
 class Reserva(models.Model):
 
     id_reserva = models.AutoField(primary_key=True)
-    id_cliente = models.ForeignKey('cliente.Cliente', on_delete=models.DO_NOTHING)
+    id_cliente = models.ForeignKey('cliente.Cliente', on_delete=models.DO_NOTHING, null=True, blank=True)
     id_emissor = models.ForeignKey('emissor.Emissor', on_delete=models.DO_NOTHING)
     id_agencia = models.ForeignKey('agencia.Agencia', on_delete=models.DO_NOTHING)
     id_status_reserva = models.ForeignKey('StatusReserva', on_delete=models.DO_NOTHING)

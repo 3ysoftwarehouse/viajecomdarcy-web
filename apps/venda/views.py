@@ -30,8 +30,27 @@ from apps.pacote.models import Pacote, PacoteAcomadacao, PacoteOpcional
 from apps.subclasses.usuario.emissor.views import get_emissor
 ##################################################
 
-class ReservaRegister(JSONResponseMixin,View):
+class ReservaNova(JSONResponseMixin,View):
 	def get(self, request):
+		context = {}
+		try:
+			emissor = Emissor.objects.get(id_usuario=request.user.id_usuario)
+		except Emissor.DoesNotExist:
+			context['Emissor'] = "não encontrado"
+		try:
+			id_status_reserva = StatusReserva.objects.get(descricao="RESERVADO")
+		except:
+			context['Status'] = "não encontrado"
+
+		reserva = Reserva()
+		reserva.id_emissor = emissor
+		reserva.id_agencia = emissor.id_agencia
+		reserva.id_status_reserva = id_status_reserva
+		reserva.save()
+		return redirect(reverse_lazy("reserva-register", kwargs={'pk': reserva.pk}))
+
+class ReservaRegister(JSONResponseMixin,View):
+	def get(self, request, pk):
 
 		formset = formset_factory(ReservaPassageiroForm,extra=0)
 		initial_data = [
@@ -122,7 +141,7 @@ class ReservaRegister(JSONResponseMixin,View):
 
 		if not context:
 
-			reserva = Reserva()
+			reserva = Reserva.objects.get(pk=pk)
 			reserva.id_cliente = id_cliente
 			reserva.id_emissor = emissor
 			reserva.id_agencia = emissor.id_agencia
