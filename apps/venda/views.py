@@ -427,7 +427,6 @@ class PassageiroOpc(JSONResponseMixin,View):
 		if formset.is_valid():
 			for f in formset:
 				value = f.cleaned_data
-				print(value)
 				listOpcionais.append([
 					value.get('id_moeda'),
 					value.get('id_reserva_passageiro'),
