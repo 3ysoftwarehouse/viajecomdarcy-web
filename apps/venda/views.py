@@ -41,13 +41,15 @@ class ReservaNova(JSONResponseMixin,View):
 			id_status_reserva = StatusReserva.objects.get(descricao="RESERVADO")
 		except:
 			context['Status'] = "não encontrado"
-
-		reserva = Reserva()
-		reserva.id_emissor = emissor
-		reserva.id_agencia = emissor.id_agencia
-		reserva.id_status_reserva = id_status_reserva
-		reserva.save()
-		return redirect(reverse_lazy("reserva-register", kwargs={'pk': reserva.pk}))
+		if not context:
+			reserva = Reserva()
+			reserva.id_emissor = emissor
+			reserva.id_agencia = emissor.id_agencia
+			reserva.id_status_reserva = id_status_reserva
+			reserva.save()
+			return redirect(reverse_lazy("reserva-register", kwargs={'pk': reserva.pk}))
+		else:
+			return redirect(reverse_lazy("reserva-list", ))
 
 class ReservaRegister(JSONResponseMixin,View):
 	def get(self, request, pk):
@@ -143,9 +145,6 @@ class ReservaRegister(JSONResponseMixin,View):
 
 			reserva = Reserva.objects.get(pk=pk)
 			reserva.id_cliente = id_cliente
-			reserva.id_emissor = emissor
-			reserva.id_agencia = emissor.id_agencia
-			reserva.id_status_reserva = id_status_reserva
 			reserva.save()
 
 			for value in listPassageiros:
