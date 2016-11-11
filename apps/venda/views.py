@@ -41,7 +41,7 @@ class ReservaNova(JSONResponseMixin,View):
         except Emissor.DoesNotExist:
             context['Emissor'] = "não encontrado"
         try:
-            id_status_reserva = StatusReserva.objects.get(descricao="RESERVADO")
+            id_status_reserva = StatusReserva.objects.get(descricao="ABERTO")
         except:
             context['Status'] = "não encontrado"
         if not context:
@@ -52,19 +52,19 @@ class ReservaNova(JSONResponseMixin,View):
             reserva.save()
             return redirect(reverse_lazy("reserva-register", kwargs={'pk': reserva.pk}))
         else:
-            return redirect(reverse_lazy("reserva-list", ))
+            return redirect(reverse_lazy("reserva-list", kwargs={'context':context}))
 
 class ReservaRegister(JSONResponseMixin,View):
     def get(self, request, pk):
         formset = formset_factory(ReservaPassageiroForm,extra=0)
         initial_data = [
-            {'id_status_reserva_passageiro': StatusReservaPassageiro.objects.get(descricao="ABERTA").pk},
+            {'id_status_reserva_passageiro': StatusReservaPassageiro.objects.get(descricao="RESERVADO").pk},
         ]
         passageiros = ReservaPassageiro.objects.filter(id_reserva = pk).order_by('id_passageiro')
         form = ReservaForm()
         form_opcional = ReservaOpcionaisForm()
         form_passageiro = ReservaPassageiroForm()
-        return render (request, 'venda/reserva/register_2.html', { 'form':form,'form_passageiro':form_passageiro, 'passageiros': passageiros,'form_opcional':form_opcional })
+        return render (request, 'venda/reserva/register_2.html', { 'form':form,'form_passageiro':form_passageiro, 'passageiros': passageiros,'form_opcional':form_opcional})
 
     def post(self, request, pk=None, *args, **kwargs):
         formset = formset_factory(ReservaPassageiroForm)
@@ -507,6 +507,16 @@ class PassageiroOpcMoedaJson(JSONResponseMixin,View):
         else:
             return JsonResponse({'data':'error'})
 
+
+def finalizarAgendamento(request, pk=None):
+    try:
+        id_status_reserva = StatusReserva.objects.get(descricao="RESERVADO")
+        reserva = Reserva.objects.get(pk=pk)
+        reserva.id_status_reserva = id_status_reserva
+        reserva.save()
+        return JsonResponse({'message':'success', 'status':'success'})
+    except Exception as e:
+        return JsonResponse({'message':str(e), 'status':'error'})
 
 
 ''' ADD PASSAGEIRO A RESERVAPASSAGEIRO '''
