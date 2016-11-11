@@ -25,13 +25,13 @@
                      <div class="panel-body">
                         <div class="row clearfix">
                            <div class="col-sm-6">
-                              <div class="form-group form-group-default required" aria-required="true">
+                              <div class="form-group  required" aria-required="true">
                                  <label>Razão Social</label>
                                  {{object.empresa.razaosocial}}
                               </div>
                            </div>
                            <div class="col-sm-6">
-                              <div class="form-group form-group-default">
+                              <div class="form-group ">
                                  <label>Nome Fantasia</label>
                                  {{object.empresa.nomefantasia}}
                               </div>
@@ -39,13 +39,13 @@
                         </div>
                         <div class="row">
                            <div class="col-sm-6">
-                              <div class="form-group form-group-default">
+                              <div class="form-group ">
                                  <label>CNPJ</label>
                                  {{object.empresa.cnpj}}
                               </div>
                            </div>
                            <div class="col-sm-6">
-                              <div class="form-group form-group-default">
+                              <div class="form-group ">
                                  <label>Inscrição estadual</label>
                                  {{object.empresa.ie}}
                               </div>
@@ -53,13 +53,13 @@
                         </div>
                         <div class="row">
                            <div class="col-sm-6">
-                              <div class="form-group form-group-default">
+                              <div class="form-group ">
                                  <label>Tipo de empresa</label>
                                  {{object.empresa.id_tipo_empresa}}
                               </div>
                            </div>
                            <div class="col-sm-6">
-                              <div class="form-group form-group-default">
+                              <div class="form-group ">
                                  <label>Verificada</label>
                                 {% if object.empresa.verificada %}
                                   <span class="glyphicon glyphicon-ok"></span>
@@ -81,19 +81,19 @@
                      <div class="panel-body">
                         <div class="row clearfix">
                            <div class="col-sm-4">
-                              <div class="form-group form-group-default required" aria-required="true">
+                              <div class="form-group  required" aria-required="true">
                                  <label>País</label>
                                  {{object.empresa.id_endereco.id_logradouro.pais}}
                               </div>
                            </div>
                            <div class="col-sm-4">
-                              <div class="form-group form-group-default">
+                              <div class="form-group ">
                                  <label>Estado</label>
                                  {{object.empresa.id_endereco.id_logradouro.estado}}
                               </div>
                            </div>
                            <div class="col-sm-4">
-                              <div class="form-group form-group-default">
+                              <div class="form-group ">
                                  <label>CEP</label>
                                  {{object.empresa.id_endereco.id_logradouro.cep}}
                               </div>
@@ -101,13 +101,13 @@
                         </div>
                         <div class="row">
                            <div class="col-sm-6">
-                              <div class="form-group form-group-default">
+                              <div class="form-group ">
                                  <label>Cidade</label>
                                  {{object.empresa.id_endereco.id_logradouro.cidade}}
                               </div>
                            </div>
                            <div class="col-sm-6">
-                              <div class="form-group form-group-default">
+                              <div class="form-group ">
                                  <label>Bairro</label>
                                  {{object.empresa.id_endereco.id_logradouro.bairro}}
                               </div>
@@ -115,7 +115,7 @@
                         </div>
                         <div class="row">
                            <div class="col-sm-12">
-                              <div class="form-group form-group-default">
+                              <div class="form-group ">
                                  <label>Rua</label>
                                  {{object.empresa.id_endereco.id_logradouro.nome}}
                               </div>
@@ -123,13 +123,13 @@
                         </div>
                         <div class="row">
                            <div class="col-sm-6">
-                              <div class="form-group form-group-default">
+                              <div class="form-group ">
                                  <label>Numero</label>
                                  {{object.empresa.id_endereco.numero}}
                               </div>
                            </div>
                            <div class="col-sm-6">
-                              <div class="form-group form-group-default">
+                              <div class="form-group ">
                                  <label>Complemento</label>
                                  {{object.empresa.id_endereco.complemento}}
                               </div>
@@ -137,7 +137,7 @@
                         </div>
                         <div class="row">
                            <div class="col-sm-12">
-                              <div class="form-group form-group-default">
+                              <div class="form-group ">
                                  <label>Ponto de referencia</label>
                                  {{object.empresa.id_endereco.pontoreferencia}}
                               </div>
@@ -155,13 +155,13 @@
                      <div class="panel-body">
                         <div class="row clearfix">
                            <div class="col-sm-4">
-                              <div class="form-group form-group-default required" aria-required="true">
+                              <div class="form-group  required" aria-required="true">
                                  <label>Representante</label>
                                  {{object.representante}}
                               </div>
                            </div>
                            <div class="col-sm-4">
-                              <div class="form-group form-group-default">
+                              <div class="form-group ">
                                  <label>logo</label>
                                  <img src="{{MEDIA_URL}}{{object.logo}}"/>
                               </div>

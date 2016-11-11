@@ -11,14 +11,15 @@ from django.contrib.auth.decorators import login_required
 ##################################################
 #				CUSTOM IMPORTS                   #
 ##################################################
-from .views import ReservaRegister, ReservaList, ReservaDetail, ReservaEdit, ReservaDelete, ExcursaoPacoteJson, PacoteMoedaJson, PassageiroOpc, PassageiroOpcJson, PassageiroOpcMoedaJson
+from .views import ReservaRegister, ReservaList, ReservaDetail, ReservaEdit, ReservaDelete, ExcursaoPacoteJson, PacoteMoedaJson, PassageiroOpc, PassageiroOpcJson, PassageiroOpcMoedaJson, addPassageiroToReserva, addOpcionalPassageiro, finalizarAgendamento
 from apps.venda import views
 ##################################################
 
 
 urlpatterns = (
 	# STARTUP URLS
-	url(r'^dashboard/reserva/register/$', login_required(ReservaRegister.as_view()), name="reserva-register"),
+	url(r'^dashboard/reserva/nova/$', login_required(views.ReservaNova.as_view()), name="reserva-register"),
+	url(r'^dashboard/reserva/register/(?P<pk>\d+)/$', login_required(ReservaRegister.as_view()), name="reserva-register"),
 	url(r'^dashboard/reserva/pacote_json/(?P<pk>\d+)/$', ExcursaoPacoteJson.as_view(), name="pacote_json"),
 	url(r'^dashboard/reserva/pacote_moeda_json/(?P<pk>\d+)/$', PacoteMoedaJson.as_view(), name="pacote_moeda_json"),    
 	url(r'^dashboard/reserva/list/$', login_required(ReservaList.as_view()), name="reserva-list"),
@@ -28,4 +29,7 @@ urlpatterns = (
 	url(r'^dashboard/passageiro/opcional/(?P<pk>\d+)/$', login_required(PassageiroOpc.as_view()), name="passageiro-opcional"),
 	url(r'^dashboard/passageiro/opcional/passageiro_opcional_json/(?P<id_reserva>\d+)/(?P<id_passageiro>\d+)$', login_required(PassageiroOpcJson.as_view()), name="passageiro-opcional-json"),
 	url(r'^dashboard/passageiro/opcional/passageiro_opcional_moeda_json/(?P<id_reserva_passageiro>\d+)/(?P<id_opcional>\d+)$', login_required(PassageiroOpcMoedaJson.as_view()), name="passageiro-opcional-moeda-json"),
+	url(r'^dashboard/reservapassageiro/(?P<pk>\d+)/$', login_required(addPassageiroToReserva), name="add-passageiro"),
+	url(r'^dashboard/opcionalpassageiro/(?P<pk>\d+)/$', login_required(addOpcionalPassageiro), name="add-opcional"),
+	url(r'^dashboard/finalizaragendamento/(?P<pk>\d+)/', login_required(finalizarAgendamento), name="finalizar-agendamento"),
 )

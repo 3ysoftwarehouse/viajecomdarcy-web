@@ -27,19 +27,19 @@
       <form autocomplete="off"  method="post" enctype="multipart/form-data" role="form" id="form-personal" novalidate="novalidate">
       {% csrf_token %}
       {{ form.errors }}
-        <div class="form-group form-group-default required">
+        <div class="form-group  required">
           <label>{{form.opcional_desc.label_tag}}</label>
           {{form.opcional_desc}}
         </div>
-        <div class="form-group form-group-default required">
+        <div class="form-group  required">
           <label>{{form.opcional_preco.label_tag}}</label>
           {{form.opcional_preco}}
         </div>
-        <div class="form-group form-group-default required">
+        <div class="form-group  required">
           <label>{{form.id_moeda.label_tag}}</label>
           {{form.id_moeda}}
         </div>
-        <div class="form-group form-group-default required">
+        <div class="form-group  required">
           <label>{{form.taxa_remessa.label_tag}}</label>
           {{form.taxa_remessa}}
         </div>

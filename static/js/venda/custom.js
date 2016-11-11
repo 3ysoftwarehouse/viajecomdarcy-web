@@ -1,5 +1,117 @@
 // multiple fields
 
+function getCookie(name) {
+ var cookieValue = null;
+ if (document.cookie && document.cookie != '') {
+   var cookies = document.cookie.split(';');
+   for (var i = 0; i < cookies.length; i++) {
+     var cookie = jQuery.trim(cookies[i]);
+     if (cookie.substring(0, name.length + 1) == (name + '=')) {
+       cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+       break;
+     }
+   }
+ }
+ return cookieValue;
+}
+
+function finalizarAgendamento(){
+    $.ajax({
+        url: url_finalizar,
+        type: 'GET',
+        success: function(response){
+          if (response.status == "success"){
+            window.location = url_list;
+          }else{
+            console.log(response.message);
+          }
+        }
+    })
+}
+
+function genNotification(message,type){
+
+    $('body').pgNotification({
+        style: 'bar',
+        message: message,
+        position: 'top',
+        timeout: 2000,
+        type: type
+    }).show();
+}    
+
+
+$('#new_reserva_passageiro_btn').on('click', function(event) {
+  $('#form-personal').validate();
+  var csrftoken = getCookie('csrftoken');
+  if($('#form-personal').valid()){
+    var formData = new FormData($('#form-personal')[0]);
+    formData.append('csrfmiddlewaretoken', csrftoken);
+    $.ajax({
+      url: url,
+      type: 'POST',
+      enctype: "multipart/form-data",
+      cache: false,
+      contentType: false,
+      processData: false,
+      data: formData,
+      success : function(response) {
+        if(response.status == "success"){
+        genNotification('Passageiro adicionado com sucesso!','success');
+        $('#divDetalhes').html(response.html);
+        }
+        else{
+          genNotification(response.message,'error');
+        }
+        $('#modalPassageiro').modal('hide');
+      },
+      error: function(error) {
+        genNotification(error.messageText,'error');
+        $('#modalPassageiro').modal('hide');
+      }    
+    });
+  }
+});
+
+function modalOpcional(id_passageiro){
+  $('#modalOpcional #id_id_passageiro').val(id_passageiro).change();
+  $('#modalOpcional').modal('show');
+
+}
+
+$('#new_opcional_btn').on('click', function(event) {
+  $('#form-opcional').validate();
+  var csrftoken = getCookie('csrftoken');
+  if($('#form-opcional').valid()){
+    var formData = new FormData($('#form-opcional')[0]);
+    formData.append('csrfmiddlewaretoken', csrftoken);
+    $.ajax({
+      url: url_opcional,
+      type: 'POST',
+      enctype: "multipart/form-data",
+      cache: false,
+      contentType: false,
+      processData: false,
+      data: formData,
+      success : function(response) {
+        if(response.status == "success"){
+        genNotification('Opcional adicionado com sucesso!','success');
+        $('#divDetalhes').html(response.html);
+        }
+        else{
+          genNotification(response.message,'error');
+        }
+        $('#modalOpcional').modal('hide');
+      },
+      error: function(error) {
+        genNotification(error.messageText,'error');
+        $('#modalOpcional').modal('hide');
+      }    
+    });
+  }
+});
+
+
 var blockField = function setPacote(){
   edit = $("#edit-reserva").val()
   if(edit != "true"){
@@ -22,39 +134,17 @@ blockField()
 
 var lenForm= 1;
 $(function() {
-    $('#id_passageiro_table .tr').formset()
-    $('.add-row').on('click', function(event) {
-        lenForm += 1
-        for (i=0; i< lenForm; i++){
-            $("#id_form-"+i+"-id_excursao").select2();
-            $("#id_form-"+i+"-id_pacote").select2();
-            $("#id_form-"+i+"-id_passageiro").select2();
-            $("#id_form-"+i+"-id_status_reserva_passageiro").select2();
-            $("#id_form-"+i+"-id_acomodacao_pacote").select2();
-            $("#id_form-"+i+"-id_opcional").select2();
-        }
-    });
-    $('.delete-row').on('click', function(event) {
-        lenForm -= 1
-        for (i=0; i< lenForm; i++){
-            $("#id_form-"+i+"-id_excursao").select2();
-            $("#id_form-"+i+"-id_pacote").select2();
-            $("#id_form-"+i+"-id_passageiro").select2();
-            $("#id_form-"+i+"-id_status_reserva_passageiro").select2();
-            $("#id_form-"+i+"-id_acomodacao_pacote").select2();
-            $("#id_form-"+i+"-id_opcional").select2();
-        }
-    });
+
 })
 
 
 
 $(function() {
-    $("#id_form-0-id_excursao").select2();
-    $("#id_form-0-id_pacote").select2();
-    $("#id_form-0-id_passageiro").select2();
-    $("#id_form-0-id_status_reserva_passageiro").select2();
-    $("#id_form-0-id_acomodacao_pacote").select2();
+  $("#id_id_excursao").select2();
+  $("#id_id_pacote").select2();
+  $("#id_id_passageiro").select2();
+  $("#id_id_status_reserva_passageiro").select2();
+  $("#id_id_acomodacao_pacote").select2();
 })
 
 
@@ -64,9 +154,9 @@ function setExcursaoPacote(select){
   var valor = selected.value
   var id = String(select.id).split('-')[1]
   setPacote(valor,id);
-  $("#id_form-"+id+"-id_pacote").parent().children().find('.select2-choice').find('.select2-chosen').html('---------');
-  $('#id_form-'+id+'-id_pacote').prop('disabled', false);
-  $('#id_form-'+id+'-id_status_reserva option[value="RESERVADO"]').prop('selected', true);
+  $("#id_id_pacote").parent().children().find('.select2-choice').find('.select2-chosen').html('---------');
+  $('#id_id_pacote').prop('disabled', false);
+  $('#id_id_status_reserva option[value="RESERVADO"]').prop('selected', true);
 }
 
 function setPacoteAcomodacao(select){
@@ -75,8 +165,8 @@ function setPacoteAcomodacao(select){
   var valor = selected.value
   var id = String(select.id).split('-')[1]
   setMoeda(valor,id)
-  $("#id_form-"+id+"-id_acomodacao_pacote").parent().children().find('.select2-choice').find('.select2-chosen').html('---------');
-  $('#id_form-'+id+'-id_acomodacao_pacote').prop('disabled', false);
+  $("#id_id_acomodacao_pacote").parent().children().find('.select2-choice').find('.select2-chosen').html('---------');
+  $('#id_id_acomodacao_pacote').prop('disabled', false);
 }
 
 
@@ -85,8 +175,8 @@ function setPrecoAcomodacao(select){
   var selected = select.options[select.selectedIndex]
   var valor = selected.value
   var id = String(select.id).split('-')[1]
-  $('#id_form-'+id+'-preco_acomodacao').val(selected.getAttribute('data-preco'));
-  $('#id_form-'+id+'-preco_acomodacao').prop('disabled', false);
+  $('#id_preco_acomodacao').val(selected.getAttribute('data-preco'));
+  $('#id_preco_acomodacao').prop('disabled', false);
 }
 
 
@@ -103,7 +193,7 @@ function setPacote(codigo,id){
           for(i=0; i < pacotes.length; i++){
             htmlString += '<option value="'+ String(pacotes[i].id_pacote)+'">'+pacotes[i].pacote_nome+'</option>'
           }
-          $("#id_form-"+id+"-id_pacote").html(htmlString);
+          $("#id_id_pacote").html(htmlString);
         }
       },
       error: function(error) {
@@ -112,13 +202,13 @@ function setPacote(codigo,id){
     });
   }else{
     htmlString = '<option selected="selected" value="">---------</option>'
-    $("#id_form-"+id+"-id_pacote").parent().children().find('a').find('.select2-chosen').html("---------")
-    $("#id_form-"+id+"-id_pacote").html(htmlString);
-    $("#id_form-"+id+"-id_acomodacao_pacote").parent().children().find('a').find('.select2-chosen').html("---------")
-    $("#id_form-"+id+"-id_acomodacao_pacote").html(htmlString);
-    $('#id_form-'+id+'-reserva_passageiro_preco').val("");
-    $('#id_form-'+id+'-id_moeda').val("");
-    $('#id_form-'+id+'-reserva_passageiro_cambio').val("");
+    $("#id_id_pacote").parent().children().find('a').find('.select2-chosen').html("---------")
+    $("#id_id_pacote").html(htmlString);
+    $("#id_id_acomodacao_pacote").parent().children().find('a').find('.select2-chosen').html("---------")
+    $("#id_id_acomodacao_pacote").html(htmlString);
+    $('#id_reserva_passageiro_preco').val("");
+    $('#id_id_moeda').val("");
+    $('#id_reserva_passageiro_cambio').val("");
   }
 }
 
@@ -135,9 +225,9 @@ function setMoeda(codigo,id){
 
           pacote = response.pacote
           htmlString = '<option selected="selected" value="">---------</option>'
-          $('#id_form-'+id+'-reserva_passageiro_preco').val(pacote[0].pacote_preco)
-          $("#id_form-"+id+"-id_moeda").html(htmlString+'<option selected="selected" value="'+pacote[0].id_moeda+'">'+pacote[0].id_moeda__moeda_desc+'</option>');
-          $('#id_form-'+id+'-reserva_passageiro_cambio').val(pacote[0].id_moeda__moeda_cambio)
+          $('#id_reserva_passageiro_preco').val(pacote[0].pacote_preco)
+          $("#id_id_moeda").html(htmlString+'<option selected="selected" value="'+pacote[0].id_moeda+'">'+pacote[0].id_moeda__moeda_desc+'</option>');
+          $('#id_reserva_passageiro_cambio').val(pacote[0].id_moeda__moeda_cambio)
 
 
           acomodacao = response.acomodacao
@@ -159,17 +249,17 @@ function setMoeda(codigo,id){
 }
 
 function setPassageiroOpcional(select){
-  console.log("setPassageiroOpcional")
+  console.log(select);
   var selected = select.options[select.selectedIndex]
   var id_passageiro = selected.value
   var id = String(select.id).split('-')[1]
   var id_reserva = $('#id_reserva').html()
-  setOpcional(id, id_reserva, id_passageiro);
-  $("#id_form-"+id+"-id_opcional").parent().children().find('.select2-choice').find('.select2-chosen').html('---------');
-  $('#id_form-'+id+'-id_opcional').prop('disabled', false);
+  setOpcional(id_reserva, id_passageiro);
+  $("#id_id_opcional").parent().children().find('.select2-choice').find('.select2-chosen').html('---------');
+  $('#id_id_opcional').prop('disabled', false);
 }
 
-function setOpcional(id, id_reserva, id_passageiro){
+function setOpcional(id_reserva, id_passageiro){
   var url = '/framework/dashboard/passageiro/opcional/passageiro_opcional_json/' + String(id_reserva) + "/" + String(id_passageiro);
   $.ajax({
     url: url,
@@ -182,7 +272,7 @@ function setOpcional(id, id_reserva, id_passageiro){
       for(i=0; i < opicionais.length; i++){
         htmlString += '<option value="'+ String(opicionais[i].id_opcional)+'">'+opicionais[i].id_opcional__opcional_desc+'</option>'
       }
-      $("#id_form-"+id+"-id_opcional").html(htmlString);
+      $("#id_id_opcional").html(htmlString);
 
       //var select = document.getElementById("id_form-"+id+"-id_moeda");
       //for(i=0; i<select.options.length; i++){
@@ -197,7 +287,7 @@ function setOpcional(id, id_reserva, id_passageiro){
 
       htmlString = '<option value="">---------</option>';
       htmlString += '<option selected="selected" value="'+response.id_reserva_passageiro+'">'+response.reserva_passageiro_obs+'</option>';
-      $("#id_form-"+id+"-id_reserva_passageiro").html(htmlString);
+      $("#id_id_reserva_passageiro").html(htmlString);
 
     },
 
@@ -213,22 +303,22 @@ function setPassageiroMoedaOpcional(select){
   var selected = select.options[select.selectedIndex]
   var id_opcional = selected.value
   var id = String(select.id).split('-')[1]
-  var id_reserva_passageiro = $("#id_form-"+id+"-id_reserva_passageiro").val()
+  var id_reserva_passageiro = $("#id_id_reserva_passageiro").val()
   
-  setMoedaOpcional(id, id_reserva_passageiro, id_opcional);
+  setMoedaOpcional(id_reserva_passageiro, id_opcional);
 }
 
-function setMoedaOpcional(id, id_reserva_passageiro, id_opcional){
+function setMoedaOpcional(id_reserva_passageiro, id_opcional){
   var url = '/framework/dashboard/passageiro/opcional/passageiro_opcional_moeda_json/' + String(id_reserva_passageiro) + "/" + String(id_opcional);
   $.ajax({
     url: url,
     type: 'GET',
 
     success : function(response) {
-      $("#id_form-"+id+"-moeda_desc").val(response.moeda_desc);
+      $("#modalOpcional #id_moeda_desc").val(response.moeda_desc);
       htmlString = '<option value="">---------</option>';
       htmlString += '<option selected="selected" value="'+response.id_moeda+'">'+response.moeda_desc+'</option>';
-      $("#id_form-"+id+"-id_moeda").html(htmlString);
+      $("#modalOpcional #id_id_moeda").html(htmlString);
     },
 
     error: function(error) {

@@ -13,5 +13,5 @@ class Passageiro(models.Model):
 	id_emissor = models.ForeignKey('emissor.Emissor', on_delete=models.DO_NOTHING, null=True, blank=True)
 	id_agencia = models.ForeignKey('agencia.Agencia', on_delete=models.DO_NOTHING, null=True, blank=True)
 	def __str__(self):
-		return str(self.id_usuario.nomecompleto)
+		return str(self.id_usuario.nome + ' ' + self.id_usuario.sobrenome)
 
