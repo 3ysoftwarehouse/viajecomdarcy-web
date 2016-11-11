@@ -15,6 +15,20 @@ function getCookie(name) {
  return cookieValue;
 }
 
+function finalizarAgendamento(){
+    $.ajax({
+        url: url_finalizar,
+        type: 'GET',
+        success: function(response){
+          if (response.status == "success"){
+            window.location = url_list;
+          }else{
+            console.log(response.message);
+          }
+        }
+    })
+}
+
 function genNotification(message,type){
 
     $('body').pgNotification({
