@@ -117,7 +117,7 @@ class ReservaOpcionaisForm(forms.ModelForm):
 
 
     def __init__(self, *args, **kwargs):
-        self.id_passageiros = kwargs.pop('id_passageiros')
+        #self.id_passageiros = kwargs.pop('id_passageiros')
         super(ReservaOpcionaisForm, self).__init__(*args, **kwargs)
         # id_reserva_passageiro Fields widget
         self.fields['id_reserva_passageiro'].widget.attrs['class'] = 'form-control'
@@ -128,7 +128,7 @@ class ReservaOpcionaisForm(forms.ModelForm):
         self.fields['preco_reserva_opcional'].widget.attrs['class'] = 'form-control'
         # id_passageiro Fields widget
         self.fields['id_passageiro'].widget.attrs['class'] = 'form-control'
-        self.fields['id_passageiro'].queryset = Passageiro.objects.filter(pk__in=self.id_passageiros)
+        #self.fields['id_passageiro'].queryset = Passageiro.objects.filter(pk__in=self.id_passageiros)
         self.fields['id_passageiro'].widget.attrs['onchange'] = 'setPassageiroOpcional(this)'
         # id_moeda  Fields widget
         self.fields['id_moeda'].widget.attrs['class'] = 'form-control'

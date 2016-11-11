@@ -3,76 +3,74 @@
 
 <!DOCTYPE html>
 <html>
-   <head>
+<head>
+  <!-- META TAGS -->
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta content="" name="description" />
+  <meta content="" name="author" />
+  <!-- END META -->
+  <title>
+   {% if PROJECT_VALID %}
+   {% if PROJECT_DATA.nome %}
+   {{PROJECT_DATA.nome}}
+   {% else %}
+   Pages
+   {% endif %}
+   {% endif %}
+ </title>
 
-      <!-- META TAGS -->
-      <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-      <meta charset="utf-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-      <meta name="apple-mobile-web-app-capable" content="yes">
-      <meta name="apple-touch-fullscreen" content="yes">
-      <meta name="apple-mobile-web-app-status-bar-style" content="default">
-      <meta content="" name="description" />
-      <meta content="" name="author" />
-      <!-- END META -->
+ <!-- ICONS -->
+ <link rel="apple-touch-icon" href="{% static 'img/default/icons/60.png' %}">
+ <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/default/icons/76.png' %}">
+ <link rel="apple-touch-icon" sizes="120x120" href="{% static 'img/default/icons/120.png' %}">
+ <link rel="apple-touch-icon" sizes="152x152" href="{% static 'img/default/icons/152.png' %}">
+ <!-- END ICONS -->
 
-      <title>
-         {% if PROJECT_VALID %}
-            {% if PROJECT_DATA.nome %}
-               {{PROJECT_DATA.nome}}
-            {% else %}
-               Pages
-            {% endif %}
-         {% endif %}
-      </title>
+ <!-- BASIC CSS -->
+ <link href="{% static 'css/default/jquery.dataTables.css' %}" rel="stylesheet" type="text/css" />
+ <link href="{% static 'css/default/dataTables.fixedColumns.min.css' %}" rel="stylesheet" type="text/css" />
+ <link href="{% static 'css/default/datatables.responsive.css' %}" rel="stylesheet" type="text/css" media="screen" />
+ <link href="{% static 'css/dataTable/dataTables.tableTools.css' %}" rel="stylesheet" type="text/css" />
 
-      <!-- ICONS -->
-      <link rel="apple-touch-icon" href="{% static 'img/default/icons/60.png' %}">
-      <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/default/icons/76.png' %}">
-      <link rel="apple-touch-icon" sizes="120x120" href="{% static 'img/default/icons/120.png' %}">
-      <link rel="apple-touch-icon" sizes="152x152" href="{% static 'img/default/icons/152.png' %}">
-      <!-- END ICONS -->
-
-      <!-- BASIC CSS -->
-       <link href="{% static 'css/default/jquery.dataTables.css' %}" rel="stylesheet" type="text/css" />
-      <link href="{% static 'css/default/dataTables.fixedColumns.min.css' %}" rel="stylesheet" type="text/css" />
-      <link href="{% static 'css/default/datatables.responsive.css' %}" rel="stylesheet" type="text/css" media="screen" />
-      <link href="{% static 'css/dataTable/dataTables.tableTools.css' %}" rel="stylesheet" type="text/css" />
-      
-      <link href="{% static 'css/default/pace-theme-flash.css' %}" rel="stylesheet" type="text/css" />
-      <link href="{% static 'css/default/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
-      <link href="{% static 'css/default/font-awesome.css' %}" rel="stylesheet" type="text/css" />
-      <link href="{% static 'css/default/jquery.scrollbar.css' %}" rel="stylesheet" type="text/css" media="screen" />
-      <link href="{% static 'css/default/select2.css' %}" rel="stylesheet" type="text/css" media="screen" />
-      <link href="{% static 'css/default/switchery.min.css' %}" rel="stylesheet" type="text/css" media="screen" />
-      <link href="{% static 'css/default/pages-icons.css' %}" rel="stylesheet" type="text/css">
-      <link class="main-stylesheet" href="{% static 'css/default/pages.css' %}" rel="stylesheet" type="text/css" />
+ <link href="{% static 'css/default/pace-theme-flash.css' %}" rel="stylesheet" type="text/css" />
+ <link href="{% static 'css/default/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
+ <link href="{% static 'css/default/font-awesome.css' %}" rel="stylesheet" type="text/css" />
+ <link href="{% static 'css/default/jquery.scrollbar.css' %}" rel="stylesheet" type="text/css" media="screen" />
+ <link href="{% static 'css/default/select2.css' %}" rel="stylesheet" type="text/css" media="screen" />
+ <link href="{% static 'css/default/pages-icons.css' %}" rel="stylesheet" type="text/css">
+ <link class="main-stylesheet" href="{% static 'css/default/pages.css' %}" rel="stylesheet" type="text/css" />
       <!--[if lte IE 9]>
          <link href="{% static 'css/panel/ie9.css' %}" rel="stylesheet" type="text/css" />
-      <![endif]-->
-      <script type="text/javascript">
-         window.onload = function(){
-             // FIX FOR WINDOWNS 8
-             if (navigator.appVersion.indexOf("Windows NT 6.2") != -1)
-                 var css = '<link rel="stylesheet" type="text/css" href="'
-                 css += "{% static 'css/default/windows.chrome.fix.css' %}"
-                 css += '" />'
-                 document.head.innerHTML += css
-         }
-      </script>
-      <!-- END BASIC CSS -->
+         <![endif]-->
+         <style>
+          .select2-container .select2-choice{
+            top: 0px;
+            left: 0;
+            position: absolute;
+            width: 100%;
+          }  
+          .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+            color: rgb(21, 20, 20);
+          }
+        </style>
+        <!-- END BASIC CSS -->
 
-      <!-- EXTRA CSS -->
-      {% block css %}
-      
-      {% endblock %}
-      <!-- END EXTRA CSS -->
+        <!-- EXTRA CSS -->
+        {% block css %}
 
-   </head>
-   <body class="fixed-header">
+        {% endblock %}
+        <!-- END EXTRA CSS -->
 
-      <!-- SIDEBAR -->
-      <div class="page-sidebar" data-pages="sidebar">
+      </head>
+      <body class="fixed-header">
+
+        <!-- SIDEBAR -->
+        <div class="page-sidebar" data-pages="sidebar">
 
          <!-- APP MENU -->
          <div id="appMenu" class="sidebar-overlay-slide from-top"></div>
@@ -80,15 +78,15 @@
 
          <!-- SIDEBAR HEADER -->
          <div class="sidebar-header">
-            {% include 'default/panel/menu-header.html' %}
-         </div>
-         <!-- END SIDEBAR HEADER -->
+          {% include 'default/panel/menu-header.html' %}
+        </div>
+        <!-- END SIDEBAR HEADER -->
 
-         <!-- SIDEBAR MENU -->
-         <div class="sidebar-menu">
-            {% include 'default/panel/menu.html' %}
-         </div>
-         <!-- END SIDEBAR MENU -->
+        <!-- SIDEBAR MENU -->
+        <div class="sidebar-menu">
+          {% include 'default/panel/menu.html' %}
+        </div>
+        <!-- END SIDEBAR MENU -->
 
       </div>
       <!-- END SIDEBAR -->
@@ -96,177 +94,167 @@
       <!-- PAGE-CONTAINER -->
       <div class="page-container">
 
-         <!-- PAGE HEADER WRAPPER -->
+       <!-- PAGE HEADER WRAPPER -->
 
-         <!-- HEADER -->
-         <div class="header ">
+       <!-- HEADER -->
+       <div class="header ">
 
-            {% include 'default/panel/mobile.html' %}
+        {% include 'default/panel/mobile.html' %}
 
-            <!-- DEFAULT LEFT SIDE -->
-            <div class=" pull-left sm-table">
-               <div class="header-inner">
-                  <div class="brand inline">
-                     {% if PROJECT_VALID %}
-                         {% if PROJECT_DATA.logo %}
-                             <img src="{{MEDIA_URL}}{{PROJECT_DATA.logo}}" alt="logo" data-src="{{MEDIA_URL}}{{PROJECT_DATA.logo}}" data-src-retina="{{MEDIA_URL}}{{PROJECT_DATA.logo}}" width="100" height="auto">
-                         {% else %}
-                             <h1><b>{{PROJECT_DATA.nome}}</b></h1>
-                         {% endif %}
-                     {% else %}
-                         <img src="{% static 'img/default/logo.png' %}" alt="logo" data-src="{% static 'img/default/logo.png' %}" data-src-retina="{% static 'img/default/logo_2x.png' %}" width="78" height="22">
-                     {% endif %}
-                  </div>
+        <!-- DEFAULT LEFT SIDE -->
+        <div class=" pull-left sm-table">
+         <div class="header-inner">
+          <div class="brand inline">
+           {% if PROJECT_VALID %}
+           {% if PROJECT_DATA.logo %}
+           <img src="{{MEDIA_URL}}{{PROJECT_DATA.logo}}" alt="logo" data-src="{{MEDIA_URL}}{{PROJECT_DATA.logo}}" data-src-retina="{{MEDIA_URL}}{{PROJECT_DATA.logo}}" width="100" height="auto">
+           {% else %}
+           <h1><b>{{PROJECT_DATA.nome}}</b></h1>
+           {% endif %}
+           {% else %}
+           <img src="{% static 'img/default/logo.png' %}" alt="logo" data-src="{% static 'img/default/logo.png' %}" data-src-retina="{% static 'img/default/logo_2x.png' %}" width="78" height="22">
+           {% endif %}
+         </div>
 
                   <!--
                      include 'default/panel/notification.html'
-                  -->
+                   -->
 
+                 </div>
                </div>
-            </div>
-            <!-- END DEFAULT LEFT SIDE -->
+               <!-- END DEFAULT LEFT SIDE -->
 
-            <!-- DEFAULT RIGHT SIDE -->
+               <!-- DEFAULT RIGHT SIDE -->
             <!-- QUICKVIEW BUTTON
                <div class=" pull-right">
                   <div class="header-inner">
                      <a href="#" class="btn-link icon-set menu-hambuger-plus m-l-20 sm-no-margin hidden-sm hidden-xs" data-toggle="quickview" data-toggle-element="#quickview"></a>
                   </div>
                </div>
-            -->
-            <div class=" pull-right">
+             -->
+             <div class=" pull-right">
                {% include 'default/panel/user-info.html' %}
-            </div>
-         </div>
-         <!-- END HEADER -->
+             </div>
+           </div>
+           <!-- END HEADER -->
 
-         <!-- END PAGE HEADER WRAPPER -->
+           <!-- END PAGE HEADER WRAPPER -->
 
-         <!-- PAGE CONTENT WRAPPER -->
-         <div class="page-content-wrapper">
+           <!-- PAGE CONTENT WRAPPER -->
+           <div class="page-content-wrapper">
             <!-- PAGE CONTENT -->
             <div class="content">
 
-               <!-- JUMBOTRON -->
-               <div class="jumbotron" data-pages="parallax">
-                  <div class="container-fluid container-fixed-lg sm-p-l-20 sm-p-r-20">
-                     <div class="inner">
-                        <!-- BREADCRUMB -->
-                        <ul class="breadcrumb">
-                           <li>
-                              <p>Dashboard</p>
-                           </li>
-                           {% block page_info %}{% endblock %}
-                        </ul>
-                        <!-- END BREADCRUMB -->
-                     </div>
-                  </div>
-               </div>
-               <!-- END JUMBOTRON -->
-
-               <!-- CONTAINER FLUID -->
-               <div class="container-fluid container-fixed-lg">
-                  <!-- PlACE PAGE CONTENT HERE -->
-                  {% block content %}{% endblock %}
-                  <!-- END PLACE PAGE CONTENT HERE -->
-               </div>
-               <!-- END CONTAINER FLUID -->
-
+             <!-- JUMBOTRON -->
+             <div class="jumbotron" data-pages="parallax">
+              <div class="container-fluid container-fixed-lg sm-p-l-20 sm-p-r-20">
+               <div class="inner">
+                <!-- BREADCRUMB -->
+                <ul class="breadcrumb">
+                 <li>
+                  <p>Dashboard</p>
+                </li>
+                {% block page_info %}{% endblock %}
+              </ul>
+              <!-- END BREADCRUMB -->
             </div>
-            <!-- END PAGE CONTENT -->
+          </div>
+        </div>
+        <!-- END JUMBOTRON -->
 
-            {% include 'default/panel/footer.html' %}
+        <!-- CONTAINER FLUID -->
+        <div class="container-fluid container-fixed-lg">
+          <!-- PlACE PAGE CONTENT HERE -->
+          {% block content %}{% endblock %}
+          <!-- END PLACE PAGE CONTENT HERE -->
+        </div>
+        <!-- END CONTAINER FLUID -->
 
-         </div>
-         <!-- END PAGE CONTENT WRAPPER -->
       </div>
-      <!-- END PAGE CONTAINER -->
+      <!-- END PAGE CONTENT -->
+
+      {% include 'default/panel/footer.html' %}
+
+    </div>
+    <!-- END PAGE CONTENT WRAPPER -->
+  </div>
+  <!-- END PAGE CONTAINER -->
 
       <!-- 
          include 'default/panel/quickview.html'
-      -->
+       -->
 
       <!--
          include 'default/panel/overlay.html'
-      -->
+       -->
 
-      <!-- BASIC JAVASCRIPT -->
-      <script src="{% static 'js/default/pace.min.js' %}" type="text/javascript"></script>
-      <script src="{% static 'js/default/jquery-1.11.1.min.js' %}" type="text/javascript"></script>
-      <script src="{% static 'js/default/modernizr.custom.js' %}" type="text/javascript"></script>
-      <script src="{% static 'js/default/jquery-ui.min.js' %}" type="text/javascript"></script>
-      <script src="{% static 'js/default/bootstrap.min.js' %}" type="text/javascript"></script>
-      <script src="{% static 'js/default/jquery-easy.js' %}" type="text/javascript"></script>
-      <script src="{% static 'js/default/jquery.unveil.min.js' %}" type="text/javascript"></script>
-      <script src="{% static 'js/default/jquery.bez.min.js' %}"></script>
-      <script src="{% static 'js/default/jquery.ioslist.min.js' %}" type="text/javascript"></script>
-      <script src="{% static 'js/default/imagesloaded.pkgd.min.js' %}"></script>
-      <script src="{% static 'js/default/jquery.actual.min.js' %}"></script>
-      <script src="{% static 'js/default/jquery.scrollbar.min.js' %}"></script>
-      <script src="{% static 'js/default/pages.js' %}" type="text/javascript"></script>
-      <script src="{% static 'js/default/scripts.js' %}" type="text/javascript"></script>
-      <script src="{% static 'js/default/select2.min.js' %}" type="text/javascript"></script>
-      <script src="{% static 'js/default/classie.js' %}" type="text/javascript"></script>
-      <script src="{% static 'js/default/switchery.min.js' %}" type="text/javascript"></script>
-      <script src="{% static 'js/default/jquery.formset.js' %}" type="text/javascript"></script>
-      <script src="{% static 'js/default/custom.js' %}" type="text/javascript"></script>
-      <script src="{% static 'js/default/lodash.min.js' %}" type="text/javascript"></script>
-
-
-      <script src="{% static 'js/datatable/jquery.dataTables.min.js' %}" type="text/javascript"></script>
-      <script src="{% static 'js/datatable/dataTables.buttons.min.js' %}" type="text/javascript"></script>
-      <script src="{% static 'js/datatable/jszip.min.js' %}" type="text/javascript"></script>
-      <script src="{% static 'js/datatable/pdfmake.min.js' %}" type="text/javascript"></script>
-      <script src="{% static 'js/datatable/vfs_fonts.js' %}" type="text/javascript"></script>
-      <script src="{% static 'js/datatable/buttons.html5.min.js' %}" type="text/javascript"></script>
-      <script src="{% static 'js/datatable/buttons.print.min.js' %}" type="text/javascript"></script>
-      <script>
+       <!-- BASIC JAVASCRIPT -->
+       <script src="{% static 'js/default/pace.min.js' %}" type="text/javascript"></script>
+       <script src="{% static 'js/default/jquery-1.11.1.min.js' %}" type="text/javascript"></script>
+       <script src="{% static 'js/default/modernizr.custom.js' %}" type="text/javascript"></script>
+       <script src="{% static 'js/default/jquery-ui.min.js' %}" type="text/javascript"></script>
+       <script src="{% static 'js/default/bootstrap.min.js' %}" type="text/javascript"></script>
+       <script src="{% static 'js/default/jquery-easy.js' %}" type="text/javascript"></script>
+       <script src="{% static 'js/default/jquery.scrollbar.min.js' %}"></script>
+       <script src="{% static 'js/default/pages.js' %}" type="text/javascript"></script>
+       <script src="{% static 'js/default/select2.min.js' %}" type="text/javascript"></script>
+       <script src="{% static 'js/default/switchery.min.js' %}" type="text/javascript"></script>
+       <script src="{% static 'js/default/jquery.formset.js' %}" type="text/javascript"></script>
+       <script src="{% static 'js/default/custom.js' %}" type="text/javascript"></script>
+       <script src="{% static 'js/datatable/jquery.dataTables.min.js' %}" type="text/javascript"></script>
+       <script src="{% static 'js/datatable/dataTables.buttons.min.js' %}" type="text/javascript"></script>
+       <script src="{% static 'js/datatable/jszip.min.js' %}" type="text/javascript"></script>
+       <script src="{% static 'js/datatable/pdfmake.min.js' %}" type="text/javascript"></script>
+       <script src="{% static 'js/datatable/vfs_fonts.js' %}" type="text/javascript"></script>
+       <script src="{% static 'js/datatable/buttons.html5.min.js' %}" type="text/javascript"></script>
+       <script src="{% static 'js/datatable/buttons.print.min.js' %}" type="text/javascript"></script>
+       <script>
         $(document).ready(function() {
-            var init = new Switchery(document.querySelector('.js-switch'))
-            $('#datatable').DataTable({
-                "language": {
-                  "url": "{% static 'js/datatable/Portuguese-Brasil.json' %}"
-                },
-                dom: 'fBrtip',
-                buttons: [
-                    {
-                      extend:'copyHtml5',
-                      text:'Copiar',
-                      filename:'viajecomdarcy',
-                      className:'btn btn-default',
-                    },
-                    {
-                      extend:'print',
-                      text:'Imprimir',
-                      className:'btn btn-default',
-                      autoPrint: true
-                    },
-                    {
-                      extend:'excelHtml5',
-                      text:'Excel',
-                      filename:'viajecomdarcy',
-                      className:'btn btn-default'
-                    },
-                    {
-                      extend:'csvHtml5',
-                      text:'CSV',
-                      filename:'viajecomdarcy',
-                      className:'btn btn-default'
-                    },
-                    {
-                      extend:'pdfHtml5',
-                      text:'PDF',
-                      filename:'viajecomdarcy',
-                      className:'btn btn-default',
-                      orientation: 'landscape',
-                      pageSize: 'LEGAL'
-                    }
-                ],
-                initComplete: function () {
-                    $('#datatable_filter input').addClass("form-control");
-                    $('#datatable_filter input').attr("placeholder", "Buscar");
-                }
-            });
+          var init = new Switchery(document.querySelector('.js-switch'))
+          $('#datatable').DataTable({
+            "language": {
+              "url": "{% static 'js/datatable/Portuguese-Brasil.json' %}"
+            },
+            dom: 'fBrtip',
+            buttons: [
+            {
+              extend:'copyHtml5',
+              text:'Copiar',
+              filename:'viajecomdarcy',
+              className:'btn btn-default',
+            },
+            {
+              extend:'print',
+              text:'Imprimir',
+              className:'btn btn-default',
+              autoPrint: true
+            },
+            {
+              extend:'excelHtml5',
+              text:'Excel',
+              filename:'viajecomdarcy',
+              className:'btn btn-default'
+            },
+            {
+              extend:'csvHtml5',
+              text:'CSV',
+              filename:'viajecomdarcy',
+              className:'btn btn-default'
+            },
+            {
+              extend:'pdfHtml5',
+              text:'PDF',
+              filename:'viajecomdarcy',
+              className:'btn btn-default',
+              orientation: 'landscape',
+              pageSize: 'LEGAL'
+            }
+            ],
+            initComplete: function () {
+              $('#datatable_filter input').addClass("form-control");
+              $('#datatable_filter input').attr("placeholder", "Buscar");
+            }
+          });
         });
       </script>
       <!-- END BASIC JAVASCRIPT -->
@@ -276,5 +264,5 @@
       {% endblock %}
       <!-- END EXTRA JAVASCRIPT -->
 
-   </body>
-</html>
+    </body>
+    </html>

@@ -41,14 +41,14 @@
                                 {% else %}
                                 <div class="col-sm-12">
                                 {% endif %}
-                                    <div class="form-group form-group-default required">
+                                    <div class="form-group  required">
                                         <label>Nome Completo</label>
                                         {{form.nome}}
                                     </div>
                                 </div>
                                  {% if request.session.view == "usuario" %}
                                 <div class="col-sm-4">
-                                    <div class="form-group form-group-default required">
+                                    <div class="form-group  required">
                                         <label>Tipo de Usuario</label>
                                         {{form.tipo_usuario}}
                                     </div>
@@ -57,19 +57,19 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-4">
-                                    <div class="form-group form-group-default required">
+                                    <div class="form-group  required">
                                         <label>{{form.email.label_tag}}</label>
                                         {{form.email}}
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
-                                    <div class="form-group form-group-default required">
+                                    <div class="form-group  required">
                                         <label>{{form.password.label_tag}}</label>
                                         {{form.password}}
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
-                                    <div class="form-group form-group-default required">
+                                    <div class="form-group  required">
                                         <label>{{form.repetir_password.label_tag}}</label>
                                         {{form.repetir_password}}
                                     </div>
@@ -77,20 +77,20 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-4">
-                                    <div class="form-group form-group-default required">
+                                    <div class="form-group  required">
                                         <label>{{form.cpf.label_tag}}</label>
                                         {{form.cpf}}
                                     </div>
                                     <p id="cpfReport"></p>
                                 </div>
                                 <div class="col-sm-4">
-                                    <div class="form-group form-group-default required">
+                                    <div class="form-group  required">
                                         <label>{{form.rg.label_tag}}</label>
                                         {{form.rg}}
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
-                                    <div class="form-group form-group-default">
+                                    <div class="form-group ">
                                         <label>{{form.orgaoemissor.label_tag}}</label>
                                         {{form.orgaoemissor}}
                                     </div>
@@ -98,7 +98,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-4">
-                                    <div class="form-group form-group-default">
+                                    <div class="form-group ">
                                         <label>{{form.genero.label_tag}}</label>
                                         <select class="form-control" id="genero" name="genero">
                                             <option value={{form.genero}}</option>
@@ -106,13 +106,13 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
-                                    <div class="form-group form-group-default">
+                                    <div class="form-group ">
                                         <label>{{form.data_nascimento.label_tag}}</label>
                                         {{form.data_nascimento}}
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
-                                    <div class="form-group form-group-default">
+                                    <div class="form-group ">
                                         <label>{{form.foto.label_tag}}</label>
                                         {{form.foto}}
                                     </div>
@@ -127,13 +127,13 @@
                                 <div id="{{ form.prefix }}-row" class="tr form-group-attached">
                                     <div class="row">
                                         <div class="col-sm-5">
-                                            <div class="form-group form-group-default">
+                                            <div class="form-group ">
                                                 <label>{{form.tipo_telefone.label_tag}}</label>
                                                 <div style="text-align:center;">{{ form.tipo_telefone }}</div>
                                             </div>
                                         </div>
                                         <div class="col-sm-7">
-                                            <div class="form-group form-group-default">
+                                            <div class="form-group ">
                                                 <label>{{form.numero.label_tag}}</label>
                                                 <div style="text-align:center;">{{ form.numero }}</div>
                                             </div>
@@ -153,25 +153,25 @@
                         <div class="padding-10">
                             <div class="row clearfix">
                                 <div class="col-sm-3">
-                                    <div class="form-group form-group-default">
+                                    <div class="form-group ">
                                         <label>{{form.cep.label_tag}}</label>
                                         {{form.cep}}
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
-                                    <div class="form-group form-group-default required">
+                                    <div class="form-group  required">
                                         <label>{{form.pais.label_tag}}</label>
                                         {{form.pais}}
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
-                                    <div class="form-group form-group-default required">
+                                    <div class="form-group  required">
                                         <label>{{form.estado.label_tag}}</label>
                                         {{form.estado}}
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
-                                    <div class="form-group form-group-default required">
+                                    <div class="form-group  required">
                                         <label>{{form.cidade.label_tag}}</label>
                                         {{form.cidade}}
                                     </div>
@@ -179,19 +179,19 @@
                             </div>
                             <div class="row clearfix">
                                 <div class="col-sm-6">
-                                    <div class="form-group form-group-default required">
+                                    <div class="form-group  required">
                                         <label>{{form.rua.label_tag}}</label>
                                         {{form.rua}}
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
-                                    <div class="form-group form-group-default">
+                                    <div class="form-group ">
                                         <label>{{form.numero.label_tag}}</label>
                                         {{form.numero}}
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
-                                    <div class="form-group form-group-default">
+                                    <div class="form-group ">
                                         <label>{{form.bairro.label_tag}}</label>
                                         {{form.bairro}}
                                     </div>
@@ -199,13 +199,13 @@
                             </div>
                             <div class="row clearfix">
                                 <div class="col-sm-6">
-                                    <div class="form-group form-group-default">
+                                    <div class="form-group ">
                                         <label>{{form.complemento.label_tag}}</label>
                                         {{form.complemento}}
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
-                                    <div class="form-group form-group-default">
+                                    <div class="form-group ">
                                         <label>{{form.pontoreferencia.label_tag}}</label>
                                         {{form.pontoreferencia}}
                                     </div>

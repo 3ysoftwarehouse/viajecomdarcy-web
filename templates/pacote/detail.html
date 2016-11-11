@@ -25,13 +25,13 @@
                      <div class="panel-body">
                         <div class="row clearfix">
                            <div class="col-sm-6">
-                              <div class="form-group form-group-default required" aria-required="true">
+                              <div class="form-group  required" aria-required="true">
                                  <label>Nome</label>
                                  {{object.pacote_nome}}
                               </div>
                            </div>
                            <div class="col-sm-6">
-                              <div class="form-group form-group-default">
+                              <div class="form-group ">
                                  <label>Descrição</label>
                                  {{object.pacote_desc}}
                               </div>
@@ -39,13 +39,13 @@
                         </div>
                         <div class="row">
                            <div class="col-sm-6">
-                              <div class="form-group form-group-default">
+                              <div class="form-group ">
                                  <label>Excrusão</label>
                                  {{object.id_excursao}}
                               </div>
                            </div>
                            <div class="col-sm-6">
-                              <div class="form-group form-group-default">
+                              <div class="form-group ">
                                  <label>Observação</label>
                                  {{object.pacote_obs}}
                               </div>
@@ -53,19 +53,19 @@
                         </div>
                         <div class="row">
                            <div class="col-sm-4">
-                              <div class="form-group form-group-default">
+                              <div class="form-group ">
                                  <label>Preço</label>
                                  {{object.id_moeda.moeda_simbolo}} {{object.pacote_preco}}
                               </div>
                            </div>
                            <div class="col-sm-4">
-                              <div class="form-group form-group-default">
+                              <div class="form-group ">
                                  <label>Taxa</label>
                                  {{object.id_moeda.moeda_simbolo}} {{object.pacote_taxa}}
                               </div>
                            </div>
                            <div class="col-sm-4">
-                              <div class="form-group form-group-default">
+                              <div class="form-group ">
                                  <label>Taxa remessa</label>
                                  {{object.percentage}} %
                               </div>
@@ -73,13 +73,13 @@
                         </div>
                         <div class="row">
                            <div class="col-sm-6">
-                              <div class="form-group form-group-default">
+                              <div class="form-group ">
                                  <label>Day by Day</label>
                                  {{object.pacote_daybyday}}
                               </div>
                            </div>
                            <div class="col-sm-6">
-                              <div class="form-group form-group-default">
+                              <div class="form-group ">
                                  <label>Ativado</label>
                                  {% if pacote.is_active %}
                                    <span class="glyphicon glyphicon-ok"></span>
@@ -92,13 +92,13 @@
                         <div class="row">
                            {% for opcional in list_opcionais %}
                            <div class="col-sm-6">
-                              <div class="form-group form-group-default">
+                              <div class="form-group ">
                                  <label>Opcional</label>
                                  {{ opcional.id_opcional.opcional_desc }}
                               </div>
                            </div>
                            <div class="col-sm-6">
-                              <div class="form-group form-group-default">
+                              <div class="form-group ">
                                  <label>Preço</label>
                                  {{ opcional.id_opcional.id_moeda.moeda_simbolo }} {{ opcional.id_opcional.opcional_preco }}
                               </div>
@@ -119,13 +119,13 @@
                         <div class="row">
                            {% for cidade in list_cidades %}
                            <div class="col-sm-6">
-                              <div class="form-group form-group-default">
+                              <div class="form-group ">
                                  <label>Cidade</label>
                                  {{ cidade.id_cidade.cidade }}
                               </div>
                            </div>
                            <div class="col-sm-6">
-                              <div class="form-group form-group-default">
+                              <div class="form-group ">
                                  <label>Qtd Dias</label>
                                  {{ cidade.qtd_dias }}
                               </div>
@@ -136,13 +136,13 @@
                         <div class="row">
                            {% for acomodacoes in list_acomodacoes %}
                            <div class="col-sm-6">
-                              <div class="form-group form-group-default">
+                              <div class="form-group ">
                                  <label>Acomodação</label>
                                  {{ acomodacoes.id_acomodacao.acomodacao_desc }}
                               </div>
                            </div>
                            <div class="col-sm-6">
-                              <div class="form-group form-group-default">
+                              <div class="form-group ">
                                  <label>Preço</label>
                                  {{ acomodacoes.id_moeda.moeda_simbolo }} {{ acomodacoes.preco }}
                               </div>
