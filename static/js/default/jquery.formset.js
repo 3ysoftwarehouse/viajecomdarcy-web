@@ -9,39 +9,39 @@
  * Licensed under the New BSD License
  * See: http://www.opensource.org/licenses/bsd-license.php
  */
-;(function($) {
+ ;(function($) {
     $.fn.formset = function(opts)
     {
         var options = $.extend({}, $.fn.formset.defaults, opts),
-            flatExtraClasses = options.extraClasses.join(' '),
-            totalForms = $('#id_' + options.prefix + '-TOTAL_FORMS'),
-            maxForms = $('#id_' + options.prefix + '-MAX_NUM_FORMS'),
-            minForms = $('#id_' + options.prefix + '-MIN_NUM_FORMS'),
-            childElementSelector = 'input,select,textarea,label,div',
-            $$ = $(this),
+        flatExtraClasses = options.extraClasses.join(' '),
+        totalForms = $('#id_' + options.prefix + '-TOTAL_FORMS'),
+        maxForms = $('#id_' + options.prefix + '-MAX_NUM_FORMS'),
+        minForms = $('#id_' + options.prefix + '-MIN_NUM_FORMS'),
+        childElementSelector = 'input,select,textarea,label,div',
+        $$ = $(this),
 
-            applyExtraClasses = function(row, ndx) {
-                if (options.extraClasses) {
-                    row.removeClass(flatExtraClasses);
-                    row.addClass(options.extraClasses[ndx % options.extraClasses.length]);
-                }
-            },
+        applyExtraClasses = function(row, ndx) {
+            if (options.extraClasses) {
+                row.removeClass(flatExtraClasses);
+                row.addClass(options.extraClasses[ndx % options.extraClasses.length]);
+            }
+        },
 
-            updateElementIndex = function(elem, prefix, ndx) {
-                var idRegex = new RegExp(prefix + '-(\\d+|__prefix__)-'),
-                    replacement = prefix + '-' + ndx + '-';
-                if (elem.attr("for")) elem.attr("for", elem.attr("for").replace(idRegex, replacement));
-                if (elem.attr('id')) elem.attr('id', elem.attr('id').replace(idRegex, replacement));
-                if (elem.attr('name')) elem.attr('name', elem.attr('name').replace(idRegex, replacement));
-            },
+        updateElementIndex = function(elem, prefix, ndx) {
+            var idRegex = new RegExp(prefix + '-(\\d+|__prefix__)-'),
+            replacement = prefix + '-' + ndx + '-';
+            if (elem.attr("for")) elem.attr("for", elem.attr("for").replace(idRegex, replacement));
+            if (elem.attr('id')) elem.attr('id', elem.attr('id').replace(idRegex, replacement));
+            if (elem.attr('name')) elem.attr('name', elem.attr('name').replace(idRegex, replacement));
+        },
 
-            hasChildElements = function(row) {
-                return row.find(childElementSelector).length > 0;
-            },
+        hasChildElements = function(row) {
+            return row.find(childElementSelector).length > 0;
+        },
 
-            showAddButton = function() {
+        showAddButton = function() {
                 return maxForms.length == 0 ||   // For Django versions pre 1.2
-                    (maxForms.val() == '' || (maxForms.val() - totalForms.val() > 0));
+                (maxForms.val() == '' || (maxForms.val() - totalForms.val() > 0));
             },
 
             /**
@@ -49,12 +49,12 @@
             */
             showDeleteLinks = function() {
                 return minForms.length == 0 ||   // For Django versions pre 1.7
-                    (minForms.val() == '' || (totalForms.val() - minForms.val() > 0));
+                (minForms.val() == '' || (totalForms.val() - minForms.val() > 0));
             },
 
             insertDeleteLink = function(row) {
                 var delCssSelector = $.trim(options.deleteCssClass).replace(/\s+/g, '.'),
-                    addCssSelector = $.trim(options.addCssClass).replace(/\s+/g, '.');
+                addCssSelector = $.trim(options.addCssClass).replace(/\s+/g, '.');
                 if (row.is('TR')) {
                     // If the forms are laid out in table rows, insert
                     // the remove button into the last table cell:
@@ -75,9 +75,9 @@
 
                 row.find('a.' + delCssSelector).click(function() {
                     var row = $(this).parents('.' + options.formCssClass),
-                        del = row.find('input:hidden[id $= "-DELETE"]'),
-                        buttonRow = row.siblings("a." + addCssSelector + ', .' + options.formCssClass + '-add'),
-                        forms;
+                    del = row.find('input:hidden[id $= "-DELETE"]'),
+                    buttonRow = row.siblings("a." + addCssSelector + ', .' + options.formCssClass + '-add'),
+                    forms;
                     if (del.length) {
                         // We're dealing with an inline formset.
                         // Rather than remove this form from the DOM, we'll mark it as deleted
@@ -121,10 +121,10 @@
                 });
             };
 
-        $$.each(function(i) {
-            var row = $(this),
+            $$.each(function(i) {
+                var row = $(this),
                 del = row.find('input:checkbox[id $= "-DELETE"]');
-            if (del.length) {
+                if (del.length) {
                 // If you specify "can_delete = True" when creating an inline formset,
                 // Django adds a checkbox to each form in the formset.
                 // Replace the default checkbox with a hidden field:
@@ -142,17 +142,17 @@
             }
             if (hasChildElements(row)) {
                 row.addClass(options.formCssClass);
-                if (row.is(':visible')) {
+                //if (row.is(':visible')) {
                     insertDeleteLink(row);
                     applyExtraClasses(row, i);
-                }
+                //}
             }
         });
 
-        if ($$.length) {
-            var hideAddButton = !showAddButton(),
+            if ($$.length) {
+                var hideAddButton = !showAddButton(),
                 addButton, template;
-            if (options.formTemplate) {
+                if (options.formTemplate) {
                 // If a form template was specified, we'll clone it to generate new form instances:
                 template = (options.formTemplate instanceof $) ? options.formTemplate : $(options.formTemplate);
                 template.removeAttr('id').addClass(options.formCssClass + ' formset-custom-template');
@@ -184,8 +184,8 @@
                 // If forms are laid out as table rows, insert the
                 // "add" button in a new table row:
                 var numCols = $$.eq(0).children().length,   // This is a bit of an assumption :|
-                    buttonRow = $('<tr><td colspan="' + numCols + '"><a class="' + options.addCssClass + '" href="javascript:void(0)">' + options.addText + '</a></tr>')
-                                .addClass(options.formCssClass + '-add');
+                buttonRow = $('<tr><td colspan="' + numCols + '"><a class="' + options.addCssClass + '" href="javascript:void(0)">' + options.addText + '</a></tr>')
+                .addClass(options.formCssClass + '-add');
                 $$.parent().append(buttonRow);
                 if (hideAddButton) buttonRow.hide();
                 addButton = buttonRow.find('a');
@@ -197,9 +197,9 @@
             }
             addButton.click(function() {
                 var formCount = parseInt(totalForms.val()),
-                    row = options.formTemplate.clone(true).removeClass('formset-custom-template'),
-                    buttonRow = $($(this).parents('tr.' + options.formCssClass + '-add').get(0) || this)
-                    delCssSelector = $.trim(options.deleteCssClass).replace(/\s+/g, '.');
+                row = options.formTemplate.clone(true).removeClass('formset-custom-template'),
+                buttonRow = $($(this).parents('tr.' + options.formCssClass + '-add').get(0) || this)
+                delCssSelector = $.trim(options.deleteCssClass).replace(/\s+/g, '.');
                 applyExtraClasses(row, formCount);
                 row.insertBefore(buttonRow).show();
                 row.find(childElementSelector).each(function() {

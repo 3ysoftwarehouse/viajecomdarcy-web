@@ -6,7 +6,7 @@
     {% csrf_token %}
     <div class="row">
       <div class="col-sm-12">
-        <div class="form-group form-group-default required">
+        <div class="form-group  required">
           <label>Nome</label>
           <input type="text" id="{{ form.nome.id_for_label }}" name="{{ form.nome.html_name }}" placeholder="" class="form-control" required="">
         </div>
@@ -14,7 +14,7 @@
     </div>
     <div class="row">
       <div class="col-sm-12">
-        <div class="form-group form-group-default required">
+        <div class="form-group  required">
           <label>Sobrenome</label>
           <input type="text" id="{{ form.sobrenome.id_for_label }}" name="{{ form.sobrenome.html_name }}" placeholder="" class="form-control" required="">
         </div>
@@ -22,7 +22,7 @@
     </div>
     <div class="row">
       <div class="col-sm-12">
-        <div class="form-group form-group-default required">
+        <div class="form-group  required">
           <label>Email</label>
           <input type="text" id="{{ form.email.id_for_label }}" name="{{ form.email.html_name }}" placeholder="" class="form-control" required="">
         </div>
@@ -30,7 +30,7 @@
     </div>
     <div class="row">
       <div class="col-sm-12">
-        <div class="form-group form-group-default required">
+        <div class="form-group  required">
           <label>Senha</label>
           <input type="password" id="{{ form.password.id_for_label }}" name="{{ form.password.html_name }}" placeholder="" class="form-control" required="">
         </div>
