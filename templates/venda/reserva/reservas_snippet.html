@@ -1,4 +1,5 @@
 {% if passageiros %}
+
 <div class="table-responsive">
     <table class="table m-t-20 table-condensed">
         {% for passageiro in passageiros %}
@@ -13,10 +14,14 @@
         <tbody>
             {% for pacote in passageiro.passageiro_opcional.all %}
             <tr>
+                <div style="display:none;" id="passageiro_{{passageiro.id_passageiro.id_passageiro}}">
+                    {% for pacote in passageiro.passageiro_opcional.all %}
+                        {{pacote.id_opcional.pk}}|
+                    {% endfor %}
+                </div>
                 <td class="no-border">
                     <p class="text-black">{{pacote.id_opcional}}</p>
                 </td>
-
                 <td class="text-right no-border">{{pacote.id_moeda.moeda_simbolo}} {{pacote.preco_reserva_opcional}}</td>
             </tr>
             {% if forloop.last %}

@@ -76,7 +76,6 @@ $('#new_reserva_passageiro_btn').on('click', function(event) {
 function modalOpcional(id_passageiro){
   $('#modalOpcional #id_id_passageiro').val(id_passageiro).change();
   $('#modalOpcional').modal('show');
-
 }
 
 $('#new_opcional_btn').on('click', function(event) {
@@ -288,7 +287,7 @@ function setOpcional(id_reserva, id_passageiro){
       htmlString = '<option value="">---------</option>';
       htmlString += '<option selected="selected" value="'+response.id_reserva_passageiro+'">'+response.reserva_passageiro_obs+'</option>';
       $("#id_id_reserva_passageiro").html(htmlString);
-
+      setOpcionals(id_passageiro);
     },
 
     error: function(error) {
@@ -296,6 +295,24 @@ function setOpcional(id_reserva, id_passageiro){
     }  
 
   });
+}
+
+function setOpcionals(id_passageiro){
+  try{
+    var select = document.getElementById('id_id_opcional');
+    var passageiro_opcional = $('#passageiro_'+id_passageiro).html().replace(/^\s+|\s+$/g,"");
+    passageiro_opcional = passageiro_opcional.split("|");
+    for(i=0; i < passageiro_opcional.length; i++){
+      for(j=0; j < select.options.length; j++){
+        if(passageiro_opcional[i] == select.options[j].value && select.options[j].value){
+          select.remove(j);
+          break
+        }
+      }
+    }
+  }catch(error){
+    console.log("No opcionals to set.")
+  }
 }
 
 function setPassageiroMoedaOpcional(select){
