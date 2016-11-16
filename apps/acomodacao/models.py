@@ -9,5 +9,6 @@ class Acomodacao(models.Model):
 
 	def __str__(self):
 		return self.acomodacao_desc
+		
 	def __unicode__(self):
 		return unicode(self.acomodacao_desc)

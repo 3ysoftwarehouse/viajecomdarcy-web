@@ -40,12 +40,12 @@ class PacoteRegisterForm(forms.Form):
 	pacote_nome = forms.CharField(max_length=45)
 	pacote_desc = forms.CharField(max_length=200)
 	is_active = forms.BooleanField()
-	pacote_preco = forms.DecimalField()
-	pacote_taxa = forms.DecimalField()
-	pacote_daybyday = forms.CharField(max_length=200,widget=forms.Textarea)
-	pacote_obs = forms.CharField(max_length=200,widget=forms.Textarea)
-	id_opcional = forms.ModelMultipleChoiceField(queryset=Opcional.objects.all())
-	taxa_remessa = forms.DecimalField(max_digits=6, decimal_places=3)
+	pacote_preco = forms.DecimalField(max_digits=10, decimal_places=2)
+	pacote_taxa = forms.DecimalField(max_digits=10, decimal_places=2)
+	pacote_daybyday = forms.CharField(max_length=200,widget=forms.Textarea, required=False)
+	pacote_obs = forms.CharField(max_length=200,widget=forms.Textarea, required=False)
+	id_opcional = forms.ModelMultipleChoiceField(queryset=Opcional.objects.all(), required=False)
+	taxa_remessa = forms.DecimalField(max_digits=6, decimal_places=4)
 
 	def __init__(self, *args, **kwargs):
 		super(PacoteRegisterForm, self).__init__(*args, **kwargs)

@@ -32,8 +32,18 @@
                <label>Nome</label>
                {{form.acomodacao_desc}}
             </div>
-            <input type="submit" value="Salvar" />
-         </form>
+            <div class="form-group  required">
+               <label>Sigla</label>
+               {{form.sigla}}
+            </div>
+            <div class="form-group  required">
+               <label>Número</label>
+               {{ form.numero }}
+            </div>
+          <button class="btn btn-success btn-cons m-t-10 pull-right" type="submit">
+            Cadastrar
+          </button>
+      </form>
       </div>
    </div>
    <!-- END PANEL -->
