@@ -14,9 +14,9 @@ class Pacote(models.Model):
 	is_active = models.BooleanField(default=True)
 	pacote_preco = models.DecimalField(max_digits=10, decimal_places=2)
 	pacote_taxa = models.DecimalField(max_digits=10, decimal_places=2)
-	pacote_daybyday = models.TextField()
-	pacote_obs = models.TextField()
-	taxa_remessa = models.DecimalField(max_digits=6, decimal_places=3)
+	pacote_daybyday = models.TextField(null=True, blank=True)
+	pacote_obs = models.TextField(null=True, blank=True)
+	taxa_remessa = models.DecimalField(max_digits=6, decimal_places=4)
 	
 	def __str__(self):
 		return self.pacote_nome

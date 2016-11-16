@@ -6,7 +6,7 @@ class Moeda(models.Model):
 	moeda_desc = models.CharField(max_length=15, unique=True)
 	moeda_cambio = models.DecimalField(max_digits=4, decimal_places=3)
 	moeda_ultimaatualizacao = models.DateTimeField(auto_now_add=True)
-	moeda_simbolo = models.CharField(max_length=2)
+	moeda_simbolo = models.CharField(max_length=4)
 	
 	def __str__(self):
 		return self.moeda_desc
