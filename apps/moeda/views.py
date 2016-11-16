@@ -20,22 +20,25 @@ from django.forms import formset_factory
 #				CUSTOM IMPORTS                   #
 ##################################################
 from .models import Moeda # MODELS
+from .forms import MoedaForm
 from apps.default.views import JSONResponseMixin
 ##################################################
 
 
 class MoedaRegister(JSONResponseMixin,CreateView):
     model = Moeda
+    form_class = MoedaForm
     template_name = 'moeda/register.html'
-    fields = ['moeda_desc', 'moeda_cambio', 'moeda_simbolo']
+    #fields = ['moeda_desc', 'moeda_cambio', 'moeda_simbolo']
     success_url = reverse_lazy('moeda-list')
 
 
 
 class MoedaEdit(JSONResponseMixin,UpdateView):
     model = Moeda
+    form_class = MoedaForm
     template_name = 'moeda/edit.html'
-    fields = ['moeda_desc', 'moeda_cambio', 'moeda_simbolo']
+    #fields = ['moeda_desc', 'moeda_cambio', 'moeda_simbolo']
     success_url = reverse_lazy('moeda-list')
 
 

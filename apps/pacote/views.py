@@ -52,13 +52,13 @@ class PacoteRegister(JSONResponseMixin,View):
             id_moeda = request.POST['id_moeda']
             pacote_nome = request.POST['pacote_nome']
             pacote_desc = request.POST['pacote_desc']
-            is_active = request.POST['is_active']
+            is_active = request.POST.get('is_active', False)
             pacote_preco = request.POST['pacote_preco']
             pacote_taxa = request.POST['pacote_taxa']
             pacote_daybyday = request.POST['pacote_daybyday']
             pacote_obs = request.POST['pacote_obs']
             id_opcional = request.POST.getlist('id_opcional')
-            taxa_remessa = request.POST.getlist('taxa_remessa')
+            taxa_remessa = request.POST.get('taxa_remessa', None)
 
             if not id_excursao:
                 context['error_msg'] = 'id_excursao cannot be empty !'
@@ -75,11 +75,11 @@ class PacoteRegister(JSONResponseMixin,View):
             if not pacote_taxa:
                 context['error_msg'] = 'pacote_taxa cannot be empty !'
             if not pacote_daybyday:
-                context['error_msg'] = 'pacote_daybyday cannot be empty !'
+                pacote_daybyday = ''
             if not pacote_obs:
-                context['error_msg'] = 'pacote_obs cannot be empty !'
+                pacote_obs = ''
             if not id_opcional:
-                context['error_msg'] = 'id_opcional cannot be empty !'
+                id_opcional = None
             if not taxa_remessa:
                 context['error_msg'] = 'pacote_taxa cannot be empty !'
 
@@ -133,11 +133,12 @@ class PacoteRegister(JSONResponseMixin,View):
                 pacote.taxa_remessa = taxa_remessa
                 pacote.save()
 
-                for value in id_opcional:
-                    pacoteopcional = PacoteOpcional()
-                    pacoteopcional.id_pacote = Pacote.objects.get(pk=pacote.pk)
-                    pacoteopcional.id_opcional = Opcional.objects.get(pk=value)
-                    pacoteopcional.save()
+                if id_opcional:
+                    for value in id_opcional:
+                        pacoteopcional = PacoteOpcional()
+                        pacoteopcional.id_pacote = Pacote.objects.get(pk=pacote.pk)
+                        pacoteopcional.id_opcional = Opcional.objects.get(pk=value)
+                        pacoteopcional.save()
 
                 for i, listcidade in enumerate(listcidades):
                     print(listcidade[0])
@@ -240,13 +241,13 @@ class PacoteEdit(JSONResponseMixin,View):
             id_moeda = request.POST['id_moeda']
             pacote_nome = request.POST['pacote_nome']
             pacote_desc = request.POST['pacote_desc']
-            is_active = request.POST['is_active']
+            is_active = request.POST.get('is_active',False)
             pacote_preco = request.POST['pacote_preco']
             pacote_taxa = request.POST['pacote_taxa']
             pacote_daybyday = request.POST['pacote_daybyday']
             pacote_obs = request.POST['pacote_obs']
             id_opcional = request.POST.getlist('id_opcional')
-            taxa_remessa = request.POST.getlist('taxa_remessa')
+            taxa_remessa = request.POST.get('taxa_remessa',None)
 
             if not id_excursao:
                 context['error_msg'] = 'id_excursao cannot be empty !'
@@ -263,11 +264,11 @@ class PacoteEdit(JSONResponseMixin,View):
             if not pacote_taxa:
                 context['error_msg'] = 'pacote_taxa cannot be empty !'
             if not pacote_daybyday:
-                context['error_msg'] = 'pacote_daybyday cannot be empty !'
+                pacote_daybyday = ''
             if not pacote_obs:
-                context['error_msg'] = 'pacote_obs cannot be empty !'
+                pacote_obs = ''
             if not id_opcional:
-                context['error_msg'] = 'id_opcional cannot be empty !'
+                id_opcional = None
             if not taxa_remessa:
                 context['error_msg'] = 'pacote_taxa cannot be empty !'
             
@@ -333,12 +334,12 @@ class PacoteEdit(JSONResponseMixin,View):
                 for value in pacoteacomodacao:
                     value.delete()
 
-
-                for value in id_opcional:
-                    pacoteopcional = PacoteOpcional()
-                    pacoteopcional.id_pacote = Pacote.objects.get(pk=pacote.pk)
-                    pacoteopcional.id_opcional = Opcional.objects.get(pk=value)
-                    pacoteopcional.save()
+                if id_opcional:
+                    for value in id_opcional:
+                        pacoteopcional = PacoteOpcional()
+                        pacoteopcional.id_pacote = Pacote.objects.get(pk=pacote.pk)
+                        pacoteopcional.id_opcional = Opcional.objects.get(pk=value)
+                        pacoteopcional.save()
 
                 for i, listcidade in enumerate(listcidades):
                     pacotecidade = PacoteCidade()

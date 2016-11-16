@@ -20,22 +20,25 @@ from django.forms import formset_factory
 #				CUSTOM IMPORTS                   #
 ##################################################
 from .models import Acomodacao # MODELS
+from .forms import AcomodacaoForm
 from apps.default.views import JSONResponseMixin
 ##################################################
 
 
 class AcomodacaoRegister(JSONResponseMixin,CreateView):
     model = Acomodacao
+    form_class = AcomodacaoForm
     template_name = 'acomodacao/register.html'
-    fields = ['acomodacao_desc', 'sigla', 'numero']
+    #fields = ['acomodacao_desc', 'sigla', 'numero']
     success_url = reverse_lazy('acomodacao-list')
 
 
 
 class AcomodacaoEdit(JSONResponseMixin,UpdateView):
     model = Acomodacao
+    form_class = AcomodacaoForm
     template_name = 'acomodacao/edit.html'
-    fields = ['acomodacao_desc']
+    #fields = ['acomodacao_desc', 'sigla', 'numero']
     success_url = reverse_lazy('acomodacao-list')
 
 

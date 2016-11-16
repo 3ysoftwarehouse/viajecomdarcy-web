@@ -20,7 +20,7 @@ from django.forms import formset_factory
 #				CUSTOM IMPORTS                   #
 ##################################################
 from .models import Excursao, Cidade, Opcional # MODELS
-from .forms import ExcursaoRegisterForm
+from .forms import ExcursaoRegisterForm, OpcionalForm, CidadeForm
 from apps.default.views import JSONResponseMixin
 ##################################################
 
@@ -145,20 +145,16 @@ class ExcursaoDelete(JSONResponseMixin,DeleteView):
 '''
 class CidadeRegister(JSONResponseMixin,CreateView):
     model = Cidade
+    form_class = CidadeForm
     template_name = 'excursao/cidade/register.html'
-    fields = [
-    'cidade',
-    ]
     success_url = reverse_lazy('cidade-list')
 
 
 
 class CidadeEdit(JSONResponseMixin,UpdateView):
     model = Cidade
+    form_class = CidadeForm
     template_name = 'excursao/cidade/edit.html'
-    fields = [
-    'cidade',
-    ]
     success_url = reverse_lazy('cidade-list')
 
 
@@ -197,20 +193,16 @@ class CidadeDelete(JSONResponseMixin,DeleteView):
 '''
 class OpcionalRegister(JSONResponseMixin,CreateView):
     model = Opcional
-    template_name = 'excursao/opcional/register.html'
-    fields = [
-    'opcional_desc', 'opcional_preco','id_moeda', 'taxa_remessa',
-    ]
+    form_class = OpcionalForm
+    template_name = 'excursao/opcional/register.html'    
     success_url = reverse_lazy('opcional-list')
 
 
 
 class OpcionalEdit(JSONResponseMixin,UpdateView):
     model = Opcional
+    form_class = OpcionalForm
     template_name = 'excursao/opcional/edit.html'
-    fields = [
-    'opcional_desc', 'opcional_preco','id_moeda', 'taxa_remessa',
-    ]
     success_url = reverse_lazy('opcional-list')
 
 
