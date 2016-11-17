@@ -17,6 +17,7 @@ class Pacote(models.Model):
 	pacote_daybyday = models.TextField(null=True, blank=True)
 	pacote_obs = models.TextField(null=True, blank=True)
 	taxa_remessa = models.DecimalField(max_digits=6, decimal_places=4)
+	data_prevista = models.DateField(null=True, blank=True)
 	
 	def __str__(self):
 		return self.pacote_nome
