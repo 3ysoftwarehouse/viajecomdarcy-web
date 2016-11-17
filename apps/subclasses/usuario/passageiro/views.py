@@ -78,6 +78,15 @@ class PassageiroRegister(JSONResponseMixin,View):
 			matricula = request.POST['matricula']
 			natularidade = request.POST['natularidade']
 			observacao = request.POST['observacao']
+			numero_passaporte = request.POST.get('numero_passaporte', None)
+			data_validade_passaporte = request.POST.get('data_validade_passaporte', None)
+
+			if not numero_passaporte:
+				numero_passaporte = None
+			if data_validade_passaporte:
+				data_validade_passaporte = datetime.strptime(data_validade_passaporte, '%d/%m/%Y').strftime('%Y-%m-%d')
+			else:
+				data_validade_passaporte = None
 
 			if data_nascimento:
 				data_nascimento = datetime.strptime(data_nascimento, '%d/%m/%Y').strftime('%Y-%m-%d')
@@ -203,6 +212,8 @@ class PassageiroRegister(JSONResponseMixin,View):
 				passageiro.matricula = matricula
 				passageiro.natularidade = natularidade
 				passageiro.observacao = observacao
+				passageiro.numero_passaporte = numero_passaporte
+				passageiro.data_validade_passaporte = data_validade_passaporte
 				if emissor:
 					passageiro.id_emissor = emissor
 					passageiro.id_agencia = emissor.id_agencia
@@ -260,7 +271,9 @@ class PassageiroEdit(JSONResponseMixin,View):
 			'id_escola': passageiro.id_escola,
 			'matricula': passageiro.matricula,
 			'natularidade': passageiro.natularidade,
-			'observacao': passageiro.observacao,		
+			'observacao': passageiro.observacao,
+			'numero_passaporte': passageiro.numero_passaporte,		
+			'data_validade_passaporte': passageiro.data_validade_passaporte,				
 			}
 			)
 		return render (request, 'subclasses/usuario/passageiro/edit.html', {'form':form,'formset':formset})
@@ -299,6 +312,15 @@ class PassageiroEdit(JSONResponseMixin,View):
 			matricula = request.POST['matricula']
 			natularidade = request.POST['natularidade']
 			observacao = request.POST['observacao']
+			numero_passaporte = request.POST.get('numero_passaporte', None)
+			data_validade_passaporte = request.POST.get('data_validade_passaporte', None)
+
+			if not numero_passaporte:
+				numero_passaporte = None
+			if data_validade_passaporte:
+				data_validade_passaporte = datetime.strptime(data_validade_passaporte, '%d/%m/%Y').strftime('%Y-%m-%d')
+			else:
+				data_validade_passaporte = None
 
 			if data_nascimento:
 				data_nascimento = datetime.strptime(data_nascimento, '%d/%m/%Y').strftime('%Y-%m-%d')
@@ -422,6 +444,8 @@ class PassageiroEdit(JSONResponseMixin,View):
 				passageiro.matricula = matricula
 				passageiro.natularidade = natularidade
 				passageiro.observacao = observacao
+				passageiro.numero_passaporte = numero_passaporte
+				passageiro.data_validade_passaporte = data_validade_passaporte
 				if emissor:
 					passageiro.id_emissor = emissor
 					passageiro.id_agencia = emissor.id_agencia
