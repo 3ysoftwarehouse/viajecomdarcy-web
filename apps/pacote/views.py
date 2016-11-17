@@ -12,6 +12,7 @@ from django.http import (HttpResponse,
                          HttpResponseForbidden,
                          HttpResponseBadRequest)
 from django.forms import formset_factory
+from datetime import datetime
 ##################################################
 
 
@@ -59,6 +60,7 @@ class PacoteRegister(JSONResponseMixin,View):
             pacote_obs = request.POST['pacote_obs']
             id_opcional = request.POST.getlist('id_opcional')
             taxa_remessa = request.POST.get('taxa_remessa', None)
+            data_prevista = request.POST.get('data_prevista', None)
 
             if not id_excursao:
                 context['error_msg'] = 'id_excursao cannot be empty !'
@@ -82,6 +84,11 @@ class PacoteRegister(JSONResponseMixin,View):
                 id_opcional = None
             if not taxa_remessa:
                 context['error_msg'] = 'pacote_taxa cannot be empty !'
+
+            if data_prevista:
+                data_prevista = datetime.strptime(data_prevista, '%d/%m/%Y').strftime('%Y-%m-%d')
+            else:
+                data_prevista = None
 
 
             listcidades = []
@@ -131,6 +138,7 @@ class PacoteRegister(JSONResponseMixin,View):
                 pacote.pacote_daybyday = pacote_daybyday
                 pacote.pacote_obs = pacote_obs
                 pacote.taxa_remessa = taxa_remessa
+                pacote.data_prevista = data_prevista
                 pacote.save()
 
                 if id_opcional:
@@ -221,6 +229,7 @@ class PacoteEdit(JSONResponseMixin,View):
             'pacote_daybyday': pacote.pacote_daybyday,
             'pacote_obs': pacote.pacote_obs,
             'taxa_remessa' : pacote.taxa_remessa,
+            'data_prevista': pacote.data_prevista,
             }
         )
         return render (request, 'pacote/edit.html', {'form':form, 'opcionais':opcionais,'cidadeformset':cidadeformset, 'acomodacaoformset':acomodacaoformset})
@@ -248,6 +257,7 @@ class PacoteEdit(JSONResponseMixin,View):
             pacote_obs = request.POST['pacote_obs']
             id_opcional = request.POST.getlist('id_opcional')
             taxa_remessa = request.POST.get('taxa_remessa',None)
+            data_prevista = request.POST.get('data_prevista',None)
 
             if not id_excursao:
                 context['error_msg'] = 'id_excursao cannot be empty !'
@@ -271,6 +281,11 @@ class PacoteEdit(JSONResponseMixin,View):
                 id_opcional = None
             if not taxa_remessa:
                 context['error_msg'] = 'pacote_taxa cannot be empty !'
+
+            if data_prevista:
+                data_prevista = datetime.strptime(data_prevista, '%d/%m/%Y').strftime('%Y-%m-%d')
+            else:
+                data_prevista = None
             
             listcidades = []
 
@@ -319,6 +334,7 @@ class PacoteEdit(JSONResponseMixin,View):
                 pacote.pacote_daybyday = pacote_daybyday
                 pacote.pacote_obs = pacote_obs
                 pacote.taxa_remessa = taxa_remessa
+                pacote.data_prevista = data_prevista
                 pacote.save()
 
                 pacoteopcional = PacoteOpcional.objects.filter(id_pacote=pk)

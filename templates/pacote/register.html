@@ -86,7 +86,13 @@
              </div>
            </div>
           <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label>{{form.data_prevista.label_tag}}</label>
+                  {{form.data_prevista}}
+              </div>
+            </div>
+            <div class="col-sm-8">
               <div class="form-group  required">
                 <label>{{form.is_active.label_tag}}</label>
                   {{form.is_active}}
@@ -225,7 +231,7 @@
   $(document).ready(function() {
 
     $("#id_id_opcional").select2();
-
+    $('#id_data_prevista').mask("99/99/9999");
 
     // multiple fields
     $(function() {

@@ -46,6 +46,7 @@ class PacoteRegisterForm(forms.Form):
 	pacote_obs = forms.CharField(max_length=200,widget=forms.Textarea, required=False)
 	id_opcional = forms.ModelMultipleChoiceField(queryset=Opcional.objects.all(), required=False)
 	taxa_remessa = forms.DecimalField(max_digits=6, decimal_places=4)
+	data_prevista = forms.DateField(required=False)
 
 	def __init__(self, *args, **kwargs):
 		super(PacoteRegisterForm, self).__init__(*args, **kwargs)
@@ -83,6 +84,9 @@ class PacoteRegisterForm(forms.Form):
 
 		# id_opcional Fields widget
 		self.fields['id_opcional'].widget.attrs['style'] = 'width:100%;'
+
+		# data_prevista Fields widget
+		self.fields['data_prevista'].widget.attrs['class'] = 'form-control'
 		
 		pass
 
