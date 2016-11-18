@@ -37,6 +37,20 @@
             <div class="row">
                <div class="col-sm-4">
                   <div class="form-group  required">
+                     <label>{{form.numero_passaporte.label_tag}}</label>
+                     {{form.numero_passaporte}}
+                  </div>
+               </div>
+               <div class="col-sm-4">
+                  <div class="form-group  required">
+                     <label>{{form.data_validade_passaporte.label_tag}}</label>
+                     {{form.data_validade_passaporte}}
+                  </div>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-sm-4">
+                  <div class="form-group  required">
                      <label>{{form.observacao.label_tag}}</label>
                      {{form.observacao}}
                   </div>
@@ -53,6 +67,7 @@
 <script>
 $(function() {
         $("#id_id_escola").select2();
+        $('#id_data_validade_passaporte').mask("99/99/9999");
     })
 </script>
 {% endblock %}
