@@ -1,5 +1,5 @@
 #!/bin/bash
-# teste jenkins webhook
+# teste jenkins webhook 2
 apt-get update
 apt-get -y remove gunicorn
 apt-get -y install python3-pip libmysqlclient-dev libtiff5-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python-tk
