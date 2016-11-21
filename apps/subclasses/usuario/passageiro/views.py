@@ -20,10 +20,10 @@ from datetime import datetime
 ##################################################
 #				CUSTOM IMPORTS                   #
 ##################################################
-from apps.default.models import Projeto, Usuario, Empresa, Logradouro, Endereco, TipoEmpresa, TipoTelefone, TelefoneUsuario, TipoUsuario, Genero # MODELS
+from apps.default.models import Projeto, Usuario, Empresa, Logradouro, Endereco, TipoEmpresa, TipoTelefone, TelefoneUsuario, TipoUsuario, Genero,TipoDocumento, Documento # MODELS
 from .models import Passageiro # MODELS
 from apps.subclasses.empresa.escola.models import Escola # MODELS
-from .forms import PassageiroRegisterForm
+from .forms import PassageiroRegisterForm, DocumentoForm
 from apps.default.forms import PhoneForm # PHONE FORMS
 from apps.default.views import JSONResponseMixin
 from apps.subclasses.usuario.emissor.views import get_emissor
@@ -39,16 +39,21 @@ from apps.subclasses.usuario.emissor.views import get_emissor
 class PassageiroRegister(JSONResponseMixin,View):
 	def get(self, request):
 		form = PassageiroRegisterForm		
-		formset = formset_factory(PhoneForm)
+		PhoneFormSet = formset_factory(PhoneForm)
+		formset = PhoneFormSet(prefix='phone')
+		DocFormSet = formset_factory(DocumentoForm)
+		doc_formset = DocFormSet(prefix='doc')
 		request.session["view"]="passageiro"
-		return render (request, 'subclasses/usuario/passageiro/register.html', {'form':form, 'formset':formset})
+		return render (request, 'subclasses/usuario/passageiro/register.html', {'form':form, 'formset':formset, 'doc_formset':doc_formset})
 
 	def post(self, request, *args, **kwargs):
 		context = {}
 		if request.method == 'POST':		    
 			form = PassageiroRegisterForm(request.POST,request.FILES)
 			PhoneFormSet = formset_factory(PhoneForm)		
-			formset = PhoneFormSet(request.POST, request.FILES)
+			formset = PhoneFormSet(request.POST, request.FILES, prefix='phone')
+			DocFormSet = formset_factory(DocumentoForm)
+			doc_formset = DocFormSet(request.POST, request.FILES, prefix='doc')
 
 			emissor = get_emissor(self)
 			
@@ -158,6 +163,21 @@ class PassageiroRegister(JSONResponseMixin,View):
 					context['error'] = erro
 				pass
 
+			listdocs = []
+			if doc_formset.is_valid():
+				for f in doc_formset:
+					doc = f.cleaned_data
+					listdocs.append([doc.get('id_tipo_documento'),doc.get('anexo')])
+
+					if not doc.get('id_tipo_documento'):
+						context['Tipo de Documento'] = ' cannot be empty !'
+					if not doc.get('anexo'):
+						context['Anexo'] = ' cannot be empty !'
+			else:
+				for erro in doc_formset.errors:					
+					context['error'] = erro
+				pass
+
 			if not context:
 
 				id_logradouro = Logradouro()
@@ -203,6 +223,14 @@ class PassageiroRegister(JSONResponseMixin,View):
 					teluser.numero = listphone[1]
 					teluser.save()
 
+				for listdoc in listdocs:
+					tipo_documento = TipoDocumento.objects.filter(descricao=listdoc[0])[0]			
+					documento = Documento()
+					documento.id_usuario = usuario
+					documento.id_tipo_documento = tipo_documento
+					documento.anexo = listdoc[1]
+					documento.save()
+
 				passageiro = Passageiro()
 				if id_escola:
 					passageiro.id_escola = Escola.objects.get(pk=id_escola)
@@ -224,9 +252,11 @@ class PassageiroRegister(JSONResponseMixin,View):
 			else:
 				form = PassageiroRegisterForm(request.POST,request.FILES)
 				PhoneFormSet = formset_factory(PhoneForm)		
-				formset = PhoneFormSet(request.POST, request.FILES)
+				formset = PhoneFormSet(request.POST, request.FILES, prefix='phone')
+				DocFormSet = formset_factory(DocumentoForm)
+				doc_formset = DocFormSet(request.POST, request.FILES, prefix='doc')
 
-		return render(request, 'subclasses/usuario/passageiro/register.html', {'form': form, 'formset':formset})
+		return render(request, 'subclasses/usuario/passageiro/register.html', {'form': form, 'formset':formset, 'doc_formset':doc_formset})
 
 
 class PassageiroEdit(JSONResponseMixin,View):
@@ -245,7 +275,24 @@ class PassageiroEdit(JSONResponseMixin,View):
 		
 				
 		formset = PhoneFormSet(
-			initial=data
+			initial=data,
+			prefix='phone',
+			)
+
+		documentos = Documento.objects.filter(id_usuario=usuario.pk)
+
+		if documentos:
+			DocFormSet = formset_factory(DocumentoForm,extra=0)
+		else:
+			DocFormSet = formset_factory(DocumentoForm)
+
+		data = []
+		for documento in documentos:
+			data.append({'id_tipo_documento':documento.id_tipo_documento,'anexo':documento.anexo})
+
+		doc_formset = DocFormSet(
+			initial=data,
+			prefix='doc'
 			)
 
 		form = PassageiroRegisterForm(
@@ -276,14 +323,17 @@ class PassageiroEdit(JSONResponseMixin,View):
 			'data_validade_passaporte': passageiro.data_validade_passaporte,				
 			}
 			)
-		return render (request, 'subclasses/usuario/passageiro/edit.html', {'form':form,'formset':formset})
+		return render (request, 'subclasses/usuario/passageiro/edit.html', {'form':form,'formset':formset, 'doc_formset':doc_formset})
 
 	def post(self, request, pk=None, *args, **kwargs):
 		context = {}
 		if request.method == 'POST':		    
 			form = PassageiroRegisterForm(request.POST,request.FILES)
 			PhoneFormSet = formset_factory(PhoneForm)		
-			formset = PhoneFormSet(request.POST, request.FILES)
+			formset = PhoneFormSet(request.POST, request.FILES, prefix='phone')
+			DocFormSet = formset_factory(DocumentoForm)
+			doc_formset = DocFormSet(request.POST, request.FILES, prefix='doc')
+
 
 			emissor = get_emissor(self)
 
@@ -341,6 +391,21 @@ class PassageiroEdit(JSONResponseMixin,View):
 						context['Numero'] = ' cannot be empty !'
 			else:
 				for erro in formset.errors:					
+					context['error'] = erro
+				pass
+
+			listdocs = []
+			if doc_formset.is_valid():
+				for f in doc_formset:
+					doc = f.cleaned_data
+					listdocs.append([doc.get('id_tipo_documento'),doc.get('anexo')])
+
+					if not doc.get('id_tipo_documento'):
+						context['Tipo de Documento'] = ' cannot be empty !'
+					if not doc.get('anexo'):
+						context['Anexo'] = ' cannot be empty !'
+			else:
+				for erro in doc_formset.errors:					
 					context['error'] = erro
 				pass
 
@@ -459,14 +524,25 @@ class PassageiroEdit(JSONResponseMixin,View):
 					teluser.numero = listphone[1]
 					teluser.save()
 
+				for listdoc in listdocs:
+					tipo_documento = TipoDocumento.objects.filter(descricao=listdoc[0])[0]			
+					documento = Documento()
+					documento.id_usuario = usuario
+					documento.id_tipo_documento = tipo_documento
+					documento.anexo = listdoc[1]
+					documento.save()
+
 				return redirect(reverse_lazy("passageiro-list"))
 
 			else:
 				form = PassageiroRegisterForm(request.POST)
 				PhoneFormSet = formset_factory(PhoneForm)		
-				formset = PhoneFormSet(request.POST, request.FILES)
+				formset = PhoneFormSet(request.POST, request.FILES, prefix='phone')
+				DocFormSet = formset_factory(DocumentoForm)
+				doc_formset = DocFormSet(request.POST, request.FILES, prefix='doc')
 
-		return render (request, 'subclasses/usuario/passageiro/edit.html', {'form':form ,'formset':formset,'context':context})
+
+		return render (request, 'subclasses/usuario/passageiro/edit.html', {'form':form ,'formset':formset,'context':context, 'doc_formset':doc_formset})
 
 
 

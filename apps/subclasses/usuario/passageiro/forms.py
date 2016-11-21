@@ -15,6 +15,7 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField
 ##################################################
 from apps.default.forms import UserRegisterForm
 from apps.subclasses.empresa.escola.models import Escola
+from apps.default.models import Documento
 ##################################################
 
 class PassageiroRegisterForm(UserRegisterForm, forms.Form):
@@ -38,3 +39,20 @@ class PassageiroRegisterForm(UserRegisterForm, forms.Form):
 		self.fields['observacao'].widget.attrs['placeholder'] = 'Digite algumas observacões'
 		self.fields['numero_passaporte'].widget.attrs['class'] = 'form-control'
 		self.fields['data_validade_passaporte'].widget.attrs['class'] = 'form-control'
+
+
+class DocumentoForm(forms.ModelForm):
+
+    class Meta:
+        model = Documento
+        fields = ('id_tipo_documento', 'anexo',)
+
+    def __init__(self, *args, **kwargs):
+        super(DocumentoForm, self).__init__(*args, **kwargs)
+        # id_tipo_documento Fields widget
+        self.fields['id_tipo_documento'].widget.attrs['class'] = 'form-control'
+        self.fields['id_tipo_documento'].widget.attrs['placeholder'] = 'Tipo'
+
+         # anexo Fields widget
+        self.fields['anexo'].widget.attrs['class'] = 'form-control'
+        self.fields['anexo'].widget.attrs['placeholder'] = 'Anexo'
