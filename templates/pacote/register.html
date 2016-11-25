@@ -94,8 +94,11 @@
             </div>
             <div class="col-sm-8">
               <div class="form-group  required">
-                <label>{{form.is_active.label_tag}}</label>
-                  {{form.is_active}}
+                <br>
+                <div class="checkbox check-success  ">
+                  {{ form.is_active }}
+                  <label for="id_is_active">Ativo </label>
+                </div>
               </div>
             </div>
           </div>
@@ -226,7 +229,7 @@
 <script src="{% static 'js/default/jquery.bootstrap.wizard.min.js' %}" type="text/javascript">
 </script>
 <script src="{% static 'js/default/bootstrap-datepicker.js' %}" type="text/javascript"></script>
-
+<script src="{% static 'js/default/custom.js' %}" type="text/javascript"></script>
 <script>
   $(document).ready(function() {
 

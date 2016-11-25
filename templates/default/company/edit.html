@@ -3,7 +3,7 @@
 
 {% block page_info %}
     <li>
-      <b>Empresa</b>
+      <b>{% block title_top %}Empresa{% endblock %}</b>
     </li>
     <li>
       <a class="active">Editar</a>
@@ -22,7 +22,7 @@
        <li class="active">
          <a data-toggle="tab" href="#tab1"><i class="fa fa-shopping-cart tab-icon"></i>
             <span>
-               Dados da empresa
+               {% block tab_01 %} Dados da Empresa{% endblock %}
             </span>
          </a>
        </li>

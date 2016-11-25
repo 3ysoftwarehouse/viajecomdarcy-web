@@ -187,7 +187,7 @@ class UserRegister(JSONResponseMixin,View):
 			formset = PhoneFormSet(request.POST, request.FILES)
 			
 			nome = request.POST['nome']
-			#sobrenome = request.POST['sobrenome']
+			sobrenome = ''
 			email = request.POST['email']
 			password = request.POST['password']
 			tipo_usuario = request.POST['tipo_usuario']
@@ -216,6 +216,13 @@ class UserRegister(JSONResponseMixin,View):
 
 			if not nome:
 				context['error_msg'] = 'nome cannot be empty !'
+			else:
+				nomeSeparado = nome.split(" ", 1)
+				try:
+					sobrenome =  nomeSeparado[1]
+				except:
+					sobrenome = ' '
+
 			#if not sobrenome:
 			#	context['error_msg'] = 'sobrenome cannot be empty !'
 			if not email:
@@ -296,10 +303,9 @@ class UserRegister(JSONResponseMixin,View):
 				id_endereco.save()
 
 				usuario = Usuario.objects.create_user(email, password)
-				nomeSeparado = nome.split(" ", 1)
 				usuario.nome = nomeSeparado[0]
-				usuario.sobrenome = nomeSeparado[1]
-				usuario.nomecompleto = nomeSeparado[0] +" "+nomeSeparado[1]
+				usuario.sobrenome = sobrenome
+				usuario.nomecompleto = nomeSeparado[0] +" "+sobrenome
 				usuario.id_tipo_usuario = TipoUsuario.objects.get(pk=tipo_usuario)
 				usuario.id_genero = Genero.objects.get(pk=genero)
 				usuario.data_nascimento = data_nascimento
@@ -349,7 +355,7 @@ class UserEdit(JSONResponseMixin,View):
 
 		form = UserRegisterForm(
 			initial={
-			'nome': usuario.nome,
+			'nome': usuario.nomecompleto,
 			'sobrenome': usuario.sobrenome,
 			'email': usuario.email,
 			'tipo_usuario' : usuario.id_tipo_usuario, 
@@ -380,8 +386,9 @@ class UserEdit(JSONResponseMixin,View):
 			PhoneFormSet = formset_factory(PhoneForm)		
 			formset = PhoneFormSet(request.POST, request.FILES)
 			
+			
 			nome = request.POST['nome']
-			sobrenome = request.POST['sobrenome']
+			sobrenome = ''
 			email = request.POST['email']
 			tipo_usuario = request.POST['tipo_usuario']
 			genero = request.POST['genero']
@@ -409,6 +416,13 @@ class UserEdit(JSONResponseMixin,View):
 
 			if not nome:
 				context['error_msg'] = 'nome cannot be empty !'
+			else:
+				nomeSeparado = nome.split(" ", 1)
+				try:
+					sobrenome =  nomeSeparado[1]
+				except:
+					sobrenome = ' '
+
 			if not sobrenome:
 				context['error_msg'] = 'sobrenome cannot be empty !'
 			if not email:
@@ -491,9 +505,9 @@ class UserEdit(JSONResponseMixin,View):
 				id_endereco.save()
 
 				
-				usuario.nome = nome
+				usuario.nome = nomeSeparado[0]
 				usuario.sobrenome = sobrenome
-				usuario.nomecompleto = nome +" "+sobrenome
+				usuario.nomecompleto = nomeSeparado[0] +" "+sobrenome
 				usuario.id_tipo_usuario = TipoUsuario.objects.get(pk=tipo_usuario)
 				usuario.id_genero = Genero.objects.get(pk=genero)
 				usuario.data_nascimento = data_nascimento
