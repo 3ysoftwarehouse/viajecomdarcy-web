@@ -54,7 +54,7 @@ class ClienteRegister(JSONResponseMixin,View):
 			emissor = get_emissor(self)
 			
 			nome = request.POST['nome']
-			#sobrenome = request.POST['sobrenome']
+			sobrenome = ''
 			email = request.POST['email']
 			password = request.POST['password']
 			genero = request.POST['genero']
@@ -132,8 +132,12 @@ class ClienteRegister(JSONResponseMixin,View):
 
 			if not nome:
 				context['error_msg'] = 'nome cannot be empty !'
-			#if not sobrenome:
-			#	context['error_msg'] = 'sobrenome cannot be empty !'
+			else:
+				nomeSeparado = nome.split(" ", 1)
+				try:
+					sobrenome =  nomeSeparado[1]
+				except:
+					sobrenome = ' '
 			if not email:
 				context['error_msg'] = 'email cannot be empty !'
 			if not password:
@@ -262,11 +266,10 @@ class ClienteRegister(JSONResponseMixin,View):
 					id_endereco_empresa = None
 
 
-				usuario = Usuario.objects.create_user(email, password)
-				nomeSeparado = nome.split(" ", 1)
+				usuario = Usuario.objects.create_user(email, password)				
 				usuario.nome = nomeSeparado[0]
-				usuario.sobrenome = nomeSeparado[1]
-				usuario.nomecompleto = nomeSeparado[0] +" "+nomeSeparado[1]
+				usuario.sobrenome = sobrenome
+				usuario.nomecompleto = nomeSeparado[0] +" "+sobrenome
 				try:
 					tipo_usuario = TipoUsuario.objects.get(descricao__icontains='CLIENTE')
 				except:
@@ -349,7 +352,7 @@ class ClienteEdit(JSONResponseMixin,View):
 
 		form = ClienteRegisterForm(
 			initial={
-			'nome': usuario.nome,
+			'nome': usuario.nomecompleto,
 			'sobrenome': usuario.sobrenome,
 			'email': usuario.email,			
 			'genero' : usuario.id_genero,
@@ -367,12 +370,15 @@ class ClienteEdit(JSONResponseMixin,View):
 			'numero': id_endereco.numero,
 			'complemento' : id_endereco.complemento,
 			'pontoreferencia' : id_endereco.pontoreferencia,
+			'nome_pai' : cliente.nome_pai,
+			'nome_mae' : cliente.nome_mae,
+			'naturalidade' : cliente.naturalidade,
+			'numero_dependentes' : cliente.numero_dependentes,
+			'tipo_residencia' : cliente.tipo_residencia,
 			'dt_emissao_rg' : cliente.dt_emissao_rg,
 			'tempo_residencia' : cliente.tempo_residencia,
 			'empresa' : cliente.empresa,
-			'cep' : cliente.cep,
-			'endereco_empresa' : cliente.endereco,
-			'telefone_empresa' : cliente.telefone,
+			'telefone' : cliente.telefone,
 			'dt_admissao' : cliente.dt_admissao,
 			'cargo' : cliente.cargo,
 			'principal_renda' : cliente.principal_renda,
@@ -382,7 +388,8 @@ class ClienteEdit(JSONResponseMixin,View):
 			'agencia' : cliente.agencia,
 			'conta' : cliente.conta,
 			'dt_banco' : cliente.dt_banco,
-			'telefone_banco' : cliente.telefone_banco		
+			'telefone_banco' : cliente.telefone_banco,
+			'cnpj_empresa' : cliente.cnpj_empresa,	
 			}
 			)
 		return render (request, 'subclasses/usuario/cliente/edit.html', {'form':form,'formset':formset})
@@ -397,7 +404,7 @@ class ClienteEdit(JSONResponseMixin,View):
 			emissor = get_emissor(self)
 
 			nome = request.POST['nome']
-			#sobrenome = request.POST['sobrenome']
+			sobrenome = ''
 			email = request.POST['email']			
 			genero = request.POST['genero']
 			data_nascimento = request.POST['data_nascimento']
@@ -463,10 +470,14 @@ class ClienteEdit(JSONResponseMixin,View):
 				pass
 
 			
-			#if not nome:
-			#	context['Nome'] = ' cannot be empty !'
-			if not sobrenome:
-				context['Sobrenome'] = ' cannot be empty !'
+			if not nome:
+				context['Nome'] = ' cannot be empty !'
+			else:
+				nomeSeparado = nome.split(" ", 1)
+				try:
+					sobrenome =  nomeSeparado[1]
+				except:
+					sobrenome = ' '
 			if not email:
 				context['E-mail'] = ' cannot be empty !'			
 			if not genero:
@@ -581,10 +592,9 @@ class ClienteEdit(JSONResponseMixin,View):
 				id_endereco_empresa.save()
 
 				
-				nomeSeparado = nome.split(" ", 1);
 				usuario.nome = nomeSeparado[0]
-				usuario.sobrenome = nomeSeparado[1]
-				usuario.nomecompleto = nomeSeparado[0] +" "+nomeSeparado[1]
+				usuario.sobrenome = sobrenome
+				usuario.nomecompleto = nomeSeparado[0] +" "+sobrenome
 				try:
 					tipo_usuario = TipoUsuario.objects.get(descricao__icontains='CLIENTE')
 				except:

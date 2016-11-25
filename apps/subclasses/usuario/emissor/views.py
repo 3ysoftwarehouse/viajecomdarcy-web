@@ -297,6 +297,11 @@ class EmissorEdit(JSONResponseMixin,View):
 					context['error'] = erro
 				pass
 
+			if data_nascimento:
+				data_nascimento = datetime.strptime(data_nascimento, '%d/%m/%Y').strftime('%Y-%m-%d')
+			else:
+				data_nascimento = None
+
 			
 			if not nome:
 				context['Nome'] = ' cannot be empty !'
