@@ -16,5 +16,8 @@ class Passageiro(models.Model):
 	data_validade_passaporte = models.DateField(null=True, blank=True)
 	
 	def __str__(self):
-		return str(self.id_usuario.nome + ' ' + self.id_usuario.sobrenome)
-
+		if self.id_usuario.sobrenome:
+			return str(self.id_usuario.nome + ' ' + self.id_usuario.sobrenome)
+		else:
+			return str(self.id_usuario.nome)
+		

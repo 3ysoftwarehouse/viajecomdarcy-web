@@ -1,4 +1,6 @@
 {% extends "default/user/register.html" %}
+{% block title_top %} Passageiro {% endblock %}
+{% block tab_01 %} Dados do Passageiro{% endblock %}
 {% block subclass_itens %}
 <li class="">
    <a data-toggle="tab" href="#tab3"><i class="fa fa-truck tab-icon"></i> 
@@ -56,6 +58,33 @@
                   </div>
                </div>
             </div>
+            <div class='row'>
+               <div id="id_doc_table" class="row form-group-attached p-t-10">
+                   {% for form in doc_formset.forms %}
+                   <div id="{{ form.prefix }}-row" class="tr form-group-attached">
+                       <div class="row">
+                           <div class="col-sm-5">
+                               <div class="form-group form-group-default">
+                                   <label>{{ form.id_tipo_documento.label_tag }}</label>
+                                   <div style="text-align:center;">
+                                     {{ form.id_tipo_documento }}
+                                   </div>
+                               </div>
+                           </div>
+                           <div class="col-sm-7">
+                               <div class="form-group form-group-default">
+                                   <label>{{ form.anexo.label_tag}} </label>
+                                   <div style="text-align:center;">
+                                     {{ form.anexo }}
+                                   </div>
+                               </div>
+                           </div>
+                           <div></div>
+                       </div>
+                   </div>
+                   {% endfor %} {{ doc_formset.management_form }}
+                 </div>
+            </div>
 
          </div>
       </div>
@@ -68,6 +97,9 @@
 $(function() {
         $("#id_id_escola").select2();
         $('#id_data_validade_passaporte').mask("99/99/9999");
+        $('#id_doc_table .tr').formset({
+         prefix: '{{ doc_formset.prefix }}'
+       })
     })
 </script>
 {% endblock %}

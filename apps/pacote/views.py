@@ -70,8 +70,6 @@ class PacoteRegister(JSONResponseMixin,View):
                 context['error_msg'] = 'pacote_nome cannot be empty !'
             if not pacote_desc:
                 context['error_msg'] = 'pacote_desc cannot be empty !'
-            if not is_active:
-                context['error_msg'] = 'is_active cannot be empty !'
             if not pacote_preco:
                 context['error_msg'] = 'pacote_preco cannot be empty !'
             if not pacote_taxa:
@@ -267,8 +265,6 @@ class PacoteEdit(JSONResponseMixin,View):
                 context['error_msg'] = 'pacote_nome cannot be empty !'
             if not pacote_desc:
                 context['error_msg'] = 'pacote_desc cannot be empty !'
-            if not is_active:
-                context['error_msg'] = 'is_active cannot be empty !'
             if not pacote_preco:
                 context['error_msg'] = 'pacote_preco cannot be empty !'
             if not pacote_taxa:

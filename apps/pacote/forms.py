@@ -63,18 +63,16 @@ class PacoteRegisterForm(forms.Form):
 		self.fields['pacote_desc'].widget.attrs['class'] = 'form-control'
 
 		# is_active Fields widget
-		self.fields['is_active'].widget.attrs['class'] = 'form-control js-switch'
-		self.fields['is_active'].widget.attrs['data-init-plugin'] = 'switchery'
-		self.fields['is_active'].widget.attrs['checked'] = 'checked'
+		self.fields['is_active'].widget.attrs['class'] = 'form-control'
 
 		# pacote_preco Fields widget
-		self.fields['pacote_preco'].widget.attrs['class'] = 'form-control'
+		self.fields['pacote_preco'].widget.attrs['class'] = 'form-control input-number'
 
 		# pacote_taxa Fields widget
-		self.fields['pacote_taxa'].widget.attrs['class'] = 'form-control'
+		self.fields['pacote_taxa'].widget.attrs['class'] = 'form-control input-number'
 
 		# pacote_taxa Fields widget
-		self.fields['taxa_remessa'].widget.attrs['class'] = 'form-control'
+		self.fields['taxa_remessa'].widget.attrs['class'] = 'form-control input-number'
 
 		# pacote_daybyday Fields widget
 		self.fields['pacote_daybyday'].widget.attrs['class'] = 'form-control'
