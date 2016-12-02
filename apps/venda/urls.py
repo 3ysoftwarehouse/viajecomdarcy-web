@@ -31,5 +31,5 @@ urlpatterns = (
 	url(r'^dashboard/passageiro/opcional/passageiro_opcional_moeda_json/(?P<id_reserva_passageiro>\d+)/(?P<id_opcional>\d+)$', login_required(PassageiroOpcMoedaJson.as_view()), name="passageiro-opcional-moeda-json"),
 	url(r'^dashboard/reservapassageiro/(?P<pk>\d+)/$', login_required(addPassageiroToReserva), name="add-passageiro"),
 	url(r'^dashboard/opcionalpassageiro/(?P<pk>\d+)/$', login_required(addOpcionalPassageiro), name="add-opcional"),
-	url(r'^dashboard/finalizaragendamento/(?P<pk>\d+)/', login_required(finalizarAgendamento), name="finalizar-agendamento"),
+	url(r'^dashboard/finalizaragendamento/(?P<pk>\d+)/(?P<cl>\d+)/', login_required(finalizarAgendamento), name="finalizar-agendamento"),
 )

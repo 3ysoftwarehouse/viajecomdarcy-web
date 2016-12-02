@@ -16,8 +16,9 @@ function getCookie(name) {
 }
 
 function finalizarAgendamento(){
+    id_cliente = $("#id_id_cliente").val()
     $.ajax({
-        url: url_finalizar,
+        url: url_finalizar + id_reserva + '/' + id_cliente + '/',
         type: 'GET',
         success: function(response){
           if (response.status == "success"){
