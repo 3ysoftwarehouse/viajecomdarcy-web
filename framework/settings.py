@@ -51,6 +51,8 @@ DJANGO_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework_swagger',
 ]
 CUSTOM_APPS = [
     'apps.default', 
@@ -59,7 +61,7 @@ CUSTOM_APPS = [
     'apps.pacote',
     'apps.acomodacao',
     'apps.venda',
-
+    'apps.api_rest',
     # SUBCLASS APPS
     #'apps.subclasses.empresa.startup',
     'apps.subclasses.empresa.escola',

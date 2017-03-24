@@ -27,6 +27,7 @@ urlpatterns = [
 '''
 urlpatterns += i18n_patterns(
 	url(r'^$', login_required(RedirectView.as_view(url='framework/dashboard/home/'))),
+	url(r'^api_rest/', include('apps.api_rest.urls')),
 	url(r'^framework/', include('apps.default.urls')),
 	url(r'^framework/', include('apps.excursao.urls')),
 	url(r'^framework/', include('apps.moeda.urls')),
