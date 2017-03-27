@@ -508,11 +508,13 @@ class PassageiroOpcMoedaJson(JSONResponseMixin,View):
             return JsonResponse({'data':'error'})
 
 
-def finalizarAgendamento(request, pk=None):
+def finalizarAgendamento(request, pk=None, cl=None):
     try:
         id_status_reserva = StatusReserva.objects.get(descricao="RESERVADO")
+        id_cliente = Cliente.objects.get(pk=cl)
         reserva = Reserva.objects.get(pk=pk)
         reserva.id_status_reserva = id_status_reserva
+        reserva.id_cliente = id_cliente
         reserva.save()
         return JsonResponse({'message':'success', 'status':'success'})
     except Exception as e:

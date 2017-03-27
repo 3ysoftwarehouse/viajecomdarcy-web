@@ -51,6 +51,10 @@ DJANGO_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework_swagger',
+    'oauth2_provider',
+    'corsheaders',
 ]
 CUSTOM_APPS = [
     'apps.default', 
@@ -59,7 +63,7 @@ CUSTOM_APPS = [
     'apps.pacote',
     'apps.acomodacao',
     'apps.venda',
-
+    'apps.api_rest',
     # SUBCLASS APPS
     #'apps.subclasses.empresa.startup',
     'apps.subclasses.empresa.escola',
@@ -86,6 +90,7 @@ DJANGO_MIDDLEWARES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 CUSTOM_MIDDLEWARES = [
 
@@ -227,3 +232,11 @@ STATICFILES_DIRS = (
 '''
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.ext.rest_framework.OAuth2Authentication',
+    )
+}
+
