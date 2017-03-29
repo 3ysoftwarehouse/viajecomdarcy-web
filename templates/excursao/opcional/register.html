@@ -11,11 +11,6 @@
 {% endblock %}
 
 {% block content %}
-   {% if context %}
-      {%  for title, value in context.items %}
-         {{title}} : {{value}} <br>
-      {% endfor %}
-   {% endif %}
   <div class="col-md-12">
   <!-- START PANEL -->
   <div class="panel panel-default">
@@ -25,38 +20,56 @@
     </div>
     <div class="panel-body">
       <form autocomplete="off"  method="post" enctype="multipart/form-data" role="form" id="form-personal" novalidate="novalidate">
-      {% csrf_token %}
-      {{ form.errors }}
-        <div class="form-group  required">
-          <label>{{form.opcional_desc.label_tag}}</label>
-          {{form.opcional_desc}}
+        {% csrf_token %}
+        <div class='row'>
+           <div class="col-lg-12">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.opcional_desc.auto_id }}">{{ form.opcional_desc.label_tag }}</label>
+              {{ form.opcional_desc }}
+              <small class="text-muted">{{ form.opcional_desc.errors }}</small>
+            </fieldset>
+          </div>
         </div>
-        <div class="form-group  required">
-          <label>{{form.opcional_preco.label_tag}}</label>
-          {{form.opcional_preco}}
+        <div class='row'>
+          <div class="col-lg-4">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.opcional_preco.auto_id }}">{{ form.opcional_preco.label_tag }}</label>
+              {{ form.opcional_preco }}
+              <small class="text-muted">{{ form.opcional_preco.errors }}</small>
+            </fieldset>
+          </div>
+          <div class="col-lg-4">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.id_moeda.auto_id }}">{{ form.id_moeda.label_tag }}</label>
+              {{ form.id_moeda }}
+              <small class="text-muted">{{ form.id_moeda.errors }}</small>
+            </fieldset>
+          </div>
+          <div class="col-lg-4">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.taxa_remessa.auto_id }}">{{ form.taxa_remessa.label_tag }}</label>
+              {{ form.taxa_remessa }}
+              <small class="text-muted">{{ form.taxa_remessa.errors }}</small>
+            </fieldset>
+          </div>
         </div>
-        <div class="form-group  required">
-          <label>{{form.id_moeda.label_tag}}</label>
-          {{form.id_moeda}}
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="form-group">
+              <button type="submit" class="btn btn-success btn-cons">
+                Salvar
+              </button>
+              <div class="pull-right">
+              <a class="btn btn-secondary-outline" href="{% url 'opcional-list' %}">
+                Cancelar
+              </a>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="form-group  required">
-          <label>{{form.taxa_remessa.label_tag}}</label>
-          {{form.taxa_remessa}}
-        </div>
-        <button class="btn btn-success btn-cons m-t-10 pull-right" type="submit">Cadastrar
       </form>
-      </button>
     </div>
   </div>
   <!-- END PANEL -->
 </div>
-{% endblock %}
-
-{% block javascript %}
-<script src="{% static 'js/default/jquery.inputmask.min.js' %}" type="text/javascript"></script>
-<script>
-$(document).ready(function() {
-  //Input mask
-  $("#id_opcional_preco").mask("999,99");
-</script>
 {% endblock %}

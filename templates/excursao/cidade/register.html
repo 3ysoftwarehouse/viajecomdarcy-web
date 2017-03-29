@@ -11,11 +11,6 @@
 {% endblock %}
 
 {% block content %}
-   {% if context %}
-      {%  for title, value in context.items %}
-         {{title}} : {{value}} <br>
-      {% endfor %}
-   {% endif %}
   <div class="col-md-12">
   <!-- START PANEL -->
   <div class="panel panel-default">
@@ -25,14 +20,31 @@
     </div>
     <div class="panel-body">
       <form autocomplete="off"  method="post" enctype="multipart/form-data" role="form" id="form-personal" novalidate="novalidate">
-      {% csrf_token %}
-        <div class="form-group  required">
-          <label>{{form.cidade.label_tag}}</label>
-          {{form.cidade}}
+        {% csrf_token %}
+        <div class='row'>
+           <div class="col-lg-12">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.cidade.auto_id }}">{{ form.cidade.label_tag }}</label>
+              {{ form.cidade }}
+              <small class="text-muted">{{ form.cidade.errors }}</small>
+            </fieldset>
+          </div>
         </div>
-        <button class="btn btn-success btn-cons m-t-10 pull-right" type="submit">Cadastrar
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="form-group">
+              <button type="submit" class="btn btn-success btn-cons">
+                Salvar
+              </button>
+              <div class="pull-right">
+              <a class="btn btn-secondary-outline" href="{% url 'cidade-list' %}">
+                Cancelar
+              </a>
+              </div>
+            </div>
+          </div>
+        </div>
       </form>
-      </button>
     </div>
   </div>
   <!-- END PANEL -->
