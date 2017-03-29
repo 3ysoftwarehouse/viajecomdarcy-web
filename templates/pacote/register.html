@@ -104,6 +104,16 @@
               <small class="text-muted">{{ form.pacote_daybyday.errors }}</small>
             </fieldset>
           </div>          
+        </div>        
+
+        <div class='row'>
+           <div class="col-lg-12">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.pacote_obs.auto_id }}">{{ form.pacote_obs.label_tag }}</label>
+              {{ form.pacote_obs }}
+              <small class="text-muted">{{ form.pacote_obs.errors }}</small>
+            </fieldset>
+          </div>          
         </div>
 
         <div class='row'>
@@ -112,16 +122,6 @@
               <label class="form-label semibold" for="{{ form.id_opcional.auto_id }}">{{ form.id_opcional.label_tag }}</label>
               {{ form.id_opcional }}
               <small class="text-muted">{{ form.id_opcional.errors }}</small>
-            </fieldset>
-          </div>          
-        </div>
-
-        <div class='row'>
-           <div class="col-lg-12">
-            <fieldset class="form-group">
-              <label class="form-label semibold" for="{{ form.pacote_obs.auto_id }}">{{ form.pacote_obs.label_tag }}</label>
-              {{ form.pacote_obs }}
-              <small class="text-muted">{{ form.pacote_obs.errors }}</small>
             </fieldset>
           </div>          
         </div>
