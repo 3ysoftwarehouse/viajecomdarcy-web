@@ -2,26 +2,7 @@ $(document).ready(function() {
 
     $("#id_id_opcional").select2();
     $('#id_data_prevista').mask("99/99/9999");
-
-    $(function() {
-
-      $('#id_cidade_table .tr').formset({
-          prefix: '{{ cidadeformset.prefix }}'
-      });
-      $('#id_acomodacao_table .tr').formset({
-          prefix: '{{ acomodacaoformset.prefix }}'
-      });
-      $(".acomodacao").focus(function(){
-        aux_select(this.value, this.options[this.selectedIndex].text)
-      });
-      $(".acomodacao").change(function(){
-        check_select('update');
-      });
-      $(".add-row").click(function(){
-        check_select('add');
-      });
-
-    });
+    
 
   });
 
