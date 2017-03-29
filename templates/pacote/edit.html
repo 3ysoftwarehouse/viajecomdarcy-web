@@ -213,4 +213,23 @@
 <script src="{% static 'js/default/bootstrap-datepicker.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/default/custom.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/pacote/pacote.js' %}" type="text/javascript"></script>
+<script type="text/javascript">
+$(function() {
+  $('#id_cidade_table .tr').formset({
+      prefix: '{{ cidadeformset.prefix }}'
+  });
+  $('#id_acomodacao_table .tr').formset({
+      prefix: '{{ acomodacaoformset.prefix }}'
+  });
+  $(".acomodacao").focus(function(){
+    aux_select(this.value, this.options[this.selectedIndex].text)
+  });
+  $(".acomodacao").change(function(){
+    check_select('update');
+  });
+  $(".add-row").click(function(){
+    check_select('add');
+  });
+});
+</script>
 {% endblock %}
