@@ -1,8 +1,4 @@
 #-*- coding: utf-8 -*-
-
-##################################################
-#				DJANGO IMPORTS                   #
-##################################################
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render,redirect
 from django.views.generic import CreateView, RedirectView, View, UpdateView, ListView, DetailView, DeleteView
@@ -12,25 +8,11 @@ from django.http import (HttpResponse,
                          HttpResponseForbidden,
                          HttpResponseBadRequest)
 from django.forms import formset_factory
-##################################################
 
-
-
-##################################################
-#				CUSTOM IMPORTS                   #
-##################################################
-from .models import Excursao, Cidade, Opcional # MODELS
+from .models import Excursao, Cidade, Opcional
 from .forms import ExcursaoRegisterForm, OpcionalForm, CidadeForm
 from apps.default.views import JSONResponseMixin
-##################################################
 
-
-
-'''
-----------------------------------------
-			EXCURSAO METHODS
-----------------------------------------
-''' 
 
 class ExcursaoRegister(JSONResponseMixin,View):
 	def get(self, request):
@@ -39,72 +21,31 @@ class ExcursaoRegister(JSONResponseMixin,View):
 
 	def post(self, request, *args, **kwargs):
 		context = {}
-		if request.method == 'POST':		    
-			form = ExcursaoRegisterForm(request.POST,request.FILES)
-			
-			excurcao_desc = request.POST['excurcao_desc']
-			is_active = request.POST.get('is_active', False)
-			
-			
-			if not excurcao_desc:
-				context['error_msg'] = 'excurcao_desc cannot be empty !'
-			
-			
-
-			if not context:
-
-				excursao = Excursao()
-				excursao.excurcao_desc = excurcao_desc
-				excursao.is_active = is_active
-				excursao.save()
-				
-				return redirect(reverse_lazy("excursao-list"))
-
-			else:
-				form = ExcursaoRegisterForm(request.POST,request.FILES)
-				
-
-		return render(request, 'excursao/excursao/register.html', {'form': form, 'formset':formset})
+		form = ExcursaoRegisterForm(request.POST, request.FILES)		
+		if form.is_valid() :	    
+			excursao = form.save(commit=False)
+			excursao.save()
+			return redirect(reverse_lazy("excursao-list"))
+		context = {'form':form}
+		return render(request, 'excursao/excursao/register.html', context)
 
 
 class ExcursaoEdit(JSONResponseMixin,View):
-	def get(self, request, pk=None):
+	def get(self, request, pk):
 		excursao = Excursao.objects.get(pk=pk)
-		
-		form = ExcursaoRegisterForm(
-			initial={
-			'excurcao_desc': excursao.excurcao_desc,
-			'is_active': excursao.is_active,				
-			}
-			)
-		return render (request, 'excursao/excursao/register.html', {'form':form})
+		form = ExcursaoRegisterForm(instance=excursao)
+		return render (request, 'excursao/excursao/edit.html', {'form':form})
 
-	def post(self, request, pk=None, *args, **kwargs):
+	def post(self, request, pk, *args, **kwargs):
 		context = {}
-		if request.method == 'POST':		    
-			form = ExcursaoRegisterForm(request.POST,request.FILES)
-			
-			excurcao_desc = request.POST['excurcao_desc']
-			is_active = request.POST.get('is_active', False)
-			
-			
-			if not excurcao_desc:
-				context['error_msg'] = 'excurcao_desc cannot be empty !'
-			
-
-			if not context:
-
-				excursao = Excursao.objects.get(pk=pk)
-				excursao.excurcao_desc = excurcao_desc
-				excursao.is_active = is_active
-				excursao.save()
-				
-				return redirect(reverse_lazy("excursao-list"))
-
-			else:
-				form = ExcursaoRegisterForm(request.POST,request.FILES)
-
-		return render (request, 'excursao/excursao/edit.html', {'form':form ,'context':context})
+		excursao = Excursao.objects.get(pk=pk)
+		form = ExcursaoRegisterForm(request.POST, request.FILES, instance=excursao)		
+		if form.is_valid() :	    
+			excursao = form.save(commit=False)
+			excursao.save()
+			return redirect(reverse_lazy("excursao-list"))
+		context = {'form':form}
+		return render(request, 'excursao/excursao/edit.html', context)
 
 
 
@@ -131,24 +72,13 @@ class ExcursaoDelete(JSONResponseMixin,DeleteView):
 	success_url = reverse_lazy('excursao-list')
 	template_name = 'excursao/excursao/delete.html'
 
-'''
-----------------------------------------
-			END EXCURSAO METHODS
-----------------------------------------
-'''
 
 
-'''
-----------------------------------------
-			CIDADE METHODS
-----------------------------------------
-'''
 class CidadeRegister(JSONResponseMixin,CreateView):
     model = Cidade
     form_class = CidadeForm
     template_name = 'excursao/cidade/register.html'
     success_url = reverse_lazy('cidade-list')
-
 
 
 class CidadeEdit(JSONResponseMixin,UpdateView):
@@ -180,17 +110,9 @@ class CidadeDelete(JSONResponseMixin,DeleteView):
 	model = Cidade
 	success_url = reverse_lazy('pacote-list')
 	template_name = 'excursao/cidade/delete.html'
-'''
-----------------------------------------
-			END CIDADE METHODS
-----------------------------------------
-'''
 
-'''
-----------------------------------------
-			OPCIONAL METHODS
-----------------------------------------
-'''
+
+
 class OpcionalRegister(JSONResponseMixin,CreateView):
     model = Opcional
     form_class = OpcionalForm
@@ -228,8 +150,3 @@ class OpcionalDelete(JSONResponseMixin,DeleteView):
 	model = Opcional
 	success_url = reverse_lazy('opcional-list')
 	template_name = 'excursao/opcional/delete.html'
-'''
-----------------------------------------
-			END OPCIONAL METHODS
-----------------------------------------
-'''

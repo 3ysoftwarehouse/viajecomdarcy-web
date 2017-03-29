@@ -2,51 +2,67 @@
 {% load staticfiles %}
 
 {% block page_info %}
-  <li>
-     <b>Acomodação</b>
-  </li>
-  <li>
-     <a class="active">Cadastro</a>
-  </li>
+    <li>
+      <b>Acomodação</b>
+    </li>
+    <li>
+      <a class="active">Editar</a>
+    </li>    
 {% endblock %}
 
 {% block content %}
-  {% if context %}
-  {%  for title, value in context.items %}
-    {{title}} : {{value}} <br>
-  {% endfor %}
-{% endif %}
-
-<div class="col-md-12">
-   <!-- START PANEL -->
-   <div class="panel panel-default">
-      <div class="panel-heading">
-         <div class="panel-title">
-            Dados
-         </div>
+  <div class="col-md-12">
+  <!-- START PANEL -->
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">
       </div>
-      <div class="panel-body">
-         <form autocomplete="off"  method="post" enctype="multipart/form-data" role="form" id="form-personal" novalidate="novalidate">
-            {% csrf_token %}
-            <div class="form-group  required">
-               <label>Nome</label>
-               {{form.acomodacao_desc}}
+    </div>
+    <div class="panel-body">
+      <form autocomplete="off"  method="post" enctype="multipart/form-data" role="form" id="form-personal" novalidate="novalidate">
+        {% csrf_token %}
+        <div class='row'>
+           <div class="col-lg-12">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.acomodacao_desc.auto_id }}">{{ form.acomodacao_desc.label_tag }}</label>
+              {{ form.acomodacao_desc }}
+              <small class="text-muted">{{ form.acomodacao_desc.errors }}</small>
+            </fieldset>
+          </div>
+        </div>
+        <div class='row'>
+          <div class="col-lg-6">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.sigla.auto_id }}">{{ form.sigla.label_tag }}</label>
+              {{ form.sigla }}
+              <small class="text-muted">{{ form.sigla.errors }}</small>
+            </fieldset>
+          </div>
+          <div class="col-lg-6">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.numero.auto_id }}">{{ form.numero.label_tag }}</label>
+              {{ form.numero }}
+              <small class="text-muted">{{ form.numero.errors }}</small>
+            </fieldset>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="form-group">
+              <button type="submit" class="btn btn-success btn-cons">
+                Salvar
+              </button>
+              <div class="pull-right">
+              <a class="btn btn-secondary-outline" href="{% url 'acomodacao-list' %}">
+                Cancelar
+              </a>
+              </div>
             </div>
-            <div class="form-group  required">
-               <label>Sigla</label>
-               {{form.sigla}}
-            </div>
-            <div class="form-group  required">
-               <label>Número</label>
-               {{ form.numero }}
-            </div>
-          <button class="btn btn-success btn-cons m-t-10 pull-right" type="submit">
-            Cadastrar
-          </button>
+          </div>
+        </div>
       </form>
-      </div>
-   </div>
-   <!-- END PANEL -->
+    </div>
+  </div>
+  <!-- END PANEL -->
 </div>
 {% endblock %}
-

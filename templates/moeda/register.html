@@ -11,11 +11,6 @@
 {% endblock %}
 
 {% block content %}
-   {% if context %}
-      {%  for title, value in context.items %}
-         {{title}} : {{value}} <br>
-      {% endfor %}
-   {% endif %}
   <div class="col-md-12">
   <!-- START PANEL -->
   <div class="panel panel-default">
@@ -26,21 +21,46 @@
     <div class="panel-body">
       <form autocomplete="off"  method="post" enctype="multipart/form-data" role="form" id="form-personal" novalidate="novalidate">
         {% csrf_token %}
-        <div class="form-group  required">
-           <label>Nome</label>
-           {{form.moeda_desc}}
+        <div class='row'>
+          <div class="col-lg-12">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.moeda_desc.auto_id }}">Nome</label>
+              {{ form.moeda_desc }}
+              <small class="text-muted">{{ form.moeda_desc.errors }}</small>
+            </fieldset>
+          </div>
         </div>
-        <div class="form-group  required">
-           <label>Cambio</label>
-           {{form.moeda_cambio}}
+        <div class="row">
+          <div class="col-lg-6">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.moeda_cambio.auto_id }}">Cambio</label>
+              {{ form.moeda_cambio }}
+              <small class="text-muted">{{ form.moeda_cambio.errors }}</small>
+            </fieldset>
+          </div>
+          <div class="col-lg-6">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.moeda_simbolo.auto_id }}">Símbolo</label>
+              {{ form.moeda_simbolo }}
+              <small class="text-muted">{{ form.moeda_simbolo.errors }}</small>
+            </fieldset>
+          </div>
         </div>
-        <div class="form-group  required">
-           <label>Símbolo</label>
-           {{form.moeda_simbolo}}
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="form-group">
+              <button type="submit" class="btn btn-success btn-cons">
+                Salvar
+              </button>
+              <div class="pull-right">
+              <a class="btn btn-secondary-outline" href="{% url 'moeda-list' %}">
+                Cancelar
+              </a>
+              </div>
+            </div>
+          </div>
         </div>
-        <button class="btn btn-success btn-cons m-t-10 pull-right" type="submit">Cadastrar
       </form>
-      </button>
     </div>
   </div>
   <!-- END PANEL -->

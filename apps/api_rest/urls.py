@@ -6,4 +6,5 @@ schema_view = get_swagger_view(title='VDC API')
 
 urlpatterns = [
  	url('^$', schema_view),
+ 	url(r'^login/$', views.Login.as_view(), name="login"),
 ]

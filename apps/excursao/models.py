@@ -1,4 +1,6 @@
 from django.db import models
+#from django.utils.translation import ugettext_lazy as _
+
 from apps.moeda.models import Moeda
 
 class Excursao(models.Model):
