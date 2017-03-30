@@ -172,7 +172,7 @@ class Usuario(AbstractBaseUser):
 
 class TelefoneUsuario(models.Model):
 	id_telefone_usuario = models.AutoField(primary_key=True)
-	id_tipo_telefone = models.ForeignKey('TipoTelefone', on_delete=models.CASCADE)
+	id_tipo_telefone = models.ForeignKey('TipoTelefone', on_delete=models.CASCADE, null=True, blank=True)
 	id_usuario = models.ForeignKey('Usuario', on_delete=models.CASCADE)
 	numero = models.CharField(max_length=11)
 	def __str__(self):
