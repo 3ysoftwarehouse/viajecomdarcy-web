@@ -1,26 +1,23 @@
 #-*- coding: utf-8 -*-
-
-
-##################################################
-#               DJANGO IMPORTS                   #
-##################################################
 from django import forms
 from django.conf import settings
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-##################################################
+from django.forms import BaseFormSet
 
-
-##################################################
-#               CUSTOM IMPORTS                   #
-##################################################
 from apps.default.forms import UserRegisterForm
 from apps.subclasses.empresa.escola.models import Escola
 from apps.default.models import Documento
-##################################################
 
-class PassageiroRegisterForm(UserRegisterForm, forms.Form):
 
-	id_escola = forms.ModelChoiceField (label='Escola:', queryset = Escola.objects.all())
+class RequiredFormSet(BaseFormSet):
+	def __init__(self, *args, **kwargs):
+		super(RequiredFormSet, self).__init__(*args, **kwargs)
+		for form in self.forms:
+			form.empty_permitted = False
+
+class PassageiroRegisterForm(UserRegisterForm, forms.ModelForm):
+
+	id_escola = forms.ModelChoiceField (label='Escola:', queryset = Escola.objects.all(), required=False)
 	matricula = forms.IntegerField(label='Matricula CN:')
 	natularidade = forms.CharField(label='Natularidade:', max_length=30)
 	observacao = forms.CharField(label='Obs:', max_length=250, widget=forms.Textarea)
@@ -29,7 +26,7 @@ class PassageiroRegisterForm(UserRegisterForm, forms.Form):
 
 	def __init__(self, *args, **kwargs):
 		super(PassageiroRegisterForm, self).__init__(*args, **kwargs)
-
+		self.fields['password'].required = False
 		self.fields['id_escola'].widget.attrs['class'] = 'form-control'
 		self.fields['matricula'].widget.attrs['class'] = 'form-control'
 		self.fields['matricula'].widget.attrs['placeholder'] = 'Digite a matricula'
@@ -49,10 +46,8 @@ class DocumentoForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(DocumentoForm, self).__init__(*args, **kwargs)
-        # id_tipo_documento Fields widget
         self.fields['id_tipo_documento'].widget.attrs['class'] = 'form-control'
         self.fields['id_tipo_documento'].widget.attrs['placeholder'] = 'Tipo'
-
-         # anexo Fields widget
         self.fields['anexo'].widget.attrs['class'] = 'form-control'
         self.fields['anexo'].widget.attrs['placeholder'] = 'Anexo'
+        self.fields['anexo'].required = False

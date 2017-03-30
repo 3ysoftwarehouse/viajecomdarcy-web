@@ -1,8 +1,4 @@
 #-*- coding: utf-8 -*-
-
-##################################################
-#				DJANGO IMPORTS                   #
-##################################################
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render,redirect
 from django.views.generic import RedirectView, View, UpdateView, ListView, DetailView, DeleteView
@@ -13,536 +9,249 @@ from django.http import (HttpResponse,
                          HttpResponseBadRequest)
 from django.forms import formset_factory
 from datetime import datetime
-##################################################
 
-
-
-##################################################
-#				CUSTOM IMPORTS                   #
-##################################################
-from apps.default.models import Projeto, Usuario, Empresa, Logradouro, Endereco, TipoEmpresa, TipoTelefone, TelefoneUsuario, TipoUsuario, Genero,TipoDocumento, Documento # MODELS
-from .models import Passageiro # MODELS
-from apps.subclasses.empresa.escola.models import Escola # MODELS
-from .forms import PassageiroRegisterForm, DocumentoForm
-from apps.default.forms import PhoneForm # PHONE FORMS
+from apps.default.models import Projeto, Usuario, Empresa, Logradouro, Endereco, TipoEmpresa, TipoTelefone, TelefoneUsuario, TipoUsuario, Genero,TipoDocumento, Documento 
+from .models import Passageiro 
+from apps.subclasses.empresa.escola.models import Escola 
+from .forms import PassageiroRegisterForm, DocumentoForm, RequiredFormSet
+from apps.default.forms import PhoneForm 
 from apps.default.views import JSONResponseMixin
 from apps.subclasses.usuario.emissor.views import get_emissor
-##################################################
 
-
-'''
-----------------------------------------
-			PASSAGEIRO METHODS
-----------------------------------------
-''' 
 
 class PassageiroRegister(JSONResponseMixin,View):
 	def get(self, request):
 		form = PassageiroRegisterForm		
 		PhoneFormSet = formset_factory(PhoneForm)
 		formset = PhoneFormSet(prefix='phone')
-		DocFormSet = formset_factory(DocumentoForm)
+		DocFormSet = formset_factory(DocumentoForm, formset=RequiredFormSet)
 		doc_formset = DocFormSet(prefix='doc')
 		request.session["view"]="passageiro"
-		return render (request, 'subclasses/usuario/passageiro/register.html', {'form':form, 'formset':formset, 'doc_formset':doc_formset})
+		context = {'form':form, 'formset':formset, 'doc_formset':doc_formset}
+		return render(request, 'subclasses/usuario/passageiro/register.html', context)
 
 	def post(self, request, *args, **kwargs):
-		context = {}
-		if request.method == 'POST':		    
-			form = PassageiroRegisterForm(request.POST,request.FILES)
-			PhoneFormSet = formset_factory(PhoneForm)		
-			formset = PhoneFormSet(request.POST, request.FILES, prefix='phone')
-			DocFormSet = formset_factory(DocumentoForm)
-			doc_formset = DocFormSet(request.POST, request.FILES, prefix='doc')
-
+		form = PassageiroRegisterForm(request.POST,request.FILES)
+		PhoneFormSet = formset_factory(PhoneForm)		
+		formset = PhoneFormSet(request.POST, request.FILES, prefix='phone')
+		DocFormSet = formset_factory(DocumentoForm,formset=RequiredFormSet)
+		doc_formset = DocFormSet(request.POST, request.FILES, prefix='doc')
+		request.session["view"]="passageiro"
+		try:
+			request.POST['data_nascimento'] = datetime.strptime(request.POST['data_prevista'], '%d/%m/%Y').strftime('%Y-%m-%d')    
+		except:
+			pass
+		try:
+			request.POST['data_validade_passaporte'] = datetime.strptime(request.POST['data_validade_passaporte'], '%d/%m/%Y').strftime('%Y-%m-%d')    
+		except:
+			pass
+		if form.is_valid() and formset.is_valid() and doc_formset.is_valid():
 			emissor = get_emissor(self)
-			
-			nome = request.POST['nome']
-			email = request.POST['email']
-			password = request.POST['password']
-			genero = request.POST['genero']
-			data_nascimento = request.POST['data_nascimento']
-			cpf = request.POST['cpf']
-			rg = request.POST['rg']
-			orgaoemissor = request.POST['orgaoemissor']
-			foto = request.FILES.get('foto', None)
+			usuario = form.save(commit=False)
 
-			cep = request.POST['cep']
-			rua = request.POST['rua']
-			bairro = request.POST['bairro']
-			cidade = request.POST['cidade']
-			estado = request.POST['estado']
-			pais = request.POST['pais']
-
-			numero = request.POST['numero']
-			complemento = request.POST['complemento']
-			pontoreferencia = request.POST['pontoreferencia']
-
-			# EXTRAS
-			id_escola = request.POST.get('id_escola', None)
-			matricula = request.POST['matricula']
-			natularidade = request.POST['natularidade']
-			observacao = request.POST['observacao']
-			numero_passaporte = request.POST.get('numero_passaporte', None)
-			data_validade_passaporte = request.POST.get('data_validade_passaporte', None)
-
-			if not numero_passaporte:
-				numero_passaporte = None
-			if data_validade_passaporte:
-				data_validade_passaporte = datetime.strptime(data_validade_passaporte, '%d/%m/%Y').strftime('%Y-%m-%d')
-			else:
-				data_validade_passaporte = None
-
-			if data_nascimento:
-				data_nascimento = datetime.strptime(data_nascimento, '%d/%m/%Y').strftime('%Y-%m-%d')
-			else:
-				data_nascimento = None
-
-			
-			if not nome:
-				context['error_msg'] = 'nome cannot be empty !'
-			if not email:
-				context['error_msg'] = 'email cannot be empty !'
-			if not password:
-				context['error_msg'] = 'password cannot be empty !'
-
-			if not genero:
-				context['error_msg'] = 'genero cannot be empty !'
-			if not data_nascimento:
-				context['error_msg'] = 'data_nascimento cannot be empty !'
-			if not cpf:
-				context['error_msg'] = 'cpf cannot be empty !'
-			if not rg:
-				context['error_msg'] = 'rg cannot be empty !'
-			if not orgaoemissor:
-				context['error_msg'] = 'orgaoemissor cannot be empty !'
-			'''
-			if not foto:
-				context['error_msg'] = 'foto cannot be empty !'
-			'''
-			if not cep:
-				context['error_msg'] = 'cep cannot be empty !'
-			if not rua:
-				context['error_msg'] = 'rua cannot be empty !'
-			if not bairro:
-				context['error_msg'] = 'bairro cannot be empty !'
-			if not cidade:
-				context['error_msg'] = 'cidade cannot be empty !'
-			if not estado:
-				context['error_msg'] = 'estado cannot be empty !'
-			if not pais:
-				context['error_msg'] = 'pais cannot be empty !'
-			if not numero:
-				context['error_msg'] = 'numero cannot be empty !'
-			if not complemento:
-				context['error_msg'] = 'complemento cannot be empty !'
-			if not pontoreferencia:
-				context['error_msg'] = 'pontoreferencia cannot be empty !'
-
-			# EXTRAS
-			if not matricula:
-				context['error_msg'] = 'matricula cannot be empty !'
-			if not natularidade:
-				context['error_msg'] = 'natularidade cannot be empty !'
-			if not observacao:
-				context['error_msg'] = 'observacao cannot be empty !'
-
-			listphones = []
-
-			if formset.is_valid():
-				for f in formset:
-					phone = f.cleaned_data
-					listphones.append([phone.get('tipo_telefone'),phone.get('numero')])
-
-					if not phone.get('tipo_telefone'):
-						context['Tipo Telefone'] = ' cannot be empty !'
-					if not phone.get('numero'):
-						context['Numero'] = ' cannot be empty !'
-			else:
-				for erro in formset.errors:					
-					context['error'] = erro
-				pass
-
-			listdocs = []
-			if doc_formset.is_valid():
-				for f in doc_formset:
-					doc = f.cleaned_data
-					listdocs.append([doc.get('id_tipo_documento'),doc.get('anexo')])
-
-					if not doc.get('id_tipo_documento'):
-						context['Tipo de Documento'] = ' cannot be empty !'
-					if not doc.get('anexo'):
-						context['Anexo'] = ' cannot be empty !'
-			else:
-				for erro in doc_formset.errors:					
-					context['error'] = erro
-				pass
-
-			if not context:
-
+			if form.cleaned_data.get("cep") :
 				id_logradouro = Logradouro()
-				id_logradouro.cep = cep
-				id_logradouro.nome = rua
-				id_logradouro.bairro = bairro
-				id_logradouro.cidade = cidade
-				id_logradouro.estado = estado
-				id_logradouro.pais = pais
+				id_logradouro.cep = form.cleaned_data.get("cep")
+				id_logradouro.nome = form.cleaned_data.get("rua")
+				id_logradouro.bairro = form.cleaned_data.get("bairro")
+				id_logradouro.cidade = form.cleaned_data.get("cidade")
+				id_logradouro.estado = form.cleaned_data.get("estado")
+				id_logradouro.pais = form.cleaned_data.get("pais")
 				id_logradouro.save()
 
 				id_endereco = Endereco()
 				id_endereco.id_logradouro = id_logradouro
-				id_endereco.numero = numero
-				id_endereco.complemento = complemento
-				id_endereco.pontoreferencia = pontoreferencia
+				id_endereco.numero = form.cleaned_data.get("numero")
+				id_endereco.complemento = form.cleaned_data.get("complemento",None)
+				id_endereco.pontoreferencia = form.cleaned_data.get("pontoreferencia",None)
 				id_endereco.save()
+			else:
+				id_endereco = None
 
-				usuario = Usuario.objects.create_user(email, password)
-				usuario.nome = nome
-				usuario.sobrenome = None
-				usuario.nomecompleto = nome 
-				try:
-					tipo_usuario = TipoUsuario.objects.get(descricao__icontains='CLIENTE')
-				except:
-					tipo_usuario = TipoUsuario.objects.create(descricao="CLIENTE")
-				usuario.id_tipo_usuario = tipo_usuario
-				usuario.id_genero = Genero.objects.get(pk=genero)
-				usuario.data_nascimento = data_nascimento
-				usuario.cpf = cpf
-				usuario.rg = rg
-				usuario.orgaoemissor = orgaoemissor
-				usuario.foto = foto
-				usuario.id_endereco = id_endereco
-				usuario.is_active =  False
-				usuario.save()
+			usuario.id_endereco = id_endereco
+			usuario.is_active = True
+			usuario.id_tipo_usuario = TipoUsuario.objects.get_or_create(descricao="CLIENTE")[0]
+			usuario.nomecompleto = form.cleaned_data.get("nome")
+			usuario.save()
 
-				for listphone in listphones:
-					id_tipo_telefone = TipoTelefone.objects.filter(descricao=listphone[0])[0]			
+			for  f  in formset:
+				phone = f.cleaned_data
+				if phone:
 					teluser = TelefoneUsuario()
-					teluser.id_tipo_telefone = id_tipo_telefone
+					teluser.id_tipo_telefone =  phone.get('tipo_telefone')
 					teluser.id_usuario = usuario
-					teluser.numero = listphone[1]
+					teluser.numero =  phone.get('numero')
 					teluser.save()
 
-				for listdoc in listdocs:
-					tipo_documento = TipoDocumento.objects.filter(descricao=listdoc[0])[0]			
+			for  f  in doc_formset:
+				doc = f.cleaned_data
+				if doc:
 					documento = Documento()
 					documento.id_usuario = usuario
-					documento.id_tipo_documento = tipo_documento
-					documento.anexo = listdoc[1]
+					documento.id_tipo_documento = doc.get('id_tipo_documento')
+					documento.anexo = doc.get('anexo')
 					documento.save()
 
-				passageiro = Passageiro()
-				if id_escola:
-					passageiro.id_escola = Escola.objects.get(pk=id_escola)
-				else:
-					passageiro.id_escola = None
-				passageiro.id_usuario = usuario
-				passageiro.matricula = matricula
-				passageiro.natularidade = natularidade
-				passageiro.observacao = observacao
-				passageiro.numero_passaporte = numero_passaporte
-				passageiro.data_validade_passaporte = data_validade_passaporte
-				if emissor:
-					passageiro.id_emissor = emissor
-					passageiro.id_agencia = emissor.id_agencia
-				passageiro.save()
+			passageiro = Passageiro()
+			passageiro.id_escola = form.cleaned_data.get("id_escola")
+			passageiro.id_usuario = usuario
+			passageiro.matricula = form.cleaned_data.get("matricula")
+			passageiro.natularidade = form.cleaned_data.get("natularidade")
+			passageiro.observacao = form.cleaned_data.get("observacao")
+			passageiro.numero_passaporte = form.cleaned_data.get("numero_passaporte")
+			passageiro.data_validade_passaporte = form.cleaned_data.get("data_validade_passaporte")
+			if emissor:
+				passageiro.id_emissor = emissor
+				passageiro.id_agencia = emissor.id_agencia
+			passageiro.save()
 
-				return redirect(reverse_lazy("passageiro-list"))
+			return redirect(reverse_lazy("passageiro-list"))
 
-			else:
-				form = PassageiroRegisterForm(request.POST,request.FILES)
-				PhoneFormSet = formset_factory(PhoneForm)		
-				formset = PhoneFormSet(request.POST, request.FILES, prefix='phone')
-				DocFormSet = formset_factory(DocumentoForm)
-				doc_formset = DocFormSet(request.POST, request.FILES, prefix='doc')
-
-		return render(request, 'subclasses/usuario/passageiro/register.html', {'form': form, 'formset':formset, 'doc_formset':doc_formset})
+		context = {'form':form, 'formset':formset, 'doc_formset':doc_formset}
+		return render(request, 'subclasses/usuario/passageiro/register.html', context)
 
 
 class PassageiroEdit(JSONResponseMixin,View):
-	def get(self, request, pk=None):
+	def get(self, request, pk):
 		passageiro = Passageiro.objects.get(pk=pk)
 		usuario = Usuario.objects.get(pk=passageiro.id_usuario.pk)
-		id_endereco = Endereco.objects.get(pk=usuario.id_endereco.pk)
-		id_logradouro = Logradouro.objects.get(pk=id_endereco.id_logradouro.pk)
+		telefones = TelefoneUsuario.objects.filter(id_usuario=usuario.pk).extra(select={'tipo_telefone': 'id_tipo_telefone_id'}).values('tipo_telefone', 'numero')
+		documentos = Documento.objects.filter(id_usuario=usuario.pk).values('id_tipo_documento', 'anexo')
+		extra = 1
 
-		telefones = TelefoneUsuario.objects.filter(id_usuario=usuario.pk)
-		PhoneFormSet = formset_factory(PhoneForm,extra=0)
-		
-		data = []
-		for telefone in telefones:
-			data.append({'tipo_telefone':telefone.id_tipo_telefone,'numero':telefone.numero})
-		
-				
-		formset = PhoneFormSet(
-			initial=data,
-			prefix='phone',
-			)
-
-		documentos = Documento.objects.filter(id_usuario=usuario.pk)
-
+		form = PassageiroRegisterForm(instance=usuario)
+		form.initial['id_escola'] = passageiro.id_escola
+		form.initial['matricula'] = passageiro.matricula
+		form.initial['natularidade'] = passageiro.natularidade
+		form.initial['observacao'] = passageiro.observacao
+		form.initial['numero_passaporte'] = passageiro.numero_passaporte
+		form.initial['data_validade_passaporte'] = passageiro.data_validade_passaporte
+		form.initial['cep'] = usuario.id_endereco.id_logradouro.cep if usuario.id_endereco else ''
+		form.initial['rua'] = usuario.id_endereco.id_logradouro.nome if usuario.id_endereco else ''
+		form.initial['bairro'] = usuario.id_endereco.id_logradouro.bairro if usuario.id_endereco else ''
+		form.initial['cidade'] = usuario.id_endereco.id_logradouro.cidade if usuario.id_endereco else ''
+		form.initial['estado'] = usuario.id_endereco.id_logradouro.estado if usuario.id_endereco else ''
+		form.initial['pais'] = usuario.id_endereco.id_logradouro.pais if usuario.id_endereco else ''
+		form.initial['numero'] = usuario.id_endereco.numero if usuario.id_endereco else ''
+		form.initial['complemento'] = usuario.id_endereco.complemento if usuario.id_endereco else ''
+		form.initial['pontoreferencia'] = usuario.id_endereco.pontoreferencia if usuario.id_endereco else ''
+		if telefones:
+			extra = 0
+		PhoneFormSet = formset_factory(PhoneForm, extra=extra)
+		formset = PhoneFormSet(initial=telefones)
 		if documentos:
-			DocFormSet = formset_factory(DocumentoForm,extra=0)
-		else:
-			DocFormSet = formset_factory(DocumentoForm)
+			extra = 0
+		DocFormSet = formset_factory(DocumentoForm, extra=extra, formset=RequiredFormSet, can_delete=True)
+		doc_formset = DocFormSet(prefix='doc', initial=documentos)
 
-		data = []
-		for documento in documentos:
-			data.append({'id_tipo_documento':documento.id_tipo_documento,'anexo':documento.anexo})
+		request.session["view"]="passageiro"
+		context = {'form':form, 'formset':formset, 'doc_formset':doc_formset}
+		return render(request, 'subclasses/usuario/passageiro/edit.html', context)
 
-		doc_formset = DocFormSet(
-			initial=data,
-			prefix='doc'
-			)
-
-		form = PassageiroRegisterForm(
-			initial={
-			'nome': usuario.nome,
-			'sobrenome': usuario.sobrenome,
-			'email': usuario.email,
-			'genero' : usuario.id_genero,
-			'data_nascimento' : usuario.data_nascimento,
-			'cpf' : usuario.cpf,
-			'rg' : usuario.rg,
-			'orgaoemissor' : usuario.orgaoemissor,
-			'foto' : usuario.foto,
-			'cep' : id_logradouro.cep, 
-			'rua' : id_logradouro.nome,
-			'bairro' : id_logradouro.bairro,
-			'cidade' : id_logradouro.cidade,
-			'estado' : id_logradouro.estado,
-			'pais' : id_logradouro.pais,
-			'numero': id_endereco.numero,
-			'complemento': id_endereco.complemento,
-			'pontoreferencia': id_endereco.pontoreferencia,
-			'id_escola': passageiro.id_escola,
-			'matricula': passageiro.matricula,
-			'natularidade': passageiro.natularidade,
-			'observacao': passageiro.observacao,
-			'numero_passaporte': passageiro.numero_passaporte,		
-			'data_validade_passaporte': passageiro.data_validade_passaporte,				
-			}
-			)
-		return render (request, 'subclasses/usuario/passageiro/edit.html', {'form':form,'formset':formset, 'doc_formset':doc_formset})
-
-	def post(self, request, pk=None, *args, **kwargs):
-		context = {}
-		if request.method == 'POST':		    
-			form = PassageiroRegisterForm(request.POST,request.FILES)
-			PhoneFormSet = formset_factory(PhoneForm)		
-			formset = PhoneFormSet(request.POST, request.FILES, prefix='phone')
-			DocFormSet = formset_factory(DocumentoForm)
-			doc_formset = DocFormSet(request.POST, request.FILES, prefix='doc')
-
-
+	def post(self, request, pk, *args, **kwargs):
+		passageiro = Passageiro.objects.get(pk=pk)
+		user = Usuario.objects.get(pk=passageiro.id_usuario.pk)
+		telefones = TelefoneUsuario.objects.filter(id_usuario=user.pk)
+		documentos = Documento.objects.filter(id_usuario=user.pk)
+		extra = 1
+		form = PassageiroRegisterForm(request.POST, request.FILES, instance=user)
+		if telefones:
+			extra = 0
+		PhoneFormSet = formset_factory(PhoneForm, extra=extra)
+		formset = PhoneFormSet(request.POST, request.FILES)
+		if telefones:
+			documentos = 0
+		DocFormSet = formset_factory(DocumentoForm)
+		doc_formset = DocFormSet(request.POST, request.FILES, prefix='doc')
+		request.session["view"]="passageiro"
+		try:
+			request.POST['data_nascimento'] = datetime.strptime(request.POST['data_prevista'], '%d/%m/%Y').strftime('%Y-%m-%d')    
+		except:
+			pass
+		try:
+			request.POST['data_validade_passaporte'] = datetime.strptime(request.POST['data_validade_passaporte'], '%d/%m/%Y').strftime('%Y-%m-%d')    
+		except:
+			pass
+		if form.is_valid() and formset.is_valid() and doc_formset.is_valid():
 			emissor = get_emissor(self)
+			usuario = form.save(commit=False)
 
-			nome = request.POST['nome']
-			email = request.POST['email']
-			genero = request.POST['genero']
-			data_nascimento = request.POST['data_nascimento']
-			cpf = request.POST['cpf']
-			rg = request.POST['rg']
-			orgaoemissor = request.POST['orgaoemissor']
-			foto = request.FILES.get('foto', None)
-
-			cep = request.POST['cep']
-			rua = request.POST['rua']
-			bairro = request.POST['bairro']
-			cidade = request.POST['cidade']
-			estado = request.POST['estado']
-			pais = request.POST['pais']
-
-			numero = request.POST['numero']
-			complemento = request.POST['complemento']
-			pontoreferencia = request.POST['pontoreferencia']
-
-			# EXTRAS
-			id_escola = request.POST.get('id_escola', None)
-			matricula = request.POST['matricula']
-			natularidade = request.POST['natularidade']
-			observacao = request.POST['observacao']
-			numero_passaporte = request.POST.get('numero_passaporte', None)
-			data_validade_passaporte = request.POST.get('data_validade_passaporte', None)
-
-			if not numero_passaporte:
-				numero_passaporte = None
-			if data_validade_passaporte:
-				data_validade_passaporte = datetime.strptime(data_validade_passaporte, '%d/%m/%Y').strftime('%Y-%m-%d')
-			else:
-				data_validade_passaporte = None
-
-			if data_nascimento:
-				data_nascimento = datetime.strptime(data_nascimento, '%d/%m/%Y').strftime('%Y-%m-%d')
-			else:
-				data_nascimento = None
-
-
-			listphones = []
-
-			if formset.is_valid():
-				for f in formset:
-					phone = f.cleaned_data
-					listphones.append([phone.get('tipo_telefone'),phone.get('numero')])
-
-					if not phone.get('tipo_telefone'):
-						context['Tipo Telefone'] = ' cannot be empty !'
-					if not phone.get('numero'):
-						context['Numero'] = ' cannot be empty !'
-			else:
-				for erro in formset.errors:					
-					context['error'] = erro
-				pass
-
-			listdocs = []
-			if doc_formset.is_valid():
-				for f in doc_formset:
-					doc = f.cleaned_data
-					listdocs.append([doc.get('id_tipo_documento'),doc.get('anexo')])
-
-					if not doc.get('id_tipo_documento'):
-						context['Tipo de Documento'] = ' cannot be empty !'
-					if not doc.get('anexo'):
-						context['Anexo'] = ' cannot be empty !'
-			else:
-				for erro in doc_formset.errors:					
-					context['error'] = erro
-				pass
-
-			
-			if not nome:
-				context['Nome'] = ' cannot be empty !'
-			if not email:
-				context['E-mail'] = ' cannot be empty !'
-			if not genero:
-				context['Genero'] = ' cannot be empty !'
-			if not data_nascimento:
-				context['Data de nascimento'] = ' cannot be empty !'
-			if not cpf:
-				context['CPF'] = ' cannot be empty !'
-			if not rg:
-				context['RG'] = ' cannot be empty !'
-			if not orgaoemissor:
-				context['Orgão'] = ' cannot be empty !'
-			'''
-			if not foto:
-				context['error_msg'] = 'foto cannot be empty !'
-			'''
-			if not cep:
-				context['CEP'] = ' cannot be empty !'
-			if not rua:
-				context['Rua'] = ' cannot be empty !'
-			if not bairro:
-				context['Bairro'] = ' cannot be empty !'
-			if not cidade:
-				context['Cidade'] = ' cannot be empty !'
-			if not estado:
-				context['Estado'] = ' cannot be empty !'
-			if not pais:
-				context['Pais'] = ' cannot be empty !'
-			if not numero:
-				context['Número'] = ' cannot be empty !'
-			if not complemento:
-				context['Complemento'] = ' cannot be empty !'
-			if not pontoreferencia:
-				context['Refêrencia'] = ' cannot be empty !'
-			
-			# EXTRAS
-			if not matricula:
-				matricula = None
-			if not natularidade:
-				natularidade = None
-			if not observacao:
-				observacao = None
-
-			if not context:
-
-				passageiro = Passageiro.objects.get(pk=pk)
-				usuario = Usuario.objects.get(pk=passageiro.id_usuario.pk)
-				id_endereco = Endereco.objects.get(pk=usuario.id_endereco.pk)
+			if user.id_endereco:
+				id_endereco = Endereco.objects.get(pk=user.id_endereco.pk)
 				id_logradouro = Logradouro.objects.get(pk=id_endereco.id_logradouro.pk)
+			else:
+				id_endereco = Endereco()
+				id_logradouro = Logradouro()
 
-				telefones = TelefoneUsuario.objects.filter(id_usuario=usuario.pk)
-				for telefone in telefones:
-					telefone.delete()
-	
-				id_logradouro.cep = cep
-				id_logradouro.nome = rua
-				id_logradouro.bairro = bairro
-				id_logradouro.cidade = cidade
-				id_logradouro.estado = estado
-				id_logradouro.pais = pais
+			if form.cleaned_data.get("cep") :
+				id_logradouro.cep = form.cleaned_data.get("cep")
+				id_logradouro.nome = form.cleaned_data.get("rua")
+				id_logradouro.bairro = form.cleaned_data.get("bairro")
+				id_logradouro.cidade = form.cleaned_data.get("cidade")
+				id_logradouro.estado = form.cleaned_data.get("estado")
+				id_logradouro.pais = form.cleaned_data.get("pais")
 				id_logradouro.save()
 
-				
 				id_endereco.id_logradouro = id_logradouro
-				id_endereco.numero = numero
-				id_endereco.complemento = complemento
-				id_endereco.pontoreferencia = pontoreferencia
+				id_endereco.numero = form.cleaned_data.get("numero")
+				id_endereco.complemento = form.cleaned_data.get("complemento",None)
+				id_endereco.pontoreferencia = form.cleaned_data.get("pontoreferencia",None)
 				id_endereco.save()
+			else:
+				id_endereco = None
 
-				
-				usuario.nome = nome
-				usuario.sobrenome = None
-				usuario.nomecompleto = nome 
-				try:
-					tipo_usuario = TipoUsuario.objects.get(descricao__icontains='CLIENTE')
-				except:
-					tipo_usuario = TipoUsuario.objects.create(descricao="CLIENTE")
-				usuario.id_tipo_usuario = tipo_usuario
-				usuario.id_genero = Genero.objects.get(pk=genero)
-				usuario.data_nascimento = data_nascimento
-				usuario.cpf = cpf
-				usuario.rg = rg
-				usuario.orgaoemissor = orgaoemissor
-				usuario.foto = foto
-				usuario.id_endereco = id_endereco
-				usuario.is_active =  False
-				usuario.save()
+			usuario.id_endereco = id_endereco
+			usuario.is_active = True
+			usuario.id_tipo_usuario = TipoUsuario.objects.get_or_create(descricao="CLIENTE")[0]
+			usuario.nomecompleto = form.cleaned_data.get("nome")
+			usuario.save()
 
-				
-				if id_escola:
-					passageiro.id_escola = Escola.objects.get(pk=id_escola)
-				else:
-					passageiro.id_escola = None
-				passageiro.id_usuario = usuario
-				passageiro.matricula = matricula
-				passageiro.natularidade = natularidade
-				passageiro.observacao = observacao
-				passageiro.numero_passaporte = numero_passaporte
-				passageiro.data_validade_passaporte = data_validade_passaporte
-				if emissor:
-					passageiro.id_emissor = emissor
-					passageiro.id_agencia = emissor.id_agencia
-				passageiro.save()
+			for telefone in telefones:
+				telefone.delete()
 
-				for listphone in listphones:
-					id_tipo_telefone = TipoTelefone.objects.filter(descricao=listphone[0])[0]			
+
+			
+
+			for value in request.POST.getlist('deletar_anexo'):
+				doc = Documento.objects.filter(anexo=value)
+				doc.delete()
+
+			for  f  in formset:
+				phone = f.cleaned_data
+				if phone:
 					teluser = TelefoneUsuario()
-					teluser.id_tipo_telefone = id_tipo_telefone
+					teluser.id_tipo_telefone =  phone.get('tipo_telefone')
 					teluser.id_usuario = usuario
-					teluser.numero = listphone[1]
+					teluser.numero =  phone.get('numero')
 					teluser.save()
 
-				for listdoc in listdocs:
-					tipo_documento = TipoDocumento.objects.filter(descricao=listdoc[0])[0]			
+			for  f  in doc_formset:
+				doc = f.cleaned_data
+				if doc:
 					documento = Documento()
 					documento.id_usuario = usuario
-					documento.id_tipo_documento = tipo_documento
-					documento.anexo = listdoc[1]
-					documento.save()
-
-				return redirect(reverse_lazy("passageiro-list"))
-
-			else:
-				form = PassageiroRegisterForm(request.POST)
-				PhoneFormSet = formset_factory(PhoneForm)		
-				formset = PhoneFormSet(request.POST, request.FILES, prefix='phone')
-				DocFormSet = formset_factory(DocumentoForm)
-				doc_formset = DocFormSet(request.POST, request.FILES, prefix='doc')
+					documento.id_tipo_documento = doc.get('id_tipo_documento')
+					if doc.get('id_tipo_documento') and  doc.get('anexo'):
+						documento.anexo = doc.get('anexo')
+						documento.save()
 
 
-		return render (request, 'subclasses/usuario/passageiro/edit.html', {'form':form ,'formset':formset,'context':context, 'doc_formset':doc_formset})
+			passageiro.id_escola = form.cleaned_data.get("id_escola")
+			passageiro.id_usuario = usuario
+			passageiro.matricula = form.cleaned_data.get("matricula")
+			passageiro.natularidade = form.cleaned_data.get("natularidade")
+			passageiro.observacao = form.cleaned_data.get("observacao")
+			passageiro.numero_passaporte = form.cleaned_data.get("numero_passaporte")
+			passageiro.data_validade_passaporte = form.cleaned_data.get("data_validade_passaporte")
+			if emissor:
+				passageiro.id_emissor = emissor
+				passageiro.id_agencia = emissor.id_agencia
+			passageiro.save()
+
+			return redirect(reverse_lazy("passageiro-list"))
+
+		context = {'form':form, 'formset':formset}
+		return render(request, 'subclasses/usuario/passageiro/edit.html', context)
 
 
 

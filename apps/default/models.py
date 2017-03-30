@@ -225,5 +225,4 @@ class Documento(models.Model):
 	id_tipo_documento = models.ForeignKey('TipoDocumento', on_delete=models.DO_NOTHING)
 	anexo = models.ImageField(upload_to="default/documents")
 	datahora = models.DateTimeField(default=timezone.now)
-	def __str__(self):
-		return self.anexo
+	
