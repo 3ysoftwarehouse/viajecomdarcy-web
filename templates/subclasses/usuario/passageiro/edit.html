@@ -1,94 +1,107 @@
 {% extends "default/user/edit.html" %}
-{% block title_top %} Passageiro {% endblock %}
-{% block tab_01 %} Dados do Passageiro{% endblock %}
-{% block subclass_itens %}
-<li class="">
-   <a data-toggle="tab" href="#tab3"><i class="fa fa-truck tab-icon"></i> 
-   <span>
-   Extras
-   </span>
-   </a>
-</li>
-{% endblock %}
+{% block title %} Passageiro {% endblock %}
 {% block subclass_form %}
-<div class="tab-pane slide-left padding-20" id="tab3">
-   <div class="row row-same-height">
-      <div class="col-md-12">
-         <div class="padding-10">
+<h5 class="m-t-lg with-border">Dados da Escola</h5>
+<div class='row'>
+   <div class="col-lg-4">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form.id_escola.auto_id }}">{{ form.id_escola.label_tag }}</label>
+      {{ form.id_escola }}
+      <small class="text-muted">{{ form.id_escola.errors }}</small>
+    </fieldset>
+  </div>
+  <div class="col-lg-4">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form.matricula.auto_id }}">{{ form.matricula.label_tag }}</label>
+      {{ form.matricula }}
+      <small class="text-muted">{{ form.matricula.errors }}</small>
+    </fieldset>
+  </div>
+  <div class="col-lg-4">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form.natularidade.auto_id }}">{{ form.natularidade.label_tag }}</label>
+      {{ form.natularidade }}
+      <small class="text-muted">{{ form.natularidade.errors }}</small>
+    </fieldset>
+  </div>
+</div>
 
-            <div class="row clearfix">
-               <div class="col-sm-4">
-                  <div class="form-group ">
-                     <label>{{form.id_escola.label_tag}}</label>
-                     {{form.id_escola}}
-                  </div>
-               </div>
-               <div class="col-sm-4">
-                  <div class="form-group  required">
-                     <label>{{form.matricula.label_tag}}</label>
-                     {{form.matricula}}
-                  </div>
-               </div>
-               <div class="col-sm-4">
-                  <div class="form-group  required">
-                     <label>{{form.natularidade.label_tag}}</label>
-                     {{form.natularidade}}
-                  </div>
-               </div>
-            </div>
-            <div class="row">
-               <div class="col-sm-4">
-                  <div class="form-group  required">
-                     <label>{{form.numero_passaporte.label_tag}}</label>
-                     {{form.numero_passaporte}}
-                  </div>
-               </div>
-               <div class="col-sm-4">
-                  <div class="form-group  required">
-                     <label>{{form.data_validade_passaporte.label_tag}}</label>
-                     <input type="text" value="{{form.data_validade_passaporte.value|date:'d/m/Y'}}" name="data_validade_passaporte" id="id_data_validade_passaporte" class="form-control">
-                  </div>
-               </div>
-            </div>
-            <div class="row">
-               <div class="col-sm-4">
-                  <div class="form-group  required">
-                     <label>{{form.observacao.label_tag}}</label>
-                     {{form.observacao}}
-                  </div>
-               </div>
-            </div>
-            <div class='row'>
-               <div id="id_doc_table" class="row form-group-attached p-t-10">
-                   {% for form in doc_formset.forms %}
-                   <div id="{{ form.prefix }}-row" class="tr form-group-attached">
-                       <div class="row">
-                           <div class="col-sm-5">
-                               <div class="form-group form-group-default">
-                                   <label>{{ form.id_tipo_documento.label_tag }}</label>
-                                   <div style="text-align:center;">
-                                     {{ form.id_tipo_documento }}
-                                   </div>
-                               </div>
-                           </div>
-                           <div class="col-sm-7">
-                               <div class="form-group form-group-default">
-                                   <label>{{ form.anexo.label_tag}} </label>
-                                   <div style="text-align:center;">
-                                     {{ form.anexo }}
-                                   </div>
-                               </div>
-                           </div>
-                           <div></div>
-                       </div>
-                   </div>
-                   {% endfor %} {{ doc_formset.management_form }}
-                 </div>
-            </div>
+<div class='row'>
+   <div class="col-lg-6">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form.numero_passaporte.auto_id }}">{{ form.numero_passaporte.label_tag }}</label>
+      {{ form.numero_passaporte }}
+      <small class="text-muted">{{ form.numero_passaporte.errors }}</small>
+    </fieldset>
+  </div>
+  <div class="col-lg-6">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form.data_validade_passaporte.auto_id }}">{{ form.data_validade_passaporte.label_tag }}</label>
+      <input type="text" placeholder="__/__/__" value="{{form.data_validade_passaporte.value|date:'d/m/Y' }}" name="data_validade_passaporte" id="id_data_validade_passaporte" class="form-control">
+      <small class="text-muted">{{ form.data_validade_passaporte.errors }}</small>
+    </fieldset>
+  </div>
+</div>
 
-         </div>
+<div class='row'>
+   <div class="col-lg-12">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form.observacao.auto_id }}">{{ form.observacao.label_tag }}</label>
+      {{ form.observacao }}
+      <small class="text-muted">{{ form.observacao.errors }}</small>
+    </fieldset>
+  </div>
+</div>
+
+<h5 class="m-t-lg with-border">Documentos</h5>
+<div class='row'>
+   <div class="col-lg-12">
+    <div id="id_doc_table" class="row form-group-attached p-t-10" >
+      {% for form in doc_formset.forms %}
+        <div id="{{ form.prefix }}-row" class="tr form-group-attached">
+          <div class="col-lg-6">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.id_tipo_documento.auto_id }}">{{ form.id_tipo_documento.label_tag }}</label>
+              {{ form.id_tipo_documento }}
+              <small class="text-muted">{{ form.id_tipo_documento.errors }}</small>
+            </fieldset>
+          </div>
+          <div class="col-lg-5">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.anexo.auto_id }}">{{ form.anexo.label_tag }}</label>
+              {{ form.anexo }}
+              <small class="text-muted">{{ form.anexo.value|default:'' }}</small>
+              <small class="text-muted">{{ form.anexo.errors }}</small>
+            </fieldset>
+          </div>
+          <div class="col-lg-1">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="id_deletar_anexo">Deletar Doc.?</label>
+               <input class="form-control" id="id_deletar_anexo" type="checkbox" name="deletar_anexo" value="{{ form.anexo.value}}" /> 
+            </fieldset>
+          </div>
+        </div>
+        {% endfor %}
+        {{ doc_formset.management_form }}           
+    </div>
+  </div>          
+</div>
+
+{% endblock %}
+{% block buttom %} 
+<div class="row">
+  <div class="col-lg-12">
+    <div class="form-group">
+      <button type="submit" class="btn btn-success btn-cons">
+        Salvar
+      </button>
+      <div class="pull-right">
+      <a class="btn btn-secondary-outline" href="{% url 'passageiro-list' %}">
+        Cancelar
+      </a>
       </div>
-   </div>
+    </div>
+  </div>
 </div>
 {% endblock %}
 
