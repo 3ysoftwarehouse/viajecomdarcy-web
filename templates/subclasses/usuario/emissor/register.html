@@ -1,32 +1,29 @@
 {% extends "default/user/register.html" %}
-{% block title_top %} Emissor {% endblock %}
-{% block tab_01 %} Dados do Emissor{% endblock %}
-{% block subclass_itens %}
-<li class="">
-   <a data-toggle="tab" href="#tab3"><i class="fa fa-truck tab-icon"></i> 
-   <span>
-   Extras
-   </span>
-   </a>
-</li>
-{% endblock %}
+{% block title %} Emissor {% endblock %}
 {% block subclass_form %}
-<div class="tab-pane slide-left padding-20" id="tab3">
-   <div class="row row-same-height">
-      <div class="col-md-12">
-         <div class="padding-10">
-
-            <div class="row clearfix">
-               <div class="col-sm-12">
-                  <div class="form-group ">
-                     <label>{{form.id_agencia.label_tag}}</label>
-                     {{form.id_agencia}}
-                  </div>
-               </div>
-            </div>
-
-         </div>
+<div class='row'>
+   <div class="col-lg-12">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form.id_agencia.auto_id }}">{{ form.id_agencia.label_tag }}</label>
+      {{ form.id_agencia }}
+      <small class="text-muted">{{ form.id_agencia.errors }}</small>
+    </fieldset>
+  </div>
+</div>
+{% endblock %}
+{% block buttom %} 
+<div class="row">
+  <div class="col-lg-12">
+    <div class="form-group">
+      <button type="submit" class="btn btn-success btn-cons">
+        Salvar
+      </button>
+      <div class="pull-right">
+      <a class="btn btn-secondary-outline" href="{% url 'emissor-list' %}">
+        Cancelar
+      </a>
       </div>
-   </div>
+    </div>
+  </div>
 </div>
 {% endblock %}
