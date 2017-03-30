@@ -1,45 +1,18 @@
 #-*- coding: utf-8 -*-
-
-
-##################################################
-#               DJANGO IMPORTS                   #
-##################################################
 from django import forms
 from django.conf import settings
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-##################################################
 
-
-##################################################
-#               CUSTOM IMPORTS                   #
-##################################################
 from apps.default.forms import UserRegisterForm
-##################################################
+from .models import Cliente
 
-class ClienteRegisterForm(UserRegisterForm, forms.Form):
+class ClienteRegisterForm(forms.ModelForm):
 
-	nome_pai = forms.CharField(label='Nome do Pai:', max_length=45, required=False)
-	nome_mae = forms.CharField(label='Nome da Mãe:', max_length=45, required=False)
-	naturalidade = forms.CharField(label='Naturalidade:', max_length=45, required=False)
-	numero_dependentes = forms.IntegerField(label='Numero de Dependentes:', required=False)
-	tipo_residencia = forms.CharField(label='Tipo da Residência:', max_length=45, required=False)
-	dt_emissao_rg = forms.DateField(label='Data emissão RG:',input_formats=settings.DATE_INPUT_FORMATS, required=False)
-	tempo_residencia = forms.CharField(label='Tempo de residência:', max_length=45, required=False)
-	empresa = forms.CharField(label='Nome da Empresa:', max_length=45, required=False)
-	telefone_empresa = forms.CharField(label='Telefone da Empresa:', max_length=45, required=False)
-	dt_admissao = forms.CharField(label='Data de admissão:', required=False)
-	cargo = forms.CharField(label='Cargo ou Função:', max_length=45, required=False)
-	principal_renda = forms.CharField(label='Renda Principal:', max_length=45, required=False)
-	outra_renda = forms.CharField(label='Outras Rendas:', max_length=45, required=False)
-	patrimonio = forms.CharField(label='Patrimonio:', max_length=45, required=False)
-	banco = forms.CharField(label='Banco onde tem conta:', max_length=45, required=False)
-	agencia = forms.CharField(label='Agência:', max_length=45, required=False)
-	conta = forms.CharField(label='Conta:', max_length=45, required=False)
-	dt_banco = forms.DateField(label='Cliente do bancos desde:',input_formats=settings.DATE_INPUT_FORMATS, required=False)
-	telefone_banco = forms.CharField(label='Telefone do banco:', max_length=45, required=False)
-	cnpj_empresa = forms.CharField(label='CNPJ da Empresa:', max_length=45, required=False)
+	class Meta:
+		model = Cliente
+		fields = '__all__'
 
-	#Dados Empresa
+	
 	cep_empresa_cliente = forms.CharField(label='CEP:', max_length=45, required=False)
 	pais_empresa = forms.CharField(label='País:', max_length=45, required=False)
 	estado_empresa = forms.CharField(label='Estado:', max_length=45, required=False)
@@ -52,7 +25,7 @@ class ClienteRegisterForm(UserRegisterForm, forms.Form):
 
 	def __init__(self, *args, **kwargs):
 		super(ClienteRegisterForm, self).__init__(*args, **kwargs)
-
+		self.fields['usuario'].required = False
 		self.fields['nome_pai'].widget.attrs['class'] = 'form-control'
 		self.fields['nome_pai'].widget.attrs['placeholder'] = 'Nome do Pai'
 		self.fields['nome_mae'].widget.attrs['class'] = 'form-control'
@@ -69,8 +42,8 @@ class ClienteRegisterForm(UserRegisterForm, forms.Form):
 		self.fields['tempo_residencia'].widget.attrs['placeholder'] = 'Digite o tempo de residência'
 		self.fields['empresa'].widget.attrs['class'] = 'form-control'
 		self.fields['empresa'].widget.attrs['placeholder'] = 'Digite o nome da empresa'
-		self.fields['telefone_empresa'].widget.attrs['class'] = 'form-control input-number'
-		self.fields['telefone_empresa'].widget.attrs['placeholder'] = 'Digite o telefone da empresa'
+		self.fields['telefone'].widget.attrs['class'] = 'form-control input-number'
+		self.fields['telefone'].widget.attrs['placeholder'] = 'Digite o telefone da empresa'
 		self.fields['dt_admissao'].widget.attrs['class'] = 'form-control'
 		self.fields['dt_admissao'].widget.attrs['placeholder'] = 'Digite a data de adminissão'
 		self.fields['cargo'].widget.attrs['class'] = 'form-control'
@@ -114,3 +87,108 @@ class ClienteRegisterForm(UserRegisterForm, forms.Form):
 		self.fields['pontoreferencia_empresa'].widget.attrs['placeholder'] = 'Ponto de Referência'
 		self.fields['numero_empresa'].widget.attrs['class'] = 'form-control'
 		self.fields['numero_empresa'].widget.attrs['placeholder'] = 'Número'
+
+	def clean(self):
+		cleaned_data = super(ClienteRegisterForm, self).clean()
+
+		cep = cleaned_data.get("cep_empresa_cliente")
+		rua = cleaned_data.get("rua_empresa")
+		bairro = cleaned_data.get("bairro_empresa")
+		cidade = cleaned_data.get("cidade_empresa")
+		estado = cleaned_data.get("estado_empresa")
+		pais = cleaned_data.get("pais_empresa")
+		numero = cleaned_data.get("numero_empresa")
+
+
+		msg = "This field is required."
+		if cep:
+		    if not rua:
+		        self.add_error('rua_empresa', msg)
+		    if not bairro:
+		        self.add_error('bairro_empresa', msg)
+		    if not cidade:
+		        self.add_error('cidade_empresa', msg)
+		    if not estado:
+		        self.add_error('estado_empresa', msg)
+		    if not pais:
+		        self.add_error('pais_empresa', msg)
+		    if not numero:
+		        self.add_error('numero_empresa', msg)
+		elif rua:
+		    if not rua:
+		        self.add_error('rua_empresa', msg)
+		    if not bairro:
+		        self.add_error('bairro_empresa', msg)
+		    if not cidade:
+		        self.add_error('cidade_empresa', msg)
+		    if not estado:
+		        self.add_error('estado_empresa', msg)
+		    if not pais:
+		        self.add_error('pais_empresa', msg)
+		    if not numero:
+		        self.add_error('numero_empresa', msg)
+		elif bairro:
+		    if not cep:
+		        self.add_error('cep_empresa_cliente', msg)
+		    if not rua:
+		        self.add_error('rua_empresa', msg)
+		    if not cidade:
+		        self.add_error('cidade_empresa', msg)
+		    if not estado:
+		        self.add_error('estado_empresa', msg)
+		    if not pais:
+		        self.add_error('pais_empresa', msg)
+		    if not numero:
+		        self.add_error('numero_empresa', msg)
+		elif cidade:
+		    if not cep:
+		        self.add_error('cep_empresa_cliente', msg)
+		    if not rua:
+		        self.add_error('rua_empresa', msg)
+		    if not bairro:
+		        self.add_error('bairro_empresa', msg)
+		    if not estado:
+		        self.add_error('estado_empresa', msg)
+		    if not pais:
+		        self.add_error('pais_empresa', msg)
+		    if not numero:
+		        self.add_error('numero_empresa', msg)
+		elif estado:
+		    if not cep:
+		        self.add_error('cep_empresa_cliente', msg)
+		    if not rua:
+		        self.add_error('rua_empresa', msg)
+		    if not bairro:
+		        self.add_error('bairro_empresa', msg)
+		    if not cidade:
+		        self.add_error('cidade_empresa', msg)
+		    if not pais:
+		        self.add_error('pais_empresa', msg)
+		    if not numero:
+		        self.add_error('numero_empresa', msg)
+		elif pais:
+		    if not cep:
+		        self.add_error('cep_empresa_cliente', msg)
+		    if not rua:
+		        self.add_error('rua_empresa', msg)
+		    if not bairro:
+		        self.add_error('bairro_empresa', msg)
+		    if not cidade:
+		        self.add_error('cidade_empresa', msg)
+		    if not estado:
+		        self.add_error('estado_empresa', msg)
+		    if not numero:
+		        self.add_error('numero_empresa', msg)
+		elif numero:
+		    if not cep:
+		        self.add_error('cep_empresa_cliente', msg)
+		    if not rua:
+		        self.add_error('rua_empresa', msg)
+		    if not bairro:
+		        self.add_error('bairro_empresa', msg)
+		    if not cidade:
+		        self.add_error('cidade_empresa', msg)
+		    if not estado:
+		        self.add_error('estado_empresa', msg)
+		    if not pais:
+		        self.add_error('pais_empresa', msg)

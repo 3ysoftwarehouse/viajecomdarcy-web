@@ -205,8 +205,6 @@ class UserEdit(JSONResponseMixin,View):
 
 	def post(self, request, pk, *args, **kwargs):
 		user = Usuario.objects.get(pk=pk)
-		id_endereco = Endereco.objects.get(pk=user.id_endereco.pk)
-		id_logradouro = Logradouro.objects.get(pk=id_endereco.id_logradouro.pk)
 		telefones = TelefoneUsuario.objects.filter(id_usuario=pk)
 		extra = 1
 		form = UserRegisterForm(request.POST, request.FILES, instance=user)

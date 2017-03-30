@@ -7,7 +7,7 @@ class Cliente(models.Model):
 	nome_pai = models.CharField(max_length=45,null=True, blank=True)
 	nome_mae = models.CharField(max_length=45,null=True, blank=True)
 	naturalidade = models.CharField(max_length=45,null=True, blank=True)
-	numero_dependentes = models.IntegerField()
+	numero_dependentes = models.IntegerField(default=0)
 	tipo_residencia = models.CharField(max_length=20,null=True, blank=True)
 	usuario = models.OneToOneField(Usuario, on_delete = models.CASCADE, related_name='cliente_name')
 	dt_emissao_rg = models.DateTimeField(null=True, blank=True)
