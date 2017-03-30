@@ -1,8 +1,4 @@
 #-*- coding: utf-8 -*-
-
-##################################################
-#				DJANGO IMPORTS                   #
-##################################################
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render,redirect
 from django.views.generic import RedirectView, View, UpdateView, ListView, DetailView, DeleteView
@@ -12,397 +8,167 @@ from django.http import (HttpResponse,
                          HttpResponseForbidden,
                          HttpResponseBadRequest)
 from django.forms import formset_factory
-##################################################
 
-
-
-##################################################
-#				CUSTOM IMPORTS                   #
-##################################################
-from apps.default.models import Projeto, Usuario, Empresa, Logradouro, Endereco, TipoEmpresa, TipoTelefone, TelefoneEmpresa # MODELS
+from apps.default.models import Projeto, Usuario, Empresa, Logradouro, Endereco, TipoEmpresa, TipoTelefone, TelefoneEmpresa 
 from .forms import AgenciaRegisterForm
-from apps.default.forms import PhoneForm # PHONE FORMS
+from apps.default.forms import PhoneForm 
 from apps.default.views import JSONResponseMixin, validaCNPJ
 from .models import Agencia
-##################################################
 
-
-'''
-----------------------------------------
-			AGENCIA METHODS
-----------------------------------------
-''' 
 
 
 class AgenciaRegister(JSONResponseMixin,View):
 	def get(self, request):
 		form = AgenciaRegisterForm
-		formset = formset_factory(PhoneForm)
-		request.session["view"]="agencia"
-		return render (request, 'subclasses/empresa/agencia/register.html', {'form':form,'formset':formset})
+		PhoneFormSet = formset_factory(PhoneForm)
+		formset = PhoneFormSet()
+		request.session["view"]="agencia"		
+		context = {'form':form, 'formset':formset}
+		return render (request, 'subclasses/empresa/agencia/register.html', context)
 
 	def post(self, request, *args, **kwargs):
-		context = {}
-		request.session["view"]="agencia"
-		if request.method == 'POST':
+		form = AgenciaRegisterForm(request.POST, request.FILES)
+		PhoneFormSet = formset_factory(PhoneForm)		
+		formset = PhoneFormSet(request.POST, request.FILES)
+		if form.is_valid() and formset.is_valid():
+			company = form.save(commit=False)
 
-			PhoneFormSet = formset_factory(PhoneForm)		
-			formset = PhoneFormSet(request.POST, request.FILES)
-			form = AgenciaRegisterForm(request.POST, request.FILES)
-	
-			razaosocial = request.POST['razaosocial']
-			nomefantasia = request.POST['nomefantasia']
-			cnpj = request.POST['cnpj']
-			ie = request.POST['ie']
-			#id_tipo_empresa = request.POST['tipo_empresa']
-			logo = request.FILES.get('logo', None)
-
-			cep = request.POST['cep']
-			rua = request.POST['rua']
-			bairro = request.POST['bairro']
-			cidade = request.POST['cidade']
-			estado = request.POST['estado']
-			pais = request.POST['pais']
-
-			numeroed = request.POST['numeroed']
-			complemento = request.POST['complemento']
-			pontoreferencia = request.POST['pontoreferencia']
-
-			'''
-			tipo_telefone = request.POST['tipo_telefone']
-			numero = request.POST['numero']
-			ramal = request.POST['ramal']
-			nome_contato = request.POST['nome_contato']
-			'''	
-
-			# EXTRAS
-			#representante = request.POST['representante']
-
-			if not razaosocial:
-				context['Razão social'] = ' cannot be empty !'
-			if not nomefantasia:
-				context['Nome Fantasia'] = ' cannot be empty !'
-			
-			if validaCNPJ(cnpj):
-				context['CNPJ'] = ' vazio ou ja existente !'		
-				
-			if not ie:
-				context['IE'] = ' cannot be empty !'
-			'''
-			if not id_tipo_empresa:
-				context['Tipo de Empresa'] = ' cannot be empty !'
-			'''
-			'''
-			if not foto:
-				context['error_msg'] = 'foto cannot be empty !'
-			'''
-
-			if not cep:
-				context['CEP'] = ' cannot be empty !'
-			if not rua:
-				context['Rua'] = ' cannot be empty !'
-			if not bairro:
-				context['Bairro'] = ' cannot be empty !'
-			if not cidade:
-				context['Cidade'] = ' cannot be empty !'
-			if not estado:
-				context['Estado'] = ' cannot be empty !'
-			if not pais:
-				context['Pais'] = ' cannot be empty !'
-			if not numeroed:
-				context['Número'] = ' cannot be empty !'
-			if not complemento:
-				context['Comlemento'] = ' cannot be empty !'
-
-			# EXTRAS
-			#if not representante:
-			#	context['representante'] = ' cannot be empty !'
-			
-			listphones = []
-
-			if formset.is_valid():
-				for f in formset:
-					phone = f.cleaned_data
-					listphones.append([phone.get('tipo_telefone'),phone.get('numero'),phone.get('ramal'),phone.get('nome_contato')])
-
-					if not phone.get('tipo_telefone'):
-						context['Tipo Telefone'] = ' cannot be empty !'
-					if not phone.get('numero'):
-						context['Numero'] = ' cannot be empty !'
-					if not phone.get('ramal'):
-						context['Ramal'] = ' cannot be empty !'
-					if not phone.get('nome_contato'):
-						context['Contato'] = ' cannot be empty !'
-						pass
-			else:
-				for erro in formset.errors:					
-					context['error'] = erro
-				pass
-
-		
-			if not context:
-
+			if form.cleaned_data.get("cep") :
 				id_logradouro = Logradouro()
-				id_logradouro.cep = cep
-				id_logradouro.bairro = bairro
-				id_logradouro.cidade = cidade
-				id_logradouro.estado = estado
-				id_logradouro.pais = pais
-				id_logradouro.nome = rua
+				id_logradouro.cep = form.cleaned_data.get("cep")
+				id_logradouro.nome = form.cleaned_data.get("rua")
+				id_logradouro.bairro = form.cleaned_data.get("bairro")
+				id_logradouro.cidade = form.cleaned_data.get("cidade")
+				id_logradouro.estado = form.cleaned_data.get("estado")
+				id_logradouro.pais = form.cleaned_data.get("pais")
 				id_logradouro.save()
-
+				
 				id_endereco = Endereco()
 				id_endereco.id_logradouro = id_logradouro
-				id_endereco.numero = numeroed
-				id_endereco.complemento = complemento
-				id_endereco.pontoreferencia = pontoreferencia
+				id_endereco.numero = form.cleaned_data.get("numeroed")
+				id_endereco.complemento = form.cleaned_data.get("complemento",None)
+				id_endereco.pontoreferencia = form.cleaned_data.get("pontoreferencia",None)
 				id_endereco.save()
+			else:
+				id_endereco = None
 
-				try:
-					id_tipo_empresa = TipoEmpresa.objects.get(descricao__icontains = "Agência")
-				except:
-					id_tipo_empresa = TipoEmpresa.objects.create(descricao = "Agência")
+			company.id_tipo_empresa =  TipoEmpresa.objects.get_or_create(descricao = "Agência")[0]
+			company.id_endereco = id_endereco
+			company.verificada = True
+			company.save()
 
-				empresa = Empresa()
-				empresa.razaosocial = razaosocial
-				empresa.nomefantasia = nomefantasia 
-				empresa.cnpj = cnpj
-				empresa.verificada = True
-				empresa.ie = ie
-				empresa.id_tipo_empresa = id_tipo_empresa				
-				empresa.id_endereco = id_endereco
-				empresa.save()
-
-				for listphone in listphones:
-					id_tipo_telefone = TipoTelefone.objects.filter(descricao=listphone[0])[0]			
+			for  f  in formset:
+				phone = f.cleaned_data
+				if phone:
 					telempresa = TelefoneEmpresa()
-					telempresa.id_tipo_telefone = id_tipo_telefone
-					telempresa.id_empresa = empresa
-					telempresa.numero = listphone[1]
-					telempresa.ramal = listphone[2]
-					telempresa.nome_contato = listphone[3]
+					telempresa.id_tipo_telefone =  phone.get('tipo_telefone')
+					telempresa.id_empresa = company
+					telempresa.numero =  phone.get('numero')
+					telempresa.ramal =  phone.get('ramal')
+					telempresa.nome_contato = phone.get('nome_contato')
 					telempresa.save()
 
-				# EXTRAS
-				agencia = Agencia()
-				agencia.id_empresa = empresa
-				agencia.logo = logo
-				agencia.save()
-					
-				return redirect(reverse_lazy("agencia-list"))
+			agencia = Agencia()
+			agencia.id_empresa = company
+			agencia.logo = request.FILES.get('logo', None)
+			agencia.save()
 
-		else:
-			PhoneFormSet = formset_factory(PhoneForm)		
-			formset = PhoneFormSet(request.POST, request.FILES)
-			form = AgenciaRegisterForm(request.POST, request.FILES)
-
-		return render(request, 'subclasses/empresa/agencia/register.html', {'form': form, 'formset':formset ,'context':context})
+			return redirect(reverse_lazy("agencia-list"))
+		
+		context = {'form':form, 'formset':formset}
+		return render (request, 'subclasses/empresa/agencia/register.html', context)
 
 
 class AgenciaEdit(JSONResponseMixin,View):
-	def get(self, request, pk=None):
-		request.session["view"]="agencia"
+	def get(self, request, pk):
+		agencia = Agencia.objects.get(pk=pk)
+		empresa = Empresa.objects.get(pk=agencia.id_empresa.pk)
+		telefones = TelefoneEmpresa.objects.filter(id_empresa=empresa.pk).extra(select={'tipo_telefone': 'id_tipo_telefone_id'}).values('tipo_telefone', 'numero', 'ramal','nome_contato')
+		extra = 1
+
+		form = AgenciaRegisterForm(instance=empresa)
+		form.initial['cep'] = agencia.id_empresa.id_endereco.id_logradouro.cep if agencia.id_empresa.id_endereco else ''
+		form.initial['rua'] = agencia.id_empresa.id_endereco.id_logradouro.nome if agencia.id_empresa.id_endereco else ''
+		form.initial['bairro'] = agencia.id_empresa.id_endereco.id_logradouro.bairro if agencia.id_empresa.id_endereco else ''
+		form.initial['cidade'] = agencia.id_empresa.id_endereco.id_logradouro.cidade if agencia.id_empresa.id_endereco else ''
+		form.initial['estado'] = agencia.id_empresa.id_endereco.id_logradouro.estado if agencia.id_empresa.id_endereco else ''
+		form.initial['pais'] = agencia.id_empresa.id_endereco.id_logradouro.pais if agencia.id_empresa.id_endereco else ''
+		form.initial['numeroed'] = agencia.id_empresa.id_endereco.numero if agencia.id_empresa.id_endereco else ''
+		form.initial['complemento'] = agencia.id_empresa.id_endereco.complemento if agencia.id_empresa.id_endereco else ''
+		form.initial['pontoreferencia'] = agencia.id_empresa.id_endereco.pontoreferencia if agencia.id_empresa.id_endereco else ''
+		if telefones:
+			extra = 0
+		PhoneFormSet = formset_factory(PhoneForm, extra=extra)
+		formset = PhoneFormSet(initial=telefones)
+		request.session["view"]="agencia"		
+		context = {'form':form, 'formset':formset}
+		return render (request, 'subclasses/empresa/agencia/edit.html', context)
+
+	def post(self, request, pk, *args, **kwargs):
 		agencia = Agencia.objects.get(pk=pk)
 		empresa = Empresa.objects.get(pk=agencia.id_empresa.pk)
 		telefones = TelefoneEmpresa.objects.filter(id_empresa=empresa.pk)
+		extra = 1
 
-		
-		PhoneFormSet = formset_factory(PhoneForm,extra=0)
-		
+		form = AgenciaRegisterForm(request.POST, request.FILES, instance=empresa)
+		if telefones:
+			extra = 0
+		PhoneFormSet = formset_factory(PhoneForm, extra=extra)
+		formset = PhoneFormSet(request.POST)
 
-		data = []
-		for telefone in telefones:
-			data.append({'tipo_telefone':telefone.id_tipo_telefone,'numero':telefone.numero,'ramal':telefone.ramal,'nome_contato':telefone.nome_contato})
-		
-				
-		formset = PhoneFormSet(
-			initial=data
-			)
+		if form.is_valid() and formset.is_valid():
+			company = form.save(commit=False)
 
-		form = AgenciaRegisterForm(
-			initial={
-			'razaosocial': agencia.id_empresa.razaosocial,
-			'nomefantasia': agencia.id_empresa.nomefantasia,
-			'cnpj': agencia.id_empresa.cnpj,
-			'verificada': agencia.id_empresa.verificada,
-			'ie': agencia.id_empresa.ie,
-			'tipo_empresa': agencia.id_empresa.id_tipo_empresa,
-			'cep' :  agencia.id_empresa.id_endereco.id_logradouro.cep,
-		    'rua' :  agencia.id_empresa.id_endereco.id_logradouro.nome,
-		    'bairro' :  agencia.id_empresa.id_endereco.id_logradouro.bairro,
-		    'cidade' :  agencia.id_empresa.id_endereco.id_logradouro.cidade,
-		    'estado' :  agencia.id_empresa.id_endereco.id_logradouro.estado,
-		    'pais' : agencia.id_empresa.id_endereco.id_logradouro.pais,
-		    'numeroed' :  agencia.id_empresa.id_endereco.numero,
-		    'complemento' : agencia.id_empresa.id_endereco.complemento,
-		    'pontoreferencia' :  agencia.id_empresa.id_endereco.pontoreferencia,
-		    
-			# EXTRAS
-		    #'representante' : startup.representante,
-			}
-			)
-
-		return render (request, 'subclasses/empresa/agencia/edit.html', {'form':form ,'formset':  formset})
-
-	def post(self, request, pk=None, *args, **kwargs):
-		context = {}
-		request.session["view"]="agencia"
-		if request.method == 'POST':		    
-			form = AgenciaRegisterForm(request.POST, request.FILES)
-			PhoneFormSet = formset_factory(PhoneForm)		
-			formset = PhoneFormSet(request.POST, request.FILES)	  
-
-					  
-			
-			razaosocial = request.POST['razaosocial']
-			nomefantasia = request.POST['nomefantasia']
-			cnpj = request.POST['cnpj']
-			ie = request.POST['ie']
-			#id_tipo_empresa = request.POST['tipo_empresa']
-
-
-			cep = request.POST['cep']
-			rua = request.POST['rua']
-			bairro = request.POST['bairro']
-			cidade = request.POST['cidade']
-			estado = request.POST['estado']
-			pais = request.POST['pais']
-
-			numeroed = request.POST['numeroed']
-			complemento = request.POST['complemento']
-			pontoreferencia = request.POST['pontoreferencia']
-
-			
-			# EXTRAS
-			#representante = request.POST['representante']
-
-			listphones = []
-
-			if formset.is_valid():
-				for f in formset:
-					phone = f.cleaned_data
-					listphones.append([phone.get('tipo_telefone'),phone.get('numero'),phone.get('ramal'),phone.get('nome_contato')])
-
-					if not phone.get('tipo_telefone'):
-						context['Tipo Telefone'] = ' cannot be empty !'
-					if not phone.get('numero'):
-						context['Numero'] = ' cannot be empty !'
-					if not phone.get('ramal'):
-						context['Ramal'] = ' cannot be empty !'
-					if not phone.get('nome_contato'):
-						context['Contato'] = ' cannot be empty !'
-						pass
+			if empresa.id_endereco:
+				id_endereco = Endereco.objects.get(pk=empresa.id_endereco.pk)
+				id_logradouro = Logradouro.objects.get(pk=id_endereco.id_logradouro.pk)
 			else:
-				for erro in formset.errors:					
-					context['error'] = erro
-				pass
-								
-			if not razaosocial:
-				context['Razão social'] = ' cannot be empty !'
-			if not nomefantasia:
-				context['Nome Fantasia'] = ' cannot be empty !'
-			if not cnpj or not validaCNPJ(cnpj):
-				context['CNPJ'] = ' cannot be empty !'			
-			if not ie:
-				context['IE'] = ' cannot be empty !'
-			'''
-			if not id_tipo_empresa:
-				context['Tipo de Empresa'] = ' cannot be empty !'
-			'''
-			
-			'''
-			if not foto:
-				context['error_msg'] = 'foto cannot be empty !'
-			'''
-
-			if not cep:
-				context['CEP'] = ' cannot be empty !'
-			if not rua:
-				context['Rua'] = ' cannot be empty !'
-			if not bairro:
-				context['Bairro'] = ' cannot be empty !'
-			if not cidade:
-				context['Cidade'] = ' cannot be empty !'
-			if not estado:
-				context['Estado'] = ' cannot be empty !'
-			if not pais:
-				context['Pais'] = ' cannot be empty !'
-			if not numeroed:
-				context['Número'] = ' cannot be empty !'
-			if not complemento:
-				context['Comlemento'] = ' cannot be empty !'
-			if not pontoreferencia:
-				context['Ponto de refêrencia'] = ' cannot be empty !'
-
-			# EXTRAS
-			#if not representante:
-			#	context['representante'] = ' cannot be empty !'
-
-			if not context:
-
-				agencia = Agencia.objects.get(pk=pk)
-
-				empresa = Empresa.objects.get(pk=agencia.id_empresa.pk)
-				telefones = TelefoneEmpresa.objects.filter(id_empresa=empresa.pk)
-				id_endereco = Endereco.objects.get(id_endereco=empresa.id_endereco.pk)
-				id_logradouro = Logradouro.objects.get(id_logradouro=id_endereco.id_logradouro.pk)
-
-				for telefone in telefones:
-					telefone.delete()
-
+				id_endereco = Endereco()
 				id_logradouro = Logradouro()
-				id_logradouro.cep = cep
-				id_logradouro.bairro = bairro
-				id_logradouro.cidade = cidade
-				id_logradouro.estado = estado
-				id_logradouro.pais = pais
-				id_logradouro.nome = rua
-				id_logradouro.save()
 
+			if form.cleaned_data.get("cep") :
+				id_logradouro.cep = form.cleaned_data.get("cep")
+				id_logradouro.nome = form.cleaned_data.get("rua")
+				id_logradouro.bairro = form.cleaned_data.get("bairro")
+				id_logradouro.cidade = form.cleaned_data.get("cidade")
+				id_logradouro.estado = form.cleaned_data.get("estado")
+				id_logradouro.pais = form.cleaned_data.get("pais")
+				id_logradouro.save()
 				
 				id_endereco.id_logradouro = id_logradouro
-				id_endereco.numero = numeroed
-				id_endereco.complemento = complemento
-				id_endereco.pontoreferencia = pontoreferencia
+				id_endereco.numero = form.cleaned_data.get("numeroed")
+				id_endereco.complemento = form.cleaned_data.get("complemento",None)
+				id_endereco.pontoreferencia = form.cleaned_data.get("pontoreferencia",None)
 				id_endereco.save()
+			else:
+				id_endereco = None
 
-				try:
-					id_tipo_empresa = TipoEmpresa.objects.get(descricao__icontains = "Agência")
-				except:
-					id_tipo_empresa = TipoEmpresa.objects.create(descricao = "Agência")
-				
-				empresa.razaosocial = razaosocial
-				empresa.nomefantasia = nomefantasia 
-				empresa.cnpj = cnpj
-				empresa.verificada = True
-				empresa.ie = ie
-				empresa.id_tipo_empresa = id_tipo_empresa				
-				empresa.id_endereco = id_endereco
-				empresa.save()
+			company.id_tipo_empresa =  TipoEmpresa.objects.get_or_create(descricao = "Agência")[0]
+			company.id_endereco = id_endereco
+			company.verificada = True
+			company.save()
 
-				
-				for listphone in listphones:
-					id_tipo_telefone = TipoTelefone.objects.filter(descricao=listphone[0])[0]			
+			for telefone in telefones:
+				telefone.delete()
+
+			for  f  in formset:
+				phone = f.cleaned_data
+				if phone:
 					telempresa = TelefoneEmpresa()
-					telempresa.id_tipo_telefone = id_tipo_telefone
-					telempresa.id_empresa = empresa
-					telempresa.numero = listphone[1]
-					telempresa.ramal = listphone[2]
-					telempresa.nome_contato = listphone[3]
+					telempresa.id_tipo_telefone =  phone.get('tipo_telefone')
+					telempresa.id_empresa = company
+					telempresa.numero =  phone.get('numero')
+					telempresa.ramal =  phone.get('ramal')
+					telempresa.nome_contato = phone.get('nome_contato')
 					telempresa.save()
+			
+			agencia.id_empresa = company
+			agencia.logo = request.FILES.get('logo', None)
+			agencia.save()
 
-				# EXTRAS
-				#agencia.representante = representante
-				#agencia.save()
-
-				return redirect(reverse_lazy("agencia-list"))
-
-		else:
-			form = AgenciaRegisterForm(request.POST, request.FILES)
-			PhoneFormSet = formset_factory(PhoneForm)		
-			formset = PhoneFormSet(request.POST, request.FILES)	  
-
-		return render(request, 'subclasses/empresa/agencia/edit.html', {'form': form,'formset':formset,'context':context})
+			return redirect(reverse_lazy("agencia-list"))
+		context = {'form':form, 'formset':formset}
+		return render (request, 'subclasses/empresa/agencia/edit.html', context)
 
 
 
@@ -429,8 +195,3 @@ class AgenciaDelete(JSONResponseMixin,DeleteView):
 	success_url = reverse_lazy('agencia-list')
 	template_name = 'subclasses/empresa/agencia/delete.html'
 
-'''
-----------------------------------------
-			END AGENCIA METHODS
-----------------------------------------
-'''
