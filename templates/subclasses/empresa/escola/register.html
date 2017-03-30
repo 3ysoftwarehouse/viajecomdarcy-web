@@ -1,3 +1,18 @@
 {% extends "default/company/register.html" %}
-{% block title_top %} Escola {% endblock %}
-{% block tab_01 %} Dados da Escola{% endblock %}
+{% block title %} Escola {% endblock %}
+{% block buttom %} 
+<div class="row">
+  <div class="col-lg-12">
+    <div class="form-group">
+      <button type="submit" class="btn btn-success btn-cons">
+        Salvar
+      </button>
+      <div class="pull-right">
+      <a class="btn btn-secondary-outline" href="{% url 'escola-list' %}">
+        Cancelar
+      </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -14,7 +14,7 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField
 ##################################################
 #               CUSTOM IMPORTS                   #
 ##################################################
-from .models import Usuario, Genero, TipoUsuario, TipoEmpresa, TipoTelefone, TelefoneEmpresa # MODELS
+from .models import Usuario, Empresa, Genero, TipoUsuario, TipoEmpresa, TipoTelefone, TelefoneEmpresa # MODELS
 ##################################################
 
 
@@ -352,16 +352,11 @@ class UserRegisterForm(forms.Form):
 ---------------------------------------
 '''
 
-class CompanyRegisterForm(forms.Form):
+class CompanyRegisterForm(forms.ModelForm):
+    class Meta:
+        model = Empresa
+        fields = '__all__'
 
-    # FIELDS EMPRESA
-    razaosocial = forms.CharField(label='Razão Social:', max_length=100)
-    nomefantasia = forms.CharField(label='Nome Fantasia:', max_length=100)
-    cnpj = forms.CharField(label='CNPJ:', max_length=20)
-    ie = forms.CharField(label='Inscrição Estadual', max_length=45)
-    tipo_empresa = forms.ModelChoiceField (TipoEmpresa, label='Tipo de Empresa:', widget=forms.Select())
-
-    # FIELDS LOGRADOURO
     cep = forms.CharField(label='CEP:', max_length=10)
     rua = forms.CharField(label='Rua:', max_length=100)
     bairro = forms.CharField(label='Bairro:', max_length=45)
@@ -369,7 +364,6 @@ class CompanyRegisterForm(forms.Form):
     estado = forms.CharField(label='Estado:', max_length=2)
     pais = forms.CharField(label='País:', max_length=45)
 
-    # FIELDS ENDERECO
     numeroed = forms.IntegerField(label='Numero:')
     complemento = forms.CharField(label='Complemento:', max_length=45)
     pontoreferencia = forms.CharField(label='Ponto de referência:', max_length=45, widget=forms.Textarea)
@@ -377,81 +371,161 @@ class CompanyRegisterForm(forms.Form):
     
     def __init__(self, *args, **kwargs):
         super(CompanyRegisterForm, self).__init__(*args, **kwargs)
-
-        '''
-            FIELDS EMPRESA
-        '''
-
-        # Razaosocial Fields widget
         self.fields['razaosocial'].widget.attrs['class'] = 'form-control'
         self.fields['razaosocial'].widget.attrs['placeholder'] = 'Digite a Razão Social'
-
-        # Nomefantasia Fields widget
         self.fields['nomefantasia'].widget.attrs['class'] = 'form-control'
         self.fields['nomefantasia'].widget.attrs['placeholder'] = 'Digite o Nome Fantasia'
-
-        # Cnpj Fields widget
         self.fields['cnpj'].widget.attrs['class'] = 'form-control'
         self.fields['cnpj'].widget.attrs['onblur'] = 'get_cnpj_data(this.value)'
         self.fields['cnpj'].widget.attrs['placeholder'] = 'Digite a Razão Social'
-
-
-        # Ie Fields widget
         self.fields['ie'].widget.attrs['class'] = 'form-control'
         self.fields['ie'].widget.attrs['placeholder'] = 'Inscrição Estadual'
-
-        # Tipo_empresa Fields widget
-        self.fields['tipo_empresa'].widget.attrs['class'] = 'form-control'
-        self.fields['tipo_empresa'].queryset = TipoEmpresa.objects.all()
-
-
-        '''
-            FIELDS LOGRADOURO
-        '''
-
-        # CEP Fields widget
+        self.fields['id_tipo_empresa'].widget.attrs['class'] = 'form-control'
+        self.fields['id_tipo_empresa'].queryset = TipoEmpresa.objects.all()
+       
         self.fields['cep'].widget.attrs['class'] = 'form-control'
         self.fields['cep'].widget.attrs['onblur'] = 'get_cep_data(this.value)'
         self.fields['cep'].widget.attrs['placeholder'] = 'Digite o CEP'
-
-        # Rua Fields widget
         self.fields['rua'].widget.attrs['class'] = 'form-control'
         self.fields['rua'].widget.attrs['placeholder'] = 'Digite a rua'
-
-        # Bairro Fields widget
         self.fields['bairro'].widget.attrs['class'] = 'form-control'
         self.fields['bairro'].widget.attrs['placeholder'] = 'Digite o bairro'
-
-        # Cidade Fields widget
         self.fields['cidade'].widget.attrs['class'] = 'form-control'
         self.fields['cidade'].widget.attrs['placeholder'] = 'Digite a cidade'
-
-        # Estado Fields widget
         self.fields['estado'].widget.attrs['class'] = 'form-control'
         self.fields['estado'].widget.attrs['placeholder'] = 'Digite o estado'
-
-        # Pais Fields widget
         self.fields['pais'].widget.attrs['class'] = 'form-control'
         self.fields['pais'].widget.attrs['placeholder'] = 'Digite o pais'
 
-
-        '''
-            FIELDS ENDERECO
-        '''
-
-        # Numero Fields widget
         self.fields['numeroed'].widget.attrs['class'] = 'form-control'
         self.fields['numeroed'].widget.attrs['placeholder'] = 'Digite o numero'
-
-        # Complemento Fields widget
         self.fields['complemento'].widget.attrs['class'] = 'form-control'
         self.fields['complemento'].widget.attrs['placeholder'] = 'Digite o complemento'
-
-        # Pontoreferencia Fields widget
         self.fields['pontoreferencia'].widget.attrs['class'] = 'form-control'
         self.fields['pontoreferencia'].widget.attrs['placeholder'] = 'Digite um ponto de referência'
         
-        pass
+
+        self.fields['razaosocial'].required = False
+        self.fields['nomefantasia'].required = True
+        self.fields['cnpj'].required = False
+        self.fields['ie'].required = False
+        self.fields['id_tipo_empresa'].required = False
+
+
+        self.fields['cep'].required = False
+        self.fields['rua'].required = False
+        self.fields['bairro'].required = False
+        self.fields['bairro'].required = False
+        self.fields['cidade'].required = False
+        self.fields['estado'].required = False
+        self.fields['pais'].required = False
+        self.fields['numeroed'].required = False
+        self.fields['complemento'].required = False
+        self.fields['pontoreferencia'].required = False
+        
+    def clean(self):
+        cleaned_data = super(CompanyRegisterForm, self).clean()
+
+        cep = cleaned_data.get("cep")
+        rua = cleaned_data.get("rua")
+        bairro = cleaned_data.get("bairro")
+        cidade = cleaned_data.get("cidade")
+        estado = cleaned_data.get("estado")
+        pais = cleaned_data.get("pais")
+        numero = cleaned_data.get("numeroed")
+
+        msg = "This field is required."
+        if cep:
+            if not rua:
+                self.add_error('rua', msg)
+            if not bairro:
+                self.add_error('bairro', msg)
+            if not cidade:
+                self.add_error('cidade', msg)
+            if not estado:
+                self.add_error('estado', msg)
+            if not pais:
+                self.add_error('pais', msg)
+            if not numero:
+                self.add_error('numeroed', msg)
+        elif rua:
+            if not rua:
+                self.add_error('rua', msg)
+            if not bairro:
+                self.add_error('bairro', msg)
+            if not cidade:
+                self.add_error('cidade', msg)
+            if not estado:
+                self.add_error('estado', msg)
+            if not pais:
+                self.add_error('pais', msg)
+            if not numero:
+                self.add_error('numeroed', msg)
+        elif bairro:
+            if not cep:
+                self.add_error('cep', msg)
+            if not rua:
+                self.add_error('rua', msg)
+            if not cidade:
+                self.add_error('cidade', msg)
+            if not estado:
+                self.add_error('estado', msg)
+            if not pais:
+                self.add_error('pais', msg)
+            if not numero:
+                self.add_error('numeroed', msg)
+        elif cidade:
+            if not cep:
+                self.add_error('cep', msg)
+            if not rua:
+                self.add_error('rua', msg)
+            if not bairro:
+                self.add_error('bairro', msg)
+            if not estado:
+                self.add_error('estado', msg)
+            if not pais:
+                self.add_error('pais', msg)
+            if not numero:
+                self.add_error('numeroed', msg)
+        elif estado:
+            if not cep:
+                self.add_error('cep', msg)
+            if not rua:
+                self.add_error('rua', msg)
+            if not bairro:
+                self.add_error('bairro', msg)
+            if not cidade:
+                self.add_error('cidade', msg)
+            if not pais:
+                self.add_error('pais', msg)
+            if not numero:
+                self.add_error('numeroed', msg)
+        elif pais:
+            if not cep:
+                self.add_error('cep', msg)
+            if not rua:
+                self.add_error('rua', msg)
+            if not bairro:
+                self.add_error('bairro', msg)
+            if not cidade:
+                self.add_error('cidade', msg)
+            if not estado:
+                self.add_error('estado', msg)
+            if not numero:
+                self.add_error('numeroed', msg)
+        elif numero:
+            if not cep:
+                self.add_error('cep', msg)
+            if not rua:
+                self.add_error('rua', msg)
+            if not bairro:
+                self.add_error('bairro', msg)
+            if not cidade:
+                self.add_error('cidade', msg)
+            if not estado:
+                self.add_error('estado', msg)
+            if not pais:
+                self.add_error('pais', msg)
 
 '''
 ---------------------------------------
@@ -459,47 +533,19 @@ class CompanyRegisterForm(forms.Form):
 ---------------------------------------
 '''
 
-
-
-'''
----------------------------------------
-            PHONE FORMS
----------------------------------------
-'''
-
 class PhoneForm(forms.Form):
-
-    # FIEDS TELEFONE
-    tipo_telefone = forms.ModelChoiceField (TipoTelefone, label='Tipo de Telefone:', widget=forms.Select())
+    tipo_telefone = forms.ModelChoiceField (TipoTelefone, label='Tipo de Telefone:', widget=forms.Select(), required=False)
     numero = forms.CharField(label='Numero:', max_length=15)
     ramal = forms.CharField(label='Ramal:', max_length=4, required=False)
     nome_contato = forms.CharField(label='Contato:', max_length=45, required=False)
 
     def __init__(self, *args, **kwargs):
         super(PhoneForm, self).__init__(*args, **kwargs)
-
-        '''
-            FIELDS TELEFONE
-        '''
-
-        # Tipotelefone Fields widget
         self.fields['tipo_telefone'].widget.attrs['class'] = 'form-control'
         self.fields['tipo_telefone'].queryset = TipoTelefone.objects.all()
-
-        # Numero Fields widget
         self.fields['numero'].widget.attrs['class'] = 'form-control'
         self.fields['numero'].widget.attrs['placeholder'] = 'numero'
-
-        # Ramal Fields widget
         self.fields['ramal'].widget.attrs['class'] = 'form-control'
         self.fields['ramal'].widget.attrs['placeholder'] = 'ramal'
-
-        # Nomecontato Fields widget
         self.fields['nome_contato'].widget.attrs['class'] = 'form-control'
         self.fields['nome_contato'].widget.attrs['placeholder'] = 'nome do contato'
-
-'''
----------------------------------------
-            END PHONE FORMS
----------------------------------------
-'''

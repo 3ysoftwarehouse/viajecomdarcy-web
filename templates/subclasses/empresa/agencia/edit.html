@@ -1,9 +1,29 @@
 {% extends "default/company/edit.html" %}
-{% block title_top %} Agencia {% endblock %}
-{% block tab_01 %} Dados da Agencia{% endblock %}
-{% block field_logo %}
-<div class="form-group  required">
-    <label>{{form.logo.label_tag}}</label>
-    {{form.logo}}
+{% block title %} Agência {% endblock %}
+{% block subclass_form %}
+<div class='row'>
+   <div class="col-lg-12">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form.logo.auto_id }}">{{ form.logo.label_tag }}</label>
+      {{ form.logo }}
+      <small class="text-muted">{{ form.logo.errors }}</small>
+    </fieldset>
+  </div>
+</div>
+{% endblock %}
+{% block buttom %} 
+<div class="row">
+  <div class="col-lg-12">
+    <div class="form-group">
+      <button type="submit" class="btn btn-success btn-cons">
+        Salvar
+      </button>
+      <div class="pull-right">
+      <a class="btn btn-secondary-outline" href="{% url 'agencia-list' %}">
+        Cancelar
+      </a>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}
