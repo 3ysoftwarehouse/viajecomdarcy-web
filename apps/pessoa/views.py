@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import CreateView, RedirectView, View, UpdateView, ListView, DetailView, DeleteView
+from datetime import datetime
 from .models import PessoaJuridica, PessoaFisica, Pessoa
 from .forms import PessoaFisicaForm, PessoaJuridicaForm
 
@@ -12,21 +13,35 @@ class PessoaRegister(View):
         return render (request, 'pessoa/register.html', context)
 
     def post(self, request, *args, **kwargs):
-        formfisica = PessoaFisicaForm(request.POST, prefix='pessoa-fisica')
-        formjuridica = PessoaJuridicaForm(request.POST, prefix='pessoa-juridica')
+        formfisica = PessoaFisicaForm(prefix='pessoa-fisica')
+        formjuridica = PessoaJuridicaForm(prefix='pessoa-juridica')
         context = {'formfisica':formfisica, 'formjuridica':formjuridica}
-        if formfisica.is_valid():
-            obj = formfisica.save(commit=False)
-            obj.tipo_pessoa = 'Pessoa Física'
-            obj.save()
-            return redirect(reverse_lazy("pessoa-list"))
-        elif formjuridica.is_valid():
-            obj = formjuridica.save(commit=False)
-            obj.tipo_pessoa = 'Pessoa Jurídica'
-            obj.save()
-            return redirect(reverse_lazy("pessoa-list"))
-        else:
-        	return render (request, 'pessoa/register.html', context)
+        if request.POST.get('pessoa-fisica-data_nascimento'):
+            request.POST['pessoa-fisica-data_nascimento'] = datetime.strptime(request.POST['pessoa-fisica-data_nascimento'], '%d/%m/%Y').strftime('%Y-%m-%d')
+        if request.POST.get('fisica', None):
+            formfisica = PessoaFisicaForm(request.POST, prefix='pessoa-fisica')
+            if formfisica.is_valid():
+                obj = formfisica.save(commit=False)
+                obj.tipo_pessoa = 'Pessoa Física'
+                obj.save()
+                return redirect(reverse_lazy("pessoa-list"))
+            else:
+                formfisica = PessoaFisicaForm(request.POST, prefix='pessoa-fisica')
+                context = {'formfisica':formfisica, 'formjuridica':formjuridica}
+                return render (request, 'pessoa/register.html', context)
+
+        if request.POST.get('juridica', None):
+            formjuridica = PessoaJuridicaForm(request.POST,prefix='pessoa-juridica')
+            if formjuridica.is_valid():
+                obj = formjuridica.save(commit=False)
+                obj.tipo_pessoa = 'Pessoa Jurídica'
+                obj.save()
+                return redirect(reverse_lazy("pessoa-list"))
+            else:
+                formjuridica = PessoaJuridicaForm(request.POST,prefix='pessoa-juridica')
+                context = {'formfisica':formfisica, 'formjuridica':formjuridica}
+                return render (request, 'pessoa/register.html', context)
+        
 
 
 class PessoaEdit(View):
@@ -34,27 +49,27 @@ class PessoaEdit(View):
     	pessoa = Pessoa.objects.get(pk=pk)
     	if pessoa.tipo_pessoa == 'Pessoa Física':
     		pessoa = PessoaFisica.objects.get(cpf_cnpj=pessoa.cpf_cnpj)
-    		form = PessoaFisicaForm(request.POST, prefix='pessoa-fisica', instance=pessoa)
+    		form = PessoaFisicaForm( prefix='pessoa-fisica', instance=pessoa)
     	else:
     		pessoa = PessoaJuridica.objects.get(cpf_cnpj=pessoa.cpf_cnpj)
-    		form = PessoaJuridicaForm(request.POST, prefix='pessoa-juridica', instance=pessoa)
-
+    		form = PessoaJuridicaForm(prefix='pessoa-juridica', instance=pessoa)
     	context = {'form':form, 'pessoa':pessoa}
     	return render (request, 'pessoa/edit.html', context)
 
     def post(self, request, pk, *args, **kwargs):
-
         pessoa = Pessoa.objects.get(pk=pk)
         if pessoa.tipo_pessoa == 'Pessoa Física':
-        	pessoa = PessoaFisica.objects.get(cpf_cnpj=pessoa.cpf_cnpj)
-        	form = PessoaFisicaForm(request.POST, prefix='pessoa-fisica', instance=pessoa)
+            if request.POST.get('pessoa-fisica-data_nascimento'):
+                request.POST['pessoa-fisica-data_nascimento'] = datetime.strptime(request.POST['pessoa-fisica-data_nascimento'], '%d/%m/%Y').strftime('%Y-%m-%d')
+            pessoa = PessoaFisica.objects.get(cpf_cnpj=pessoa.cpf_cnpj)
+            form = PessoaFisicaForm(request.POST, prefix='pessoa-fisica', instance=pessoa)
         else:
-        	pessoa = PessoaJuridica.objects.get(cpf_cnpj=pessoa.cpf_cnpj)
-        	form = PessoaJuridicaForm(request.POST, prefix='pessoa-juridica', instance=pessoa)
+            pessoa = PessoaJuridica.objects.get(cpf_cnpj=pessoa.cpf_cnpj)
+            form = PessoaJuridicaForm(request.POST, prefix='pessoa-juridica', instance=pessoa)
 
         context = {'form':form, 'pessoa':pessoa}
         if form.is_valid():
-            obj = formfisica.save(commit=False)
+            obj = form.save(commit=False)
             obj.save()
             return redirect(reverse_lazy("pessoa-list"))
         else:
@@ -68,17 +83,6 @@ class PessoaList(ListView):
 		context = super(PessoaList, self).get_context_data(**kwargs)
 		return context
 
-class PessoaDetail(DetailView):
-    model = Pessoa
-    template_name = 'pessoa/detail.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(PessoaDetail, self).get_context_data(**kwargs)
-        if self.object.tipo_pessoa == 'Pessoa Física':
-        	context['pessoa'] = PessoaFisica.objects.get(cpf_cnpj=self.object.cpf_cnpj)
-        else:
-        	context['pessoa'] = PessoaJuridica.objects.get(cpf_cnpj=self.object.cpf_cnpj)
-        return context
 
 class PessoaDelete(DeleteView):
 	model = Pessoa
