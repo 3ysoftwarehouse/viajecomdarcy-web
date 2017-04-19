@@ -1,0 +1,169 @@
+{% extends "default/panel/layout.html" %}
+{% load staticfiles %}
+
+{% block page_info %}
+    <li>
+      <b>Pessoa</b>
+    </li>
+    <li>
+      <a class="active">Cadastro</a>
+    </li>    
+{% endblock %}
+
+{% block content %}
+  <div class="col-md-12">
+  <!-- START PANEL -->
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">
+      </div>
+    </div>
+    <div class="panel-body">
+      <form>
+        <div class='row'>
+          <input id="check_fisica" type="radio" name="opcao" value="" ckecked> Pessoa Física
+          <input id="check_juridica" type="radio" name="opcao" value=""> Pessoa Jurídica 
+        </div>
+      </form>
+      <form autocomplete="off"  method="post" enctype="multipart/form-data" role="form" id="form-pessoa-fisica" novalidate="novalidate">
+        <div class='row' id="form_pessoa_fisica">
+          {% csrf_token %}
+          <h5 class="m-t-lg with-border">Cadastro de Pessoa Física</h5>
+          <div class='row'>
+            <div class="col-lg-4">
+              <fieldset class="form-group">
+                <label class="form-label semibold" for="{{ formfisica.cpf_cnpj.auto_id }}">CPF</label>
+                {{ formfisica.cpf_cnpj }}
+                <small class="text-muted">{{ formfisica.cpf_cnpj.errors }}</small>
+              </fieldset>
+            </div>
+            <div class="col-lg-4">
+              <fieldset class="form-group">
+                <label class="form-label semibold" for="{{ formfisica.nome.auto_id }}">{{ formfisica.nome.label_tag }}</label>
+                {{ formfisica.nome }}
+                <small class="text-muted">{{ formfisica.nome.errors }}</small>
+              </fieldset>
+            </div>
+            <div class="col-lg-4">
+              <fieldset class="form-group">
+                <label class="form-label semibold" for="{{ formfisica.email.auto_id }}">{{ formfisica.email.label_tag }}</label>
+                {{ formfisica.email }}
+                <small class="text-muted">{{ formfisica.email.errors }}</small>
+              </fieldset>
+            </div>
+            <div class="col-lg-4">
+              <fieldset class="form-group">
+                <label class="form-label semibold" for="{{ formfisica.data_nascimento.auto_id }}">
+                  {{ formfisica.data_nascimento.label_tag }}
+                </label>
+                {{ formfisica.data_nascimento }}
+                <small class="text-muted">{{ formfisica.data_nascimento.errors }}</small>
+              </fieldset>
+            </div>
+            <div class="col-lg-4">
+              <fieldset class="form-group">
+                <label class="form-label semibold" for="{{ formfisica.rg.auto_id }}">{{ formfisica.rg.label_tag }}</label>
+                {{ formfisica.rg }}
+                <small class="text-muted">{{ formfisica.rg.errors }}</small>
+              </fieldset>
+            </div>
+            <div class="col-lg-4">
+              <fieldset class="form-group">
+                <label class="form-label semibold" for="{{ formfisica.orgaoemissor.auto_id }}">
+                  {{ formfisica.orgaoemissor.label_tag }}
+                </label>
+                {{ formfisica.orgaoemissor }}
+                <small class="text-muted">{{ formfisica.orgaoemissor.errors }}</small>
+              </fieldset>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="form-group">
+                <button type="submit" class="btn btn-success btn-cons">
+                  Salvar
+                </button>
+                <div class="pull-right">
+                <a class="btn btn-secondary-outline" href="">
+                  Cancelar
+                </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <form autocomplete="off"  method="post" enctype="multipart/form-data" role="form" id="form-pessoa-fisica" novalidate="novalidate">
+        <div class='row' id="form_pessoa_juridica">
+          {% csrf_token %}
+          <h5 class="m-t-lg with-border">Cadastro de Pessoa Jurídica</h5>
+          <div class='row'>
+            <div class="col-lg-4">
+              <fieldset class="form-group">
+                <label class="form-label semibold" for="{{ formjuridica.cpf_cnpj.auto_id }}">CNPJ</label>
+                {{ formjuridica.cpf_cnpj }}
+                <small class="text-muted">{{ formjuridica.cpf_cnpj.errors }}</small>
+              </fieldset>
+            </div>
+            <div class="col-lg-4">
+              <fieldset class="form-group">
+                <label class="form-label semibold" for="{{ formjuridica.nome.auto_id }}">{{ formjuridica.nome.label_tag }}</label>
+                {{ formjuridica.nome }}
+                <small class="text-muted">{{ formjuridica.nome.errors }}</small>
+              </fieldset>
+            </div>
+            <div class="col-lg-4">
+              <fieldset class="form-group">
+                <label class="form-label semibold" for="{{ formjuridica.email.auto_id }}">{{ formjuridica.email.label_tag }}</label>
+                {{ formjuridica.email }}
+                <small class="text-muted">{{ formjuridica.email.errors }}</small>
+              </fieldset>
+            </div>
+            <div class="col-lg-4">
+              <fieldset class="form-group">
+                <label class="form-label semibold" for="{{ formjuridica.razao_social.auto_id }}">
+                  {{ formjuridica.razao_social.label_tag }}
+                </label>
+                {{ formjuridica.razao_social }}
+                <small class="text-muted">{{ formjuridica.razao_social.errors }}</small>
+              </fieldset>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="form-group">
+                <button type="submit" class="btn btn-success btn-cons">
+                  Salvar
+                </button>
+                <div class="pull-right">
+                <a class="btn btn-secondary-outline" href="">
+                  Cancelar
+                </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- END PANEL -->
+</div>
+{% endblock %}
+
+
+{% block javascript %}
+<script>
+$('#form_pessoa_juridica').hide();
+$('#check_fisica').click(function(event){
+    $('#form_pessoa_juridica').hide();
+    $('#form_pessoa_fisica').show();
+
+});
+$('#check_juridica').click(function(event){
+    $('#form_pessoa_fisica').hide();
+    $('#form_pessoa_juridica').show();
+});
+</script>
+<script src="{% static 'js/default/jquery.inputmask.min.js' %}" type="text/javascript"></script>
+{% endblock %}
