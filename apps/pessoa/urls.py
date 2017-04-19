@@ -11,13 +11,12 @@ from django.contrib.auth.decorators import login_required
 ##################################################
 #				CUSTOM IMPORTS                   #
 ##################################################
-from .views import PessoaRegister, PessoaList, PessoaDetail, PessoaDelete, PessoaEdit
+from apps.pessoa import views
 ##################################################
 
 urlpatterns = (
-	url(r'^dashboard/pessoa/register/$', login_required(PessoaRegister.as_view()), name="pessoa-register"),
-	url(r'^dashboard/pessoa/list/$', login_required(PessoaList.as_view()), name="pessoa-list"),
-	url(r'^dashboard/pessoa/detail/(?P<pk>\d+)/$', login_required(PessoaDetail.as_view()), name="pessoa-detail"),
-	url(r'^dashboard/pessoa/edit/(?P<pk>\d+)/$', login_required(PessoaEdit.as_view()), name="pessoa-edit"),
-	url(r'^dashboard/pessoa/delete/(?P<pk>\d+)/$', login_required(PessoaDelete.as_view()), name="pessoa-delete")
+	url(r'^dashboard/pessoa/register/$', login_required(views.PessoaRegister.as_view()), name="pessoa-register"),
+	url(r'^dashboard/pessoa/list/$', login_required(views.PessoaList.as_view()), name="pessoa-list"),
+	url(r'^dashboard/pessoa/edit/(?P<pk>\d+)/$', login_required(views.PessoaEdit.as_view()), name="pessoa-edit"),
+	url(r'^dashboard/pessoa/delete/(?P<pk>\d+)/$', login_required(views.PessoaDelete.as_view()), name="pessoa-delete")
 )
