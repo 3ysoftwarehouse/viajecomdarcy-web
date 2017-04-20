@@ -46,30 +46,34 @@ class PessoaRegister(View):
 
 class PessoaEdit(View):
     def get(self, request, pk):
-    	pessoa = Pessoa.objects.get(pk=pk)
-    	if pessoa.tipo_pessoa == 'Pessoa Física':
-    		pessoa = PessoaFisica.objects.get(cpf_cnpj=pessoa.cpf_cnpj)
-    		form = PessoaFisicaForm( prefix='pessoa-fisica', instance=pessoa)
-    	else:
-    		pessoa = PessoaJuridica.objects.get(cpf_cnpj=pessoa.cpf_cnpj)
-    		form = PessoaJuridicaForm(prefix='pessoa-juridica', instance=pessoa)
-    	context = {'form':form, 'pessoa':pessoa}
-    	return render (request, 'pessoa/edit.html', context)
+        pessoa = Pessoa.objects.get(pk=pk)
+        if pessoa.tipo_pessoa == 'Pessoa Física':
+            pessoa = PessoaFisica.objects.get(cpf_cnpj=pessoa.cpf_cnpj)
+            form = PessoaFisicaForm( prefix='pessoa-fisica', instance=pessoa)
+        else:
+            pessoa = PessoaJuridica.objects.get(cpf_cnpj=pessoa.cpf_cnpj)
+            form = PessoaJuridicaForm(prefix='pessoa-juridica', instance=pessoa)
+        context = {'form':form, 'pessoa':pessoa}
+        return render (request, 'pessoa/edit.html', context)
 
     def post(self, request, pk, *args, **kwargs):
         pessoa = Pessoa.objects.get(pk=pk)
+        tipo =  ''
         if pessoa.tipo_pessoa == 'Pessoa Física':
+            tipo = 'Pessoa Física'
             if request.POST.get('pessoa-fisica-data_nascimento'):
                 request.POST['pessoa-fisica-data_nascimento'] = datetime.strptime(request.POST['pessoa-fisica-data_nascimento'], '%d/%m/%Y').strftime('%Y-%m-%d')
             pessoa = PessoaFisica.objects.get(cpf_cnpj=pessoa.cpf_cnpj)
             form = PessoaFisicaForm(request.POST, prefix='pessoa-fisica', instance=pessoa)
         else:
+            tipo = 'Pessoa Jurídica'
             pessoa = PessoaJuridica.objects.get(cpf_cnpj=pessoa.cpf_cnpj)
             form = PessoaJuridicaForm(request.POST, prefix='pessoa-juridica', instance=pessoa)
 
         context = {'form':form, 'pessoa':pessoa}
         if form.is_valid():
             obj = form.save(commit=False)
+            obj.tipo_pessoa = tipo
             obj.save()
             return redirect(reverse_lazy("pessoa-list"))
         else:
