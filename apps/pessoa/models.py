@@ -36,3 +36,10 @@ class PessoaFisica(Pessoa):
 
     def __str__(self):
         return self.nome
+
+
+class Fornecedor(models.Model):
+   pessoa = models.OneToOneField(Pessoa)
+   
+   def __str__(self):
+       return self.pessoa.nome
