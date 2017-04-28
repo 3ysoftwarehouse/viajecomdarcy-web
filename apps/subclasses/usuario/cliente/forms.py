@@ -88,6 +88,17 @@ class ClienteRegisterForm(forms.ModelForm):
 		self.fields['numero_empresa'].widget.attrs['class'] = 'form-control'
 		self.fields['numero_empresa'].widget.attrs['placeholder'] = 'Número'
 
+
+		self.fields['nome_pai'].label = "Nome do Pai"
+		self.fields['nome_mae'].label = "Nome do Mãe"
+		self.fields['numero_dependentes'].label = "Numero de Dependentes"
+		self.fields['tipo_residencia'].label = "Tipo de Residência"
+		self.fields['tempo_residencia'].label = "Tempo de Residência"
+		self.fields['dt_admissao'].label = "Data de Admissão"
+		self.fields['dt_emissao_rg'].label = "Data de Admissão RG"
+		self.fields['dt_banco'].label = "Data de Criação da Conta"
+		self.fields['telefone_banco'].label = "Telefone do Banco"
+
 	def clean(self):
 		cleaned_data = super(ClienteRegisterForm, self).clean()
 

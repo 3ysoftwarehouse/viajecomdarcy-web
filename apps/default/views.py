@@ -392,7 +392,7 @@ class CompanyRegister(JSONResponseMixin,View):
 					telempresa.nome_contato = phone.get('nome_contato')
 					telempresa.save()
 
-			return redirect(reverse_lazy("escola-list"))
+			return redirect(reverse_lazy("company-list"))
 		
 		context = {'form':form, 'formset':formset}
 		return render(request, 'default/company/register.html', context)
