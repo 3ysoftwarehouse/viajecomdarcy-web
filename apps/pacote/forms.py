@@ -25,6 +25,9 @@ class PacoteCidadeRegisterForm(forms.Form):
 		self.fields['id_cidade'].widget.attrs['class'] = 'form-control'
 		self.fields['qtd_dias'].widget.attrs['class'] = 'form-control'
 
+		self.fields['id_cidade'].label = "Cidade"
+		self.fields['qtd_dias'].label = "Quantidade de dias"
+
 
 class PacoteRegisterForm(forms.ModelForm):
 	id_opcional = forms.ModelMultipleChoiceField(queryset=Opcional.objects.all(), required=False)
@@ -52,6 +55,17 @@ class PacoteRegisterForm(forms.ModelForm):
 		self.fields['data_prevista'].widget.attrs['placeholder'] = '__/__/__'
 		self.fields['data_prevista'].required = True
 
+		self.fields['pacote_nome'].label = "Nome do Pacote"
+		self.fields['pacote_desc'].label = "Descrição do Pacote"
+		self.fields['pacote_preco'].label = "Preço do Pacote"
+		self.fields['pacote_taxa'].label = "Taxa do Pacote"
+		self.fields['taxa_remessa'].label = "Taxa de Remessa"
+		self.fields['pacote_obs'].label = "Observação"
+		self.fields['pacote_daybyday'].label = "Day by day"
+		self.fields['id_opcional'].label = "Pacote Opcional"
+		self.fields['id_excursao'].label = "Excursão"
+		self.fields['id_moeda'].label = "Moeda"
+
 
 class PacoteAcomodacaoRegisterForm(forms.Form):
 	id_acomodacao = forms.ModelChoiceField (queryset=Acomodacao.objects.all())
@@ -61,4 +75,6 @@ class PacoteAcomodacaoRegisterForm(forms.Form):
 		super(PacoteAcomodacaoRegisterForm, self).__init__(*args, **kwargs)
 		self.fields['id_acomodacao'].widget.attrs['class'] = 'form-control select acomodacao'
 		self.fields['preco'].widget.attrs['class'] = 'form-control'
+
+		self.fields['id_acomodacao'].label = "Acomodação"
 

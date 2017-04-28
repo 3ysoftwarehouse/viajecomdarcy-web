@@ -51,3 +51,5 @@ class DocumentoForm(forms.ModelForm):
         self.fields['anexo'].widget.attrs['class'] = 'form-control'
         self.fields['anexo'].widget.attrs['placeholder'] = 'Anexo'
         self.fields['anexo'].required = False
+
+        self.fields['id_tipo_documento'].label = 'Tipo de Documento'
