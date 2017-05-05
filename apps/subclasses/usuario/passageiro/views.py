@@ -100,6 +100,13 @@ class PassageiroRegister(JSONResponseMixin,View):
 			passageiro.observacao = form.cleaned_data.get("observacao")
 			passageiro.numero_passaporte = form.cleaned_data.get("numero_passaporte")
 			passageiro.data_validade_passaporte = form.cleaned_data.get("data_validade_passaporte")
+
+			passageiro.nome_pai = form.cleaned_data.get("nome_pai")
+			passageiro.nome_mae = form.cleaned_data.get("responsavel")
+			passageiro.responsavel = form.cleaned_data.get("observacao")
+			passageiro.telefone_responsavel = form.cleaned_data.get("telefone_responsavel")
+			passageiro.email_responsavel = form.cleaned_data.get("email_responsavel")
+
 			if emissor:
 				passageiro.id_emissor = emissor
 				passageiro.id_agencia = emissor.id_agencia
@@ -126,6 +133,13 @@ class PassageiroEdit(JSONResponseMixin,View):
 		form.initial['observacao'] = passageiro.observacao
 		form.initial['numero_passaporte'] = passageiro.numero_passaporte
 		form.initial['data_validade_passaporte'] = passageiro.data_validade_passaporte
+		
+		form.initial['nome_pai'] = passageiro.nome_pai
+		form.initial['nome_mae'] = passageiro.nome_mae
+		form.initial['responsavel'] = passageiro.responsavel
+		form.initial['telefone_responsavel'] = passageiro.telefone_responsavel
+		form.initial['email_responsavel'] = passageiro.email_responsavel
+
 		form.initial['cep'] = usuario.id_endereco.id_logradouro.cep if usuario.id_endereco else ''
 		form.initial['rua'] = usuario.id_endereco.id_logradouro.nome if usuario.id_endereco else ''
 		form.initial['bairro'] = usuario.id_endereco.id_logradouro.bairro if usuario.id_endereco else ''
@@ -243,6 +257,13 @@ class PassageiroEdit(JSONResponseMixin,View):
 			passageiro.observacao = form.cleaned_data.get("observacao")
 			passageiro.numero_passaporte = form.cleaned_data.get("numero_passaporte")
 			passageiro.data_validade_passaporte = form.cleaned_data.get("data_validade_passaporte")
+
+			passageiro.nome_pai = form.cleaned_data.get("nome_pai")
+			passageiro.nome_mae = form.cleaned_data.get("responsavel")
+			passageiro.responsavel = form.cleaned_data.get("observacao")
+			passageiro.telefone_responsavel = form.cleaned_data.get("telefone_responsavel")
+			passageiro.email_responsavel = form.cleaned_data.get("email_responsavel")
+
 			if emissor:
 				passageiro.id_emissor = emissor
 				passageiro.id_agencia = emissor.id_agencia

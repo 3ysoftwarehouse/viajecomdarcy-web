@@ -24,6 +24,13 @@ class PassageiroRegisterForm(UserRegisterForm, forms.ModelForm):
 	numero_passaporte = forms.CharField(label='Numero do Passaporte:', max_length=10, required=False)
 	data_validade_passaporte = forms.DateField(required=False)
 
+	nome_pai = forms.CharField(label='Nome do pai:', max_length=500, required=False)
+	nome_mae = forms.CharField(label='Nome da mãe:', max_length=500, required=False)
+	responsavel = forms.CharField(label='Nome responsável:', max_length=500, required=False)
+	telefone_responsavel = forms.CharField(label='Telefone responsável:', max_length=12, required=False)
+	email_responsavel = forms.EmailField(label='Email responsável:', required=False)
+
+
 	def __init__(self, *args, **kwargs):
 		super(PassageiroRegisterForm, self).__init__(*args, **kwargs)
 		self.fields['password'].required = False
@@ -37,6 +44,16 @@ class PassageiroRegisterForm(UserRegisterForm, forms.ModelForm):
 		self.fields['numero_passaporte'].widget.attrs['class'] = 'form-control'
 		self.fields['data_validade_passaporte'].widget.attrs['class'] = 'form-control'
 
+		self.fields['nome_pai'].widget.attrs['class'] = 'form-control'
+		self.fields['nome_pai'].widget.attrs['placeholder'] = 'Digite o nome do pai'
+		self.fields['nome_mae'].widget.attrs['class'] = 'form-control'
+		self.fields['nome_mae'].widget.attrs['placeholder'] = 'Digite o nome da mãe'
+		self.fields['responsavel'].widget.attrs['class'] = 'form-control'
+		self.fields['responsavel'].widget.attrs['placeholder'] = 'Digite o nome do responsável'
+		self.fields['telefone_responsavel'].widget.attrs['class'] = 'form-control'
+		self.fields['telefone_responsavel'].widget.attrs['placeholder'] = 'Digite o telefone do responsável'
+		self.fields['email_responsavel'].widget.attrs['class'] = 'form-control'
+		self.fields['email_responsavel'].widget.attrs['placeholder'] = 'Digite o email do responsável'
 
 class DocumentoForm(forms.ModelForm):
 
