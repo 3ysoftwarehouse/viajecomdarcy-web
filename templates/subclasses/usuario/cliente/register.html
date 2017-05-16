@@ -1,240 +1,285 @@
-{% extends "default/user/register.html" %} {% load staticfiles %}
-{% block title_top %}Cliente{% endblock %}
-{% block tab_01 %} Dados do Cliente {% endblock %}
- {% block subclass_itens %}
-
-<li class="">
-    <a data-toggle="tab" href="#tab3"><i class="fa fa-truck tab-icon"></i> 
-   <span>
-   Trabalho do Cliente
-   </span>
-   </a>
-</li>
-<li class="">
-    <a data-toggle="tab" href="#tab4"><i class="fa fa-map-marker tab-icon"></i> 
-   <span>
-   Endereço da Empresa
-   </span>
-   </a>
-</li>
-{% endblock %} {% block subclass_form %}
-{{form.errors}}
-<div class="tab-pane slide-left padding-20" id="tab3">
-    <div class="row row-same-height">
-        <div class="col-md-12">
-            <div class="padding-10">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="form-group ">
-                            <label>{{form.nome_pai.label_tag}}</label>
-                            {{form.nome_pai}}
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group ">
-                            <label>{{form.nome_mae.label_tag}}</label>
-                            {{form.nome_mae}}
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group ">
-                            <label>{{form.naturalidade.label_tag}}</label>
-                            {{form.naturalidade}}
-                        </div>
-                    </div>
-                </div>
-                <div class="row clearfix">
-                    <div class="col-sm-4">
-                        <div class="form-group ">
-                            <label>{{form.numero_dependentes.label_tag}}</label>
-                            {{form.numero_dependentes}}
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group ">
-                            <label>{{form.tempo_residencia.label_tag}}</label>
-                            {{form.tempo_residencia}}
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group ">
-                            <label>{{form.tipo_residencia.label_tag}}</label>
-                            {{form.tipo_residencia}}
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="form-group ">
-                            <label>{{form.empresa.label_tag}}</label>
-                            {{form.empresa}}
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group ">
-                            <label>{{form.cnpj_empresa.label_tag}}</label>
-                            {{form.cnpj_empresa}}
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group ">
-                            <label>{{form.telefone_empresa.label_tag}}</label>
-                            {{form.telefone_empresa}}
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="form-group ">
-                            <label>{{form.dt_emissao_rg.label_tag}}</label>
-                            {{form.dt_emissao_rg}}
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group ">
-                            <label>{{form.dt_admissao.label_tag}}</label>
-                            {{form.dt_admissao}}
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group ">
-                            <label>{{form.cargo.label_tag}}</label>
-                            {{form.cargo}}
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="form-group ">
-                            <label>{{form.patrimonio.label_tag}}</label>
-                            {{form.patrimonio}}
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group ">
-                            <label>{{form.principal_renda.label_tag}}</label>
-                            {{form.principal_renda}}
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group ">
-                            <label>{{form.outra_renda.label_tag}}</label>
-                            {{form.outra_renda}}
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="form-group ">
-                            <label>{{form.agencia.label_tag}}</label>
-                            {{form.agencia}}
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group ">
-                            <label>{{form.conta.label_tag}}</label>
-                            {{form.conta}}
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group ">
-                            <label>{{form.banco.label_tag}}</label>
-                            {{form.banco}}
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="form-group ">
-                            <label>{{form.dt_banco.label_tag}}</label>
-                            {{form.dt_banco}}
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group ">
-                            <label>{{form.telefone_banco.label_tag}}</label>
-                            {{form.telefone_banco}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+{% extends "default/user/register.html" %}
+{% block title %} Cliente {% endblock %}
+{% block subclass_form %}
+<h5 class="m-t-lg with-border">Cliente</h5>
+<div class='row'>
+   <div class="col-lg-4">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form_cliente.nome_pai.auto_id }}">{{ form_cliente.nome_pai.label_tag }}</label>
+      {{ form_cliente.nome_pai }}
+      <small class="text-muted">{{ form_cliente.nome_pai.errors }}</small>
+    </fieldset>
+  </div>
+  <div class="col-lg-4">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form_cliente.nome_mae.auto_id }}">{{ form_cliente.nome_mae.label_tag }}</label>
+      {{ form_cliente.nome_mae }}
+      <small class="text-muted">{{ form_cliente.nome_mae.errors }}</small>
+    </fieldset>
+  </div>
+  <div class="col-lg-4">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form_cliente.naturalidade.auto_id }}">{{ form_cliente.naturalidade.label_tag }}</label>
+      {{ form_cliente.naturalidade }}
+      <small class="text-muted">{{ form_cliente.naturalidade.errors }}</small>
+    </fieldset>
+  </div>
 </div>
-<div class="tab-pane slide-left padding-20" id="tab4">
-    <div class="row row-same-height">
-        <div class="col-md-12">
-            <div class="padding-10">
-                <div class="row clearfix">
-                    <div class="col-sm-3">
-                        <div class="form-group ">
-                            <label>{{form.cep_empresa_cliente.label_tag}}</label>
-                            {{form.cep_empresa_cliente}}
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group ">
-                            <label>{{form.pais_empresa.label_tag}}</label>
-                            {{form.pais_empresa}}
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group   ">
-                            <label>{{form.estado_empresa.label_tag}}</label>
-                            {{form.estado_empresa}}
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group ">
-                            <label>{{form.cidade_empresa.label_tag}}</label>
-                            {{form.cidade_empresa}}
-                        </div>
-                    </div>
-                </div>
-                <div class="row clearfix">
-                    <div class="col-sm-6">
-                        <div class="form-group ">
-                            <label>{{form.rua_empresa.label_tag}}</label>
-                            {{form.rua_empresa}}
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group ">
-                            <label>{{form.numero_empresa.label_tag}}</label>
-                            {{form.numero_empresa}}
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group ">
-                            <label>{{form.bairro_empresa.label_tag}}</label>
-                            {{form.bairro_empresa}}
-                        </div>
-                    </div>
-                </div>
-                <div class="row clearfix">
-                    <div class="col-sm-6">
-                        <div class="form-group ">
-                            <label>{{form.complemento_empresa.label_tag}}</label>
-                            {{form.complemento_empresa}}
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group ">
-                            <label>{{form.pontoreferencia_empresa.label_tag}}</label>
-                            {{form.pontoreferencia_empresa}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+<div class='row'>
+   <div class="col-lg-4">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form_cliente.numero_dependentes.auto_id }}">{{ form_cliente.numero_dependentes.label_tag }}</label>
+      {{ form_cliente.numero_dependentes }}
+      <small class="text-muted">{{ form_cliente.numero_dependentes.errors }}</small>
+    </fieldset>
+  </div>
+  <div class="col-lg-4">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form_cliente.tempo_residencia.auto_id }}">{{ form_cliente.tempo_residencia.label_tag }}</label>
+      {{ form_cliente.tempo_residencia }}
+      <small class="text-muted">{{ form_cliente.tempo_residencia.errors }}</small>
+    </fieldset>
+  </div>
+  <div class="col-lg-4">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form_cliente.tipo_residencia.auto_id }}">{{ form_cliente.tipo_residencia.label_tag }}</label>
+      {{ form_cliente.tipo_residencia }}
+      <small class="text-muted">{{ form_cliente.tipo_residencia.errors }}</small>
+    </fieldset>
+  </div>
+</div>
+
+<div class='row'>
+   <div class="col-lg-4">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form_cliente.empresa.auto_id }}">{{ form_cliente.empresa.label_tag }}</label>
+      {{ form_cliente.empresa }}
+      <small class="text-muted">{{ form_cliente.empresa.errors }}</small>
+    </fieldset>
+  </div>
+  <div class="col-lg-4">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form_cliente.cnpj_empresa.auto_id }}">{{ form_cliente.cnpj_empresa.label_tag }}</label>
+      {{ form_cliente.cnpj_empresa }}
+      <small class="text-muted">{{ form_cliente.cnpj_empresa.errors }}</small>
+    </fieldset>
+  </div>
+  <div class="col-lg-4">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form_cliente.telefone.auto_id }}">{{ form_cliente.telefone.label_tag }}</label>
+      {{ form_cliente.telefone }}
+      <small class="text-muted">{{ form_cliente.telefone.errors }}</small>
+    </fieldset>
+  </div>
+</div>
+
+<div class='row'>
+   <div class="col-lg-4">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form_cliente.dt_emissao_rg.auto_id }}">{{ form_cliente.dt_emissao_rg.label_tag }}</label>
+      <input type="text" placeholder="Digite a data de emissão do RG" name="dt_emissao_rg" id="id_dt_emissao_rg" class="form-control" value="{{form_cliente.dt_emissao_rg.value|date:'d/m/Y' }}">
+      <small class="text-muted">{{ form_cliente.dt_emissao_rg.errors }}</small>
+    </fieldset>
+  </div>
+  <div class="col-lg-4">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form_cliente.dt_admissao.auto_id }}">{{ form_cliente.dt_admissao.label_tag }}</label>
+      <input type="text" placeholder="Digite a data de adminissão" name="dt_admissao" id="id_dt_admissao" class="form-control" value="{{form_cliente.dt_admissao.value|date:'d/m/Y' }}">
+      <small class="text-muted">{{ form_cliente.dt_admissao.errors }}</small>
+    </fieldset>
+  </div>
+  <div class="col-lg-4">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form_cliente.cargo.auto_id }}">{{ form_cliente.cargo.label_tag }}</label>
+      {{ form_cliente.cargo }}
+      <small class="text-muted">{{ form_cliente.cargo.errors }}</small>
+    </fieldset>
+  </div>
+</div>
+
+<div class='row'>
+   <div class="col-lg-4">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form_cliente.patrimonio.auto_id }}">{{ form_cliente.patrimonio.label_tag }}</label>
+      {{ form_cliente.patrimonio }}
+      <small class="text-muted">{{ form_cliente.patrimonio.errors }}</small>
+    </fieldset>
+  </div>
+  <div class="col-lg-4">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form_cliente.principal_renda.auto_id }}">{{ form_cliente.principal_renda.label_tag }}</label>
+      {{ form_cliente.principal_renda }}
+      <small class="text-muted">{{ form_cliente.principal_renda.errors }}</small>
+    </fieldset>
+  </div>
+  <div class="col-lg-4">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form_cliente.outra_renda.auto_id }}">{{ form_cliente.outra_renda.label_tag }}</label>
+      {{ form_cliente.outra_renda }}
+      <small class="text-muted">{{ form_cliente.outra_renda.errors }}</small>
+    </fieldset>
+  </div>
+</div>
+
+<div class='row'>
+   <div class="col-lg-4">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form_cliente.agencia.auto_id }}">{{ form_cliente.agencia.label_tag }}</label>
+      {{ form_cliente.agencia }}
+      <small class="text-muted">{{ form_cliente.agencia.errors }}</small>
+    </fieldset>
+  </div>
+  <div class="col-lg-4">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form_cliente.conta.auto_id }}">{{ form_cliente.conta.label_tag }}</label>
+      {{ form_cliente.conta }}
+      <small class="text-muted">{{ form_cliente.conta.errors }}</small>
+    </fieldset>
+  </div>
+  <div class="col-lg-4">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form_cliente.banco.auto_id }}">{{ form_cliente.banco.label_tag }}</label>
+      {{ form_cliente.banco }}
+      <small class="text-muted">{{ form_cliente.banco.errors }}</small>
+    </fieldset>
+  </div>
+</div>
+
+<div class='row'>
+   <div class="col-lg-6">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form_cliente.dt_banco.auto_id }}">{{ form_cliente.dt_banco.label_tag }}</label>
+      <input type="text" placeholder="Digite a data aproximada de inicio da conta" name="dt_banco" id="id_dt_banco" value="{{form_cliente.dt_banco.value|date:'d/m/Y' }}" class="form-control">
+      <small class="text-muted">{{ form_cliente.dt_banco.errors }}</small>
+    </fieldset>
+  </div>
+  <div class="col-lg-6">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form_cliente.telefone_banco.auto_id }}">{{ form_cliente.telefone_banco.label_tag }}</label>
+      {{ form_cliente.telefone_banco }}
+      <small class="text-muted">{{ form_cliente.telefone_banco.errors }}</small>
+    </fieldset>
+  </div>
+</div>
+
+<h5 class="m-t-lg with-border">Endereço Empresa Cliente</h5>
+<div class='row'>
+   <div class="col-lg-3">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form_cliente.cep_empresa_cliente.auto_id }}">{{ form_cliente.cep_empresa_cliente.label_tag }}</label>
+      {{ form_cliente.cep_empresa_cliente }}
+      <small class="text-muted">{{ form_cliente.cep_empresa_cliente.errors }}</small>
+    </fieldset>
+  </div>
+  <div class="col-lg-3">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form_cliente.pais_empresa.auto_id }}">{{ form_cliente.pais_empresa.label_tag }}</label>
+      {{ form_cliente.pais_empresa }}
+      <small class="text-muted">{{ form_cliente.pais_empresa.errors }}</small>
+    </fieldset>
+  </div>
+  <div class="col-lg-3">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form_cliente.estado_empresa.auto_id }}">{{ form_cliente.estado_empresa.label_tag }}</label>
+      {{ form_cliente.estado_empresa }}
+      <small class="text-muted">{{ form_cliente.estado_empresa.errors }}</small>
+    </fieldset>
+  </div>
+  <div class="col-lg-3">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form_cliente.cidade_empresa.auto_id }}">{{ form_cliente.cidade_empresa.label_tag }}</label>
+      {{ form_cliente.cidade_empresa }}
+      <small class="text-muted">{{ form_cliente.cidade_empresa.errors }}</small>
+    </fieldset>
+  </div>
+</div>
+
+<div class='row'>
+   <div class="col-lg-4">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form_cliente.rua_empresa.auto_id }}">{{ form_cliente.rua_empresa.label_tag }}</label>
+      {{ form_cliente.rua_empresa }}
+      <small class="text-muted">{{ form_cliente.rua_empresa.errors }}</small>
+    </fieldset>
+  </div>
+  <div class="col-lg-4">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form_cliente.numero_empresa.auto_id }}">{{ form_cliente.numero_empresa.label_tag }}</label>
+      {{ form_cliente.numero_empresa }}
+      <small class="text-muted">{{ form_cliente.numero_empresa.errors }}</small>
+    </fieldset>
+  </div>
+  <div class="col-lg-4">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form_cliente.bairro_empresa.auto_id }}">{{ form_cliente.bairro_empresa.label_tag }}</label>
+      {{ form_cliente.bairro_empresa }}
+      <small class="text-muted">{{ form_cliente.bairro_empresa.errors }}</small>
+    </fieldset>
+  </div>
+</div>
+
+<div class='row'>
+   <div class="col-lg-6">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form_cliente.complemento_empresa.auto_id }}">{{ form_cliente.complemento_empresa.label_tag }}</label>
+      {{ form_cliente.complemento_empresa }}
+      <small class="text-muted">{{ form_cliente.complemento_empresa.errors }}</small>
+    </fieldset>
+  </div>
+  <div class="col-lg-6">
+    <fieldset class="form-group">
+      <label class="form-label semibold" for="{{ form_cliente.pontoreferencia_empresa.auto_id }}">{{ form_cliente.pontoreferencia_empresa.label_tag }}</label>
+      {{ form_cliente.pontoreferencia_empresa }}
+      <small class="text-muted">{{ form_cliente.pontoreferencia_empresa.errors }}</small>
+    </fieldset>
+  </div>
+</div>
+
+{% endblock %}
+{% block buttom %} 
+<div class="row">
+  <div class="col-lg-12">
+    <div class="form-group">
+      <button type="submit" class="btn btn-success btn-cons">
+        Salvar
+      </button>
+      <div class="pull-right">
+      <a class="btn btn-secondary-outline" href="{% url 'cliente-list' %}">
+        Cancelar
+      </a>
+      </div>
     </div>
+  </div>
 </div>
 {% endblock %}
 
 {% block javascript %}
 {{ block.super }}
-<script src="{% static 'js/cliente/custom.js' %}" type="text/javascript"></script>
-<script>
+
+<script type="text/javascript">
+
+$("#id_cnpj_empresa").mask("99.999.999/9999-99"); 
+$("#id_dt_emissao_rg").mask("99/99/9999"); 
+$("#id_dt_admissao").mask("99/99/9999"); 
+$("#id_dt_banco").mask("99/99/9999"); 
+
+
+$(document).ready(function() {
+    $(function() {
+        $('.delete-row').prepend('<i class="fs-14 pg-minus"></i> ')
+        $('.add-row').prepend('<i class="fs-14 pg-plus"></i> ')
+        $(".add-row").click(function(){
+            $('.delete-row').each(function (index, value) { 
+                if(typeof ($(this).children().attr('class')) === 'undefined'){
+                    $(this).prepend('<i class="fs-14 pg-minus"></i> ')
+                }
+              
+            });
+        });
+
+    });
+});
 
 </script>
 {% endblock %}

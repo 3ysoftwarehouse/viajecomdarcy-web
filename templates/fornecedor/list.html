@@ -1,0 +1,69 @@
+{% extends "default/panel/layout.html" %} 
+{% load staticfiles %}
+
+{% block css %}
+ 
+{% endblock %}
+
+{% block page_info %}
+    <li>
+      <a class="active">Fornecedor</a>
+    </li>
+{% endblock %}
+
+{% block content %}
+<div class="panel panel-transparent">
+  <div class="panel-heading">
+    <div class="panel-title fs-16">
+      Listar
+    </div>
+    <div class="btn-group pull-right m-b-10">
+      <a class="btn btn-default" href="/framework/dashboard/fornecedor/register/" type="button">Cadastrar</a>
+    </div>    
+    <div class="clearfix"></div>
+  </div>
+  <div class="panel-body">
+   <table id="datatable" class="table table-hover table-condensed table-responsive">
+        <thead>
+           <tr>
+              <th style="width:20%">CPF / CNPJ</th>
+              <th style="width:20%">Nome</th>
+              <th style="width:15%">Email</th>
+              <th style="width:15%">Tipo</th>
+              <th style="width:15%">Opções</th>
+           </tr>
+        </thead>
+        <tbody>
+           {% for fornecedor in object_list %}
+             <tr>
+                <td class="v-align-middle ">
+                   <p>{{fornecedor.pessoa.cpf_cnpj}}</p>
+                </td>
+                <td class="v-align-middle">
+                   <p>{{fornecedor.pessoa.nome}}</p>
+                </td>
+                <td class="v-align-middle">
+                   <p>{{fornecedor.pessoa.email}}</p>
+                </td>
+                <td class="v-align-middle">
+                   <p>{{fornecedor.pessoa.tipo_pessoa}}</p>
+                </td>
+                <td class="v-align-middle">
+                  <a href="/framework/dashboard/fornecedor/edit/{{fornecedor.pk}}">
+                    <i class="pg-settings"></i>
+                  </a>
+                  <a href="/framework/dashboard/fornecedor/delete/{{fornecedor.pk}}">
+                    <i class="pg-eraser"></i>
+                  </a>
+                </td> 
+             </tr>
+          {% endfor %}
+        </tbody>
+     </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+  
+{% endblock %}

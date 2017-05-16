@@ -2,221 +2,203 @@
 {% load staticfiles %}
 
 {% block page_info %}
-<li>
-  <b>Pacote</b>
-</li>
-<li>
-  <a class="active">Cadastro</a>
-</li>    
+    <li>
+      <b>Pacote</b>
+    </li>
+    <li>
+      <a class="active">Cadastro</a>
+    </li>    
 {% endblock %}
 
 {% block content %}
-{% if context %}
-{%  for title, value in context.items %}
-{{title}} : {{value}} <br>
-{% endfor %}
-{% endif %}
-<div id="rootwizard">
- <!-- Nav tabs -->
- <ul class="nav nav-tabs nav-tabs-linetriangle nav-tabs-separator nav-stack-sm">
-   <li class="active">
-     <a data-toggle="tab" href="#tab1"><i class="fa fa-bars tab-icon"></i>
-      <span>
-      Dados do Pacote
-     </span>
-   </a>
- </li>
-{% block subclass_itens %}{% endblock %}     
-</ul>
-<!-- Tab panes -->
+  <div class="col-md-12">
+  <!-- START PANEL -->
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">
+      </div>
+    </div>
+    <div class="panel-body">
+      <form autocomplete="off"  method="post" enctype="multipart/form-data" role="form" id="form-personal" novalidate="novalidate">
+        {% csrf_token %}
+        <h5 class="m-t-lg with-border">Informações Gerais do Pacote</h5>
+        <div class='row'>
+           <div class="col-lg-4">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.pacote_nome.auto_id }}">{{ form.pacote_nome.label_tag }}</label>
+              {{ form.pacote_nome }}
+              <small class="text-muted">{{ form.pacote_nome.errors }}</small>
+            </fieldset>
+          </div>
+           <div class="col-lg-4">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.pacote_desc.auto_id }}">{{ form.pacote_desc.label_tag }}</label>
+              {{ form.pacote_desc }}
+              <small class="text-muted">{{ form.pacote_desc.errors }}</small>
+            </fieldset>
+          </div>
+           <div class="col-lg-4">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.id_excursao.auto_id }}">{{ form.id_excursao.label_tag }}</label>
+              {{ form.id_excursao }}
+              <small class="text-muted">{{ form.id_excursao.errors }}</small>
+            </fieldset>
+          </div>
+        </div>
 
-<form autocomplete="off" method="post" enctype="multipart/form-data" role="form" id="form-personal" novalidate="novalidate">
-  {% csrf_token %}
+        <div class='row'>
+           <div class="col-lg-4">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.id_moeda.auto_id }}">{{ form.id_moeda.label_tag }}</label>
+              {{ form.id_moeda }}
+              <small class="text-muted">{{ form.id_moeda.errors }}</small>
+            </fieldset>
+          </div>
+           <div class="col-lg-4">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.pacote_preco.auto_id }}">{{ form.pacote_preco.label_tag }}</label>
+              {{ form.pacote_preco }}
+              <small class="text-muted">{{ form.pacote_preco.errors }}</small>
+            </fieldset>
+          </div>
+          <div class="col-lg-2">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.pacote_taxa.auto_id }}">{{ form.pacote_taxa.label_tag }}</label>
+              {{ form.pacote_taxa }}
+              <small class="text-muted">{{ form.pacote_taxa.errors }}</small>
+            </fieldset>
+          </div>
+          <div class="col-lg-2">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.taxa_remessa.auto_id }}">{{ form.taxa_remessa.label_tag }}</label>
+              {{ form.taxa_remessa }}
+              <small class="text-muted">{{ form.taxa_remessa.errors }}</small>
+            </fieldset>
+          </div>
+        </div>
 
-  <div class="tab-content">
-   <div class="tab-pane active slide-left" id="tab1">
-     <div class="row row-same-height">
-       <div class="col-md-8">
-         <div class="padding-10">               
-           <div class="row clearfix p-t-10">
-             <div class="col-sm-4">
-               <div class="form-group  required">                        
-                 <label>{{form.pacote_nome.label_tag}}</label>
-                 {{form.pacote_nome}}
-               </div>
-             </div>
-             <div class="col-sm-4">
-               <div class="form-group  required">
-                 <label>{{form.pacote_desc.label_tag}}</label>
-                 {{form.pacote_desc}}
-               </div>
-             </div>
-             <div class="col-sm-4">
-               <div class="form-group ">
-                 <label>{{form.id_excursao.label_tag}}</label>
-                 {{ form.id_excursao }}
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-             <div class="col-sm-4">
-               <div class="form-group  required">
-                 <label>{{form.id_moeda.label_tag}}</label>
-                 {{form.id_moeda}}
-               </div>
-             </div>
-             <div class="col-sm-4">
-               <div class="form-group  required">
-                 <label>{{form.pacote_preco.label_tag}}</label>
-                 {{form.pacote_preco}}
-               </div>
-             </div>
-             <div class="col-sm-2">
-               <div class="form-group  required">
-                 <label>{{form.pacote_taxa.label_tag}}</label>
-                 {{form.pacote_taxa}}
-               </div>
-             </div>
-             <div class="col-sm-2">
-               <div class="form-group  required">
-                 <label>{{form.taxa_remessa.label_tag}}</label>
-                 {{form.taxa_remessa}}
-               </div>
-             </div>
-           </div>
-          <div class="row">
-            <div class="col-sm-4">
-              <div class="form-group">
-                <label>{{form.data_prevista.label_tag}}</label>
-                  {{form.data_prevista}}
-              </div>
-            </div>
-            <div class="col-sm-8">
-              <div class="form-group  required">
-                <br>
-                <div class="checkbox check-success  ">
+        <div class='row'>
+           <div class="col-lg-4">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.data_prevista.auto_id }}">{{ form.data_prevista.label_tag }}</label>
+              <input type="text" value="{{form.data_prevista.value|date:'d/m/Y' }}" placeholder="__/__/__" name="data_prevista" id="id_data_prevista" class="form-control">
+              <small class="text-muted">{{ form.data_prevista.errors }}</small>
+            </fieldset>
+          </div>
+          <div class="col-lg-4">
+            <fieldset class="form-group">
+              <br>
+              <div class="checkbox check-success  ">
                   {{ form.is_active }}
-                  <label for="id_is_active">Ativo </label>
+                  <label for="{{ form.is_active.auto_id }}">Ativo </label>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="form-group  required">
-                <label>{{form.id_opcional.label_tag}}</label>
-                  {{form.id_opcional}}
-              </div>
-            </div>
-          </div>
-
-         <div class="row">
-            <div class="col-sm-6">               
-             <div class="form-group ">
-               <label>{{form.pacote_daybyday.label_tag}}</label>
-               {{form.pacote_daybyday}}
-             </div>
-           </div>
-           <div class="col-sm-6">
-            <div class="form-group ">
-             <label>{{form.pacote_obs.label_tag}}</label>
-             {{form.pacote_obs}}
-           </div>
-         </div>
-       </div>
-
-     </div>
-   </div>
-   <div class="col-md-4">
-
-     <div class="row p-t-10">
-       <div id="id_cidade_table" class="row form-group-attached p-t-10" >
-        {% for form in cidadeformset.forms %}
-        <div id="{{ form.prefix }}-row" class="tr form-group-attached">
-          <div class="row">
-            <div class="col-sm-5">
-              <div class="form-group ">
-                <label>{{ form.id_cidade.label_tag }}</label>
-                <div style="text-align:center;">{{ form.id_cidade }}</div>
-              </div>
-            </div>
-            <div class="col-sm-7">
-              <div class="form-group ">
-                <label>{{ form.qtd_dias.label_tag }}</label>
-                <div style="text-align:center;">{{ form.qtd_dias }}</div>
-              </div>
-            </div>
-            <div></div>
+              <small class="text-muted">{{ form.is_active.errors }}</small>
+            </fieldset>
           </div>
         </div>
-        {% endfor %}
-        {{ cidadeformset.management_form }}             
-      </div>
-    </div>
 
-    <div class="row p-t-10">
-       <div id="id_acomodacao_table" class="row form-group-attached p-t-10" >
-        {% for form in acomodacaoformset.forms %}
-        <div id="{{ form.prefix }}-row" class="tr form-group-attached">
-          <div class="row">
-            <div class="col-sm-5">
-              <div class="form-group ">
-                <label>{{ form.id_acomodacao.label_tag }}</label>
-                <div style="text-align:center;">{{ form.id_acomodacao }}</div>
+        <div class='row'>
+           <div class="col-lg-12">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.pacote_daybyday.auto_id }}">{{ form.pacote_daybyday.label_tag }}</label>
+              {{ form.pacote_daybyday }}
+              <small class="text-muted">{{ form.pacote_daybyday.errors }}</small>
+            </fieldset>
+          </div>          
+        </div>        
+
+        <div class='row'>
+           <div class="col-lg-12">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.pacote_obs.auto_id }}">{{ form.pacote_obs.label_tag }}</label>
+              {{ form.pacote_obs }}
+              <small class="text-muted">{{ form.pacote_obs.errors }}</small>
+            </fieldset>
+          </div>          
+        </div>
+
+        <div class='row'>
+           <div class="col-lg-12">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.id_opcional.auto_id }}">{{ form.id_opcional.label_tag }}</label>
+              {{ form.id_opcional }}
+              <small class="text-muted">{{ form.id_opcional.errors }}</small>
+            </fieldset>
+          </div>          
+        </div>
+        <h5 class="m-t-lg with-border">Informações Adicionais do Pacote</h5>
+        <div class='row'>
+           <div class="col-lg-12">
+            <div id="id_cidade_table" class="row form-group-attached p-t-10" >
+              {% for form in cidadeformset.forms %}
+                <div id="{{ form.prefix }}-row" class="tr form-group-attached">
+                  <div class="col-lg-6">
+                    <fieldset class="form-group">
+                      <label class="form-label semibold" for="{{ form.id_cidade.auto_id }}">{{ form.id_cidade.label_tag }}</label>
+                      {{ form.id_cidade }}
+                      <small class="text-muted">{{ form.id_cidade.errors }}</small>
+                    </fieldset>
+                  </div>
+                  <div class="col-lg-6">
+                    <fieldset class="form-group">
+                      <label class="form-label semibold" for="{{ form.qtd_dias.auto_id }}">{{ form.qtd_dias.label_tag }}</label>
+                      {{ form.qtd_dias }}
+                      <small class="text-muted">{{ form.qtd_dias.errors }}</small>
+                    </fieldset>
+                  </div>
+                </div>
+                {% endfor %}
+                {{ cidadeformset.management_form }}           
+            </div>
+          </div>          
+        </div>
+
+        <br>
+        <div class='row'>
+           <div class="col-lg-12">
+            <div id="id_acomodacao_table" class="row form-group-attached p-t-10" >
+              {% for form in acomodacaoformset.forms %}
+                <div id="{{ form.prefix }}-row" class="tr form-group-attached">
+                  <div class="col-lg-6">
+                    <fieldset class="form-group">
+                      <label class="form-label semibold" for="{{ form.id_acomodacao.auto_id }}">{{ form.id_acomodacao.label_tag }}</label>
+                      {{ form.id_acomodacao }}
+                      <small class="text-muted">{{ form.id_acomodacao.errors }}</small>
+                    </fieldset>
+                  </div>
+                  <div class="col-lg-6">
+                    <fieldset class="form-group">
+                      <label class="form-label semibold" for="{{ form.preco.auto_id }}">{{ form.preco.label_tag }}</label>
+                      {{ form.preco }}
+                      <small class="text-muted">{{ form.preco.errors }}</small>
+                    </fieldset>
+                  </div>
+                </div>
+                {% endfor %}
+                {{ acomodacaoformset.management_form }}           
+            </div>
+          </div>          
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="form-group">
+              <button type="submit" class="btn btn-success btn-cons">
+                Salvar
+              </button>
+              <div class="pull-right">
+              <a class="btn btn-secondary-outline" href="{% url 'pacote-list' %}">
+                Cancelar
+              </a>
               </div>
             </div>
-            <div class="col-sm-7">
-              <div class="form-group ">
-                <label>{{ form.preco.label_tag }}</label>
-                <div style="text-align:center;">{{ form.preco }}</div>
-              </div>
-            </div>
-            <div></div>
           </div>
         </div>
-        {% endfor %}
-        {{ acomodacaoformset.management_form }}             
-      </div>
+      </form>
     </div>
-
   </div>
+  <!-- END PANEL -->
 </div>
-
-
-</div>
-
-</div>
-{% block subclass_form %}{% endblock %}             
-<div class="padding-20 bg-white">
- <ul class="pager wizard">
-   <li class="next">
-     <button class="btn btn-primary btn-cons pull-right" type="button">
-       <span>Próximo</span>
-     </button>
-   </li>
-   <li class="next finish hidden">
-     <button class="btn btn-primary btn-cons btn-animated from-left fa fa-arrow-right pull-right" type="button">
-       <span>Cadastrar</span>
-     </button>
-   </li>
-   <li class="previous first hidden">
-     <button class="btn btn-default btn-cons btn-animated from-left fa fa-cog pull-right" type="button">
-       <span>Primeiro</span>
-     </button>
-   </li>
-   <li class="previous">
-     <button class="btn btn-default btn-cons pull-right" type="button">
-       <span>Anterior</span>
-     </button>
-   </li>
- </ul>
-</div>
-</form>
-</div>
-</div>
-
 <div id="select_aux" style="display:none;"></div>
 {% endblock %}
 
@@ -230,93 +212,24 @@
 </script>
 <script src="{% static 'js/default/bootstrap-datepicker.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/default/custom.js' %}" type="text/javascript"></script>
-<script>
-  $(document).ready(function() {
-
-    $("#id_id_opcional").select2();
-    $('#id_data_prevista').mask("99/99/9999");
-
-    // multiple fields
-    $(function() {
-
-      $('#id_cidade_table .tr').formset({
-          prefix: '{{ cidadeformset.prefix }}'
-      });
-      $('#id_acomodacao_table .tr').formset({
-          prefix: '{{ acomodacaoformset.prefix }}'
-      });
-      $(".acomodacao").focus(function(){
-        aux_select(this.value, this.options[this.selectedIndex].text)
-      });
-      $(".acomodacao").change(function(){
-        check_select('update');
-      });
-      $(".add-row").click(function(){
-        check_select('add');
-      });
-
-    });
-
+<script src="{% static 'js/pacote/pacote.js' %}" type="text/javascript"></script>
+<script type="text/javascript">
+$(function() {
+  $('#id_cidade_table .tr').formset({
+      prefix: '{{ cidadeformset.prefix }}'
   });
-
-  function aux_select(value, text){
-    document.getElementById("select_aux").innerHTML = value + "|" + text
-  }
-
-  function check_select(type){
-    var selects = document.getElementsByClassName("acomodacao");
-    console.log(type)
-
-    // UPDATE OR DELETE
-    if(type == 'update' || type == 'delete'){
-      
-      var aux = document.getElementById("select_aux").innerHTML.split('|')
-      var element = document.createElement("option")
-      element.value = aux[0]
-      element.text = aux[1]
-
-      for(x=0;x<selects.length;x++){
-        var select = selects[x]
-        var search = false
-        for(y=0;y<select;y++){
-          var option = select[y]
-          if(option.text == element.text){
-            console.log(true)
-            search = true
-            break
-          }
-        }
-        if(!search && selects.length>1){
-          console.log(false)
-          select.add(element)
-        }
-      }
-
-    }else{
-
-      for(x=0;x<selects.length;x++){
-        if(selects[x].selectedIndex != 0){
-          var element = selects[x][selects[x].selectedIndex]
-          for(y=x+1;y<selects.length;y++){
-            var select = selects[y]
-            for(z=0;z<select.length;z++){
-              var option = select[z]
-              if(option.text == element.text){
-                select.remove(option.index)
-                break
-              }
-            }
-          }
-        }
-      }
-
-    }
-  }
-
-  //Submit form
-  $( ".finish" ).click(function() {
-    $( "#form-personal" ).submit();
+  $('#id_acomodacao_table .tr').formset({
+      prefix: '{{ acomodacaoformset.prefix }}'
   });
-
+  $(".acomodacao").focus(function(){
+    aux_select(this.value, this.options[this.selectedIndex].text)
+  });
+  $(".acomodacao").change(function(){
+    check_select('update');
+  });
+  $(".add-row").click(function(){
+    check_select('add');
+  });
+});
 </script>
 {% endblock %}

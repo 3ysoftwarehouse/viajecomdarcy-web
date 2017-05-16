@@ -1,0 +1,180 @@
+{% extends "default/panel/layout.html" %}
+{% load staticfiles %}
+
+{% block page_info %}
+    <li>
+      <b>Fornecedor</b>
+    </li>
+    <li>
+      <a class="active">Cadastro</a>
+    </li>    
+{% endblock %}
+
+{% block content %}
+  <div class="col-md-12">
+  <!-- START PANEL -->
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">
+      </div>
+    </div>
+    <div class="panel-body">
+      <form autocomplete="off"  method="post" enctype="multipart/form-data" role="form" id="form-pessoa-fisica" novalidate="novalidate">
+        {% if pessoa.tipo_pessoa == 'Pessoa Física' %}
+          <div class='row' id="form_pessoa_fisica">
+            {% csrf_token %}
+            <h5 class="m-t-lg with-border">Pessoa Física</h5>
+            <div class='row'>
+            <div class="row">
+              <div class="col-lg-6">
+                <fieldset class="form-group">
+                  <label class="form-label semibold" for="{{ form.nome.auto_id }}">{{ form.nome.label_tag }}</label>
+                  {{ form.nome }}
+                  <small class="text-muted">{{ form.nome.errors }}</small>
+                </fieldset>
+              </div>
+              <div class="col-lg-6">
+                <fieldset class="form-group">
+                  <label class="form-label semibold" for="{{ form.email.auto_id }}">{{ form.email.label_tag }}</label>
+                  {{ form.email }}
+                  <small class="text-muted">{{ form.email.errors }}</small>
+                </fieldset>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-3">
+                <fieldset class="form-group">
+                  <label class="form-label semibold" for="{{ form.cpf_cnpj.auto_id }}">CPF</label>
+                  {{ form.cpf_cnpj }}
+                  <small class="text-muted">{{ form.cpf_cnpj.errors }}</small>
+                </fieldset>
+              </div>
+              <div class="col-lg-3">
+                <fieldset class="form-group">
+                  <label class="form-label semibold" for="{{ form.rg.auto_id }}">{{ form.rg.label_tag }}</label>
+                  {{ form.rg }}
+                  <small class="text-muted">{{ form.rg.errors }}</small>
+                </fieldset>
+              </div>
+              <div class="col-lg-3">
+                <fieldset class="form-group">
+                  <label class="form-label semibold" for="{{ form.orgaoemissor.auto_id }}">
+                    {{ form.orgaoemissor.label_tag }}
+                  </label>
+                  {{ form.orgaoemissor }}
+                  <small class="text-muted">{{ form.orgaoemissor.errors }}</small>
+                </fieldset>
+              </div>
+              <div class="col-lg-3">
+                <fieldset class="form-group">
+                  <label class="form-label semibold" for="{{ form.data_nascimento.auto_id }}">
+                    {{ form.data_nascimento.label_tag }}
+                  </label>
+                  <input type="text" value="{{ form.data_nascimento.value|date:'d/m/Y' }}" placeholder="__/__/__" name="pessoa-fisica-data_nascimento" id="id_pessoa-fisica-data_nascimento" class="form-control">
+                  <small class="text-muted">{{ form.data_nascimento.errors }}</small>
+                </fieldset>
+              </div>
+            </div>
+          </div>
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <button type="submit" class="btn btn-success btn-cons">
+                    Salvar
+                  </button>
+                  <div class="pull-right">
+                  <a class="btn btn-secondary-outline" href="">
+                    Cancelar
+                  </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      {% else %}
+        <form autocomplete="off"  method="post" enctype="multipart/form-data" role="form" id="form-pessoa-fisica" novalidate="novalidate">
+          <div class='row' id="form_pessoa_juridica">
+            {% csrf_token %}
+            <h5 class="m-t-lg with-border">Pessoa Jurídica</h5>
+            <div class='row'>
+            <div class='row'>
+              <div class="col-lg-4">
+                <fieldset class="form-group">
+                  <label class="form-label semibold" for="{{ form.cpf_cnpj.auto_id }}">CNPJ</label>
+                  {{ form.cpf_cnpj }}
+                  <small class="text-muted">{{ form.cpf_cnpj.errors }}</small>
+                </fieldset>
+              </div>
+              <div class="col-lg-2">
+                <fieldset class="form-group">
+                  <button id="obter_dados" type="button" style="margin-top:25px" class="btn btn-success btn-cons">
+                    Obter Dados
+                  </button>
+                </fieldset>
+              </div>
+              <div class="col-lg-6">
+                <fieldset class="form-group">
+                  <label class="form-label semibold" for="{{ form.razao_social.auto_id }}">
+                    {{ form.razao_social.label_tag }}
+                  </label>
+                  {{ form.razao_social }}
+                  <small class="text-muted">{{ form.razao_social.errors }}</small>
+                </fieldset>
+              </div>
+            </div>
+            <div class='row'>
+              <div class="col-lg-6">
+                <fieldset class="form-group">
+                  <label class="form-label semibold" for="{{ form.nome.auto_id }}">{{ form.nome.label_tag }}</label>
+                  {{ form.nome }}
+                  <small class="text-muted">{{ form.nome.errors }}</small>
+                </fieldset>
+              </div>
+              <div class="col-lg-6">
+                <fieldset class="form-group">
+                  <label class="form-label semibold" for="{{ form.email.auto_id }}">{{ form.email.label_tag }}</label>
+                  {{ form.email }}
+                  <small class="text-muted">{{ form.email.errors }}</small>
+                </fieldset>
+              </div>
+            </div>            
+          </div>
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <button type="submit" class="btn btn-success btn-cons">
+                    Salvar
+                  </button>
+                  <div class="pull-right">
+                  <a class="btn btn-secondary-outline" href="">
+                    Cancelar
+                  </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+  <!-- END PANEL -->
+</div>
+{% endblock %}
+
+
+{% block javascript %}
+<script src="{% static 'js/default/jquery.inputmask.min.js' %}" type="text/javascript"></script>
+
+<script type="text/javascript">
+  {% if pessoa.tipo_pessoa == 'Pessoa Física' %}
+    $("#id_pessoa-fisica-data_nascimento").mask("99/99/9999");
+    $("#id_pessoa-fisica-cpf_cnpj").mask("999.999.999-99");
+  {% else %}
+    $("#id_pessoa-juridica-cpf_cnpj").mask("99.999.999/9999-99");
+  {% endif %}
+  var edit = true;
+</script>
+<script src="{% static 'js/fornecedor/fornecedor.js' %}" type="text/javascript"></script>
+{% endblock %}

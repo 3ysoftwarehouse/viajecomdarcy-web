@@ -49,15 +49,15 @@ class TipoEmpresa(models.Model):
 
 class Empresa(models.Model):
 	id_empresa = models.AutoField(primary_key=True)
-	id_endereco = models.ForeignKey('Endereco', on_delete=models.DO_NOTHING)
-	id_tipo_empresa = models.ForeignKey('TipoEmpresa', on_delete=models.DO_NOTHING)
-	razaosocial = models.CharField(max_length=100)
+	id_endereco = models.ForeignKey('Endereco', on_delete=models.DO_NOTHING, null=True, blank=True)
+	id_tipo_empresa = models.ForeignKey('TipoEmpresa', on_delete=models.DO_NOTHING, null=True, blank=True)
+	razaosocial = models.CharField(max_length=100, null=True, blank=True)
 	nomefantasia = models.CharField(max_length=100)
-	cnpj = models.CharField(max_length=20)
+	cnpj = models.CharField(max_length=20,null=True, blank=True)
 	verificada = models.BooleanField(default=True)
-	ie = models.CharField(max_length=45)
+	ie = models.CharField(max_length=45, null=True, blank=True)
 	def __str__(self):
-		return self.razaosocial
+		return self.nomefantasia
 
 class TipoUsuario(models.Model):
 	id_tipo_usuario= models.AutoField(primary_key=True)
@@ -131,7 +131,7 @@ class Usuario(AbstractBaseUser):
 	data_nascimento = models.DateField(null=True, blank=True)
 	rg = models.CharField(max_length=12, null=True, blank=True)
 	orgaoemissor = models.CharField(max_length=45,null=True, blank=True)
-	foto = models.ImageField(upload_to="default/users",null=True, blank=True)
+	foto = models.ImageField(upload_to="default/users", null=True, blank=True)
 	is_active = models.BooleanField(default=False)
 	is_admin = models.BooleanField(default=False)
 
@@ -172,7 +172,7 @@ class Usuario(AbstractBaseUser):
 
 class TelefoneUsuario(models.Model):
 	id_telefone_usuario = models.AutoField(primary_key=True)
-	id_tipo_telefone = models.ForeignKey('TipoTelefone', on_delete=models.CASCADE)
+	id_tipo_telefone = models.ForeignKey('TipoTelefone', on_delete=models.CASCADE, null=True, blank=True)
 	id_usuario = models.ForeignKey('Usuario', on_delete=models.CASCADE)
 	numero = models.CharField(max_length=11)
 	def __str__(self):
@@ -180,11 +180,11 @@ class TelefoneUsuario(models.Model):
 
 class TelefoneEmpresa(models.Model):
 	id_telefone_empresa = models.AutoField(primary_key=True)
-	id_tipo_telefone = models.ForeignKey('TipoTelefone', on_delete=models.CASCADE)
-	id_empresa = models.ForeignKey('Empresa', on_delete=models.CASCADE)
+	id_tipo_telefone = models.ForeignKey('TipoTelefone', on_delete=models.CASCADE, null=True, blank=True)
+	id_empresa = models.ForeignKey('Empresa', on_delete=models.CASCADE, null=True, blank=True)
 	numero = models.CharField(max_length=11)
-	ramal = models.CharField(max_length=4)
-	nome_contato = models.CharField(max_length=45)
+	ramal = models.CharField(max_length=4, null=True, blank=True)
+	nome_contato = models.CharField(max_length=45, null=True, blank=True)
 	def __unicode__(self):
 		return self.numero
 
@@ -225,5 +225,4 @@ class Documento(models.Model):
 	id_tipo_documento = models.ForeignKey('TipoDocumento', on_delete=models.DO_NOTHING)
 	anexo = models.ImageField(upload_to="default/documents")
 	datahora = models.DateTimeField(default=timezone.now)
-	def __str__(self):
-		return self.anexo
+	

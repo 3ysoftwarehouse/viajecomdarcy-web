@@ -1,0 +1,69 @@
+{% extends "default/panel/layout.html" %} 
+{% load staticfiles %}
+
+{% block css %}
+ 
+{% endblock %}
+
+{% block page_info %}
+    <li>
+      <a class="active">Pessoa</a>
+    </li>
+{% endblock %}
+
+{% block content %}
+<div class="panel panel-transparent">
+  <div class="panel-heading">
+    <div class="panel-title fs-16">
+      Listar
+    </div>
+    <div class="btn-group pull-right m-b-10">
+      <a class="btn btn-default" href="/framework/dashboard/pessoa/register/" type="button">Cadastrar</a>
+    </div>    
+    <div class="clearfix"></div>
+  </div>
+  <div class="panel-body">
+   <table id="datatable" class="table table-hover table-condensed table-responsive">
+        <thead>
+           <tr>
+              <th style="width:20%">CPF / CNPJ</th>
+              <th style="width:20%">Nome</th>
+              <th style="width:15%">Email</th>
+              <th style="width:15%">Tipo de Pessoa</th>
+              <th style="width:15%">Opções</th>
+           </tr>
+        </thead>
+        <tbody>
+           {% for pessoa in object_list %}
+             <tr>
+                <td class="v-align-middle ">
+                   <p>{{pessoa.cpf_cnpj}}</p>
+                </td>
+                <td class="v-align-middle">
+                   <p>{{pessoa.nome}}</p>
+                </td>
+                <td class="v-align-middle">
+                   <p>{{pessoa.email}}</p>
+                </td>
+                <td class="v-align-middle">
+                   <p>{{pessoa.tipo_pessoa}}</p>
+                </td>
+                <td class="v-align-middle">
+                  <a href="/framework/dashboard/pessoa/edit/{{pessoa.pk}}">
+                    <i class="pg-settings"></i>
+                  </a>
+                  <a href="/framework/dashboard/pessoa/delete/{{pessoa.pk}}">
+                    <i class="pg-eraser"></i>
+                  </a>
+                </td> 
+             </tr>
+          {% endfor %}
+        </tbody>
+     </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+  
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends "default/panel/layout.html" %}
+
+{% block page_info %}
+   <li>
+      <b>Pessoa</b>
+   </li>
+   <li>
+      <a class="active">Detalhes</a>
+   </li>
+{% endblock %}
+
+{% block content %}
+   <div class="bg-white">
+      <!-- START PANEL -->
+      <div class="panel panel-transparent">
+         <div class="panel-heading">
+            <div class="panel-title">
+               {{object.tipo_pessoa}}
+            </div>
+            <div class="row">
+               <!-- BASIC DATA -->
+               <div class="col-lg-6 col-md-6 ">
+                  <!-- START PANEL -->
+                  <div class="panel panel-transparent">
+                     <div class="panel-body">
+                        <div class="row clearfix">
+                           <div class="col-sm-4">
+                              <div class="form-group  required" aria-required="true">
+                                 {% if object.tipo_pessoa == 'Pessoa Física' %}
+                                    <label>CPF</label>
+                                 {% else %}
+                                    <label>CNPJ</label>
+                                 {% endif %}
+                                 {{object.cpf_cnpj}}
+                              </div>
+                           </div>
+                           <div class="col-sm-4">
+                              <div class="form-group ">
+                                 <label>Nome</label>
+                                 {{object.nome}}
+                              </div>
+                           </div>
+                           <div class="col-sm-4">
+                              <div class="form-group ">
+                                 <label>Observação</label>
+                                 {{object.pacote_obs}}
+                              </div>
+                           </div>
+                           {% if object.tipo_pessoa == 'Pessoa Física' %}
+                              <div class="col-sm-4">
+                                 <div class="form-group  required" aria-required="true">
+                                    <label>Data de nascimento</label>
+                                    {{object.data_nascimento}}
+                                 </div>
+                              </div>
+                              <div class="col-sm-4">
+                                 <div class="form-group ">
+                                    <label>RG</label>
+                                    {{object.rg}}
+                                 </div>
+                              </div>
+                              <div class="col-sm-4">
+                                 <div class="form-group ">
+                                    <label>Orgão emissor</label>
+                                    {{object.orgaoemissor}}
+                                 </div>
+                              </div>
+                           {% else %}
+                              <div class="col-sm-4">
+                                 <div class="form-group  required" aria-required="true">
+                                    <label>Razão Social</label>
+                                    {{object.razao_social}}
+                                 </div>
+                              </div>
+                           {% endif %}
+                        </div>
+                     </div>
+                  </div>
+                  <!-- END PANEL -->
+               </div>
+               <!-- END BASIC DATA -->
+
+            </div>
+         </div>
+      </div>
+      <!-- END PANEL -->
+   </div>
+{% endblock %}

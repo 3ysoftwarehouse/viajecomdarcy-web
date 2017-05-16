@@ -1,249 +1,244 @@
-{% extends "default/panel/layout.html" %} {% load staticfiles %} {% block page_info %}
-<li>
-    <b>{% block title_top %}Usuário{% endblock %}</b>
-</li>
-<li>
-    <a class="active">Editar</a>
-</li>
-{% endblock %} {% block content %} {% if context %} {% for title, value in context.items %} {{title}} : {{value}}
-<br> {% endfor %} {% endif %}
-<div id="rootwizard">
-    <!-- Nav tabs -->
-    <ul class="nav nav-tabs nav-tabs-linetriangle nav-tabs-separator nav-stack-sm">
-        <li class="active">
-            <a data-toggle="tab" href="#tab1"><i class="fa fa-bars tab-icon"></i>
-      <span>
-       {% block tab_01 %} Dados do Usuario{% endblock %}
-     </span>
-   </a>
-        </li>
-        <li class="">
-            <a data-toggle="tab" href="#tab2"><i class="fa fa-map-marker tab-icon"></i> 
-    <span>
-     Endereço
-   </span>
- </a>
-        </li>
-        {% block subclass_itens %}{% endblock %}
-    </ul>
-    <!-- Tab panes -->
-    <form autocomplete="off" method="post" enctype="multipart/form-data" role="form" id="form-personal" novalidate="novalidate">
-        {% csrf_token %}
-        <div class="tab-content">
-            <div class="tab-pane active slide-left" id="tab1">
-                <div class="row row-same-height">
-                    {{form.errors}}
-                    <div class="col-md-8">
-                        <div class="padding-10">
-                            <div class="row clearfix p-t-10">
-                                {% if request.session.view == "usuario" %}
-                                <div class="col-sm-8">
-                                {% else %}
-                                <div class="col-sm-12">
-                                {% endif %}
-                                    <div class="form-group  required">
-                                        <label>Nome Completo</label>
-                                        {{form.nome}}
-                                    </div>
-                                </div>
-                                 {% if request.session.view == "usuario" %}
-                                <div class="col-sm-4">
-                                    <div class="form-group  required">
-                                        <label>Tipo de Usuario</label>
-                                        {{form.tipo_usuario}}
-                                    </div>
-                                </div>
-                                {% endif %}
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <div class="form-group  required">
-                                        <label>{{form.email.label_tag}}</label>
-                                        {{form.email}}
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group  required">
-                                        <label>{{form.password.label_tag}}</label>
-                                        {{form.password}}
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group  required">
-                                        <label>{{form.repetir_password.label_tag}}</label>
-                                        {{form.repetir_password}}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <div class="form-group  required">
-                                        <label>{{form.cpf.label_tag}}</label>
-                                        {{form.cpf}}
-                                    </div>
-                                    <p id="cpfReport"></p>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group  required">
-                                        <label>{{form.rg.label_tag}}</label>
-                                        {{form.rg}}
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group ">
-                                        <label>{{form.orgaoemissor.label_tag}}</label>
-                                        {{form.orgaoemissor}}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <div class="form-group ">
-                                        <label>{{form.genero.label_tag}}</label>
-                                        <select class="form-control" id="genero" name="genero">
-                                            <option value={{form.genero}}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group ">
-                                        <label>{{form.data_nascimento.label_tag}}</label>
-                                        <input type="text" value="{{ form.data_nascimento.value|date:'d/m/Y' }}" placeholder="Digite a data de nascimento" name="data_nascimento" id="id_data_nascimento" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group ">
-                                        <label>{{form.foto.label_tag}}</label>
-                                        {{form.foto}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="row p-t-10">
-                            <div id="id_phone_table" class="row form-group-attached p-t-10">
-                                {% for form in formset.forms %}
-                                <div id="{{ form.prefix }}-row" class="tr form-group-attached">
-                                    <div class="row">
-                                        <div class="col-sm-5">
-                                            <div class="form-group ">
-                                                <label>{{form.tipo_telefone.label_tag}}</label>
-                                                <div style="text-align:center;">{{ form.tipo_telefone }}</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-7">
-                                            <div class="form-group ">
-                                                <label>{{form.numero.label_tag}}</label>
-                                                <div style="text-align:center;">{{ form.numero }}</div>
-                                            </div>
-                                        </div>
-                                        <div></div>
-                                    </div>
-                                </div>
-                                {% endfor %} {{formset.management_form}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane slide-left padding-20" id="tab2">
-                <div class="row row-same-height">
-                    <div class="col-md-12">
-                        <div class="padding-10">
-                            <div class="row clearfix">
-                                <div class="col-sm-3">
-                                    <div class="form-group ">
-                                        <label>{{form.cep.label_tag}}</label>
-                                        {{form.cep}}
-                                    </div>
-                                </div>
-                                <div class="col-sm-3">
-                                    <div class="form-group  required">
-                                        <label>{{form.pais.label_tag}}</label>
-                                        {{form.pais}}
-                                    </div>
-                                </div>
-                                <div class="col-sm-3">
-                                    <div class="form-group  required">
-                                        <label>{{form.estado.label_tag}}</label>
-                                        {{form.estado}}
-                                    </div>
-                                </div>
-                                <div class="col-sm-3">
-                                    <div class="form-group  required">
-                                        <label>{{form.cidade.label_tag}}</label>
-                                        {{form.cidade}}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row clearfix">
-                                <div class="col-sm-6">
-                                    <div class="form-group  required">
-                                        <label>{{form.rua.label_tag}}</label>
-                                        {{form.rua}}
-                                    </div>
-                                </div>
-                                <div class="col-sm-3">
-                                    <div class="form-group ">
-                                        <label>{{form.numero.label_tag}}</label>
-                                        {{form.numero}}
-                                    </div>
-                                </div>
-                                <div class="col-sm-3">
-                                    <div class="form-group ">
-                                        <label>{{form.bairro.label_tag}}</label>
-                                        {{form.bairro}}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row clearfix">
-                                <div class="col-sm-6">
-                                    <div class="form-group ">
-                                        <label>{{form.complemento.label_tag}}</label>
-                                        {{form.complemento}}
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group ">
-                                        <label>{{form.pontoreferencia.label_tag}}</label>
-                                        {{form.pontoreferencia}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% block subclass_form %}{% endblock %}
-            <div class="padding-20 bg-white">
-                <ul class="pager wizard">
-                    <li class="next">
-                        <button class="btn btn-primary btn-cons pull-right" type="button">
-                            <span>Próximo</span>
-                        </button>
-                    </li>
-                    <li class="next finish hidden">
-                        <button class="btn btn-primary btn-cons btn-animated from-left fa fa-arrow-right pull-right" type="button">
-                            <span>Cadastrar</span>
-                        </button>
-                    </li>
-                    <li class="previous first hidden">
-                        <button class="btn btn-default btn-cons btn-animated from-left fa fa-cog pull-right" type="button">
-                            <span>Primeiro</span>
-                        </button>
-                    </li>
-                    <li class="previous">
-                        <button class="btn btn-default btn-cons pull-right" type="button">
-                            <span>Anterior</span>
-                        </button>
-                    </li>
-                </ul>
-            </div>
-    </form>
+{% extends "default/panel/layout.html" %}
+{% load staticfiles %}
+
+{% block page_info %}
+    <li>
+      <b>{% block title %} Usuario {% endblock %}</b>
+    </li>
+    <li>
+      <a class="active">Editar</a>
+    </li>    
+{% endblock %}
+
+{% block content %}
+  <div class="col-md-12">
+  <!-- START PANEL -->
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">
+      </div>
     </div>
+    <div class="panel-body">
+      <form autocomplete="off"  method="post" enctype="multipart/form-data" role="form" id="form-personal" novalidate="novalidate">
+        {% csrf_token %}
+
+        <h5 class="m-t-lg with-border">Informações Gerais</h5>
+        <div class='row'>
+           <div class="col-lg-12">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.nome.auto_id }}">{{ form.nome.label_tag }}</label>
+              {{ form.nome }}
+              <small class="text-muted">{{ form.nome.errors }}</small>
+            </fieldset>
+          </div>
+        </div>
+
+        <div class='row'>
+           <div class="col-lg-12">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.email.auto_id }}">{{ form.email.label_tag }}</label>
+              {{ form.email }}
+              <small class="text-muted">{{ form.email.errors }}</small>
+            </fieldset>
+          </div>
+        </div>
+
+        {% if request.session.view != "passageiro" and request.session.view != "emissor" and request.session.view != "cliente" %}
+        <div class='row'>
+           <div class="col-lg-6">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.password.auto_id }}">{{ form.password.label_tag }}</label>
+              {{ form.password }}
+              <small class="text-muted">{{ form.password.errors }}</small>
+            </fieldset>
+          </div>
+          <div class="col-lg-6">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.repetir_password.auto_id }}">{{ form.repetir_password.label_tag }}</label>
+              {{ form.repetir_password }}
+              <small class="text-muted">{{ form.repetir_password.errors }}</small>
+            </fieldset>
+          </div>
+        </div>
+        {% endif %}
+        <div class='row'>
+           <div class="col-lg-4">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.cpf.auto_id }}">{{ form.cpf.label_tag }}</label>
+              {{ form.cpf }}
+              <small class="text-muted">{{ form.cpf.errors }}</small>
+            </fieldset>
+          </div>
+          <div class="col-lg-4">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.rg.auto_id }}">{{ form.rg.label_tag }}</label>
+              {{ form.rg }}
+              <small class="text-muted">{{ form.rg.errors }}</small>
+            </fieldset>
+          </div>
+          <div class="col-lg-4">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.orgaoemissor.auto_id }}">Orgão Emissor</label>
+              {{ form.orgaoemissor }}
+              <small class="text-muted">{{ form.orgaoemissor.errors }}</small>
+            </fieldset>
+          </div>
+        </div>
+
+        <div class='row'>
+           <div class="col-lg-4">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.id_genero.auto_id }}">Genero</label>
+              {{ form.id_genero }}
+              <small class="text-muted">{{ form.id_genero.errors }}</small>
+            </fieldset>
+          </div>
+          <div class="col-lg-4">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.data_nascimento.auto_id }}">Data de Nascimento</label>
+              <input type="text" placeholder="__/__/__" name="data_nascimento" id="id_data_nascimento" value="{{form.data_nascimento.value|date:'d/m/Y' }}" class="form-control">
+              <small class="text-muted">{{ form.data_nascimento.errors }}</small>
+            </fieldset>
+          </div>
+          <div class="col-lg-4">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.foto.auto_id }}">{{ form.foto.label_tag }}</label>
+              {{ form.foto }}
+              <small class="text-muted">{{ form.foto.errors }}</small>
+            </fieldset>
+          </div>
+        </div>
+
+        <h5 class="m-t-lg with-border">Contato</h5>
+        <div class='row'>
+           <div class="col-lg-12">
+            <div id="id_phone_table" class="row form-group-attached p-t-10" >
+              {% for form in formset.forms %}
+                <div id="{{ form.prefix }}-row" class="tr form-group-attached">
+                  <div class="col-lg-6">
+                    <fieldset class="form-group">
+                      <label class="form-label semibold" for="{{ form.id_cidade.auto_id }}">{{ form.tipo_telefone.label_tag }}</label>
+                      {{ form.tipo_telefone }}
+                      <small class="text-muted">{{ form.tipo_telefone.errors }}</small>
+                    </fieldset>
+                  </div>
+                  <div class="col-lg-6">
+                    <fieldset class="form-group">
+                      <label class="form-label semibold" for="{{ form.numero.auto_id }}">{{ form.numero.label_tag }}</label>
+                      {{ form.numero }}
+                      <small class="text-muted">{{ form.numero.errors }}</small>
+                    </fieldset>
+                  </div>
+                </div>
+                {% endfor %}
+                {{ formset.management_form }}           
+            </div>
+          </div>          
+        </div>
+
+        <h5 class="m-t-lg with-border">Endereço</h5>
+        <div class='row'>
+          <div class="col-lg-4">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.cep.auto_id }}">{{ form.cep.label_tag }}</label>
+              {{ form.cep }}
+              <small class="text-muted">{{ form.cep.errors }}</small>
+            </fieldset>
+          </div>
+          <div class="col-lg-4">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.pais.auto_id }}">{{ form.pais.label_tag }}</label>
+              {{ form.pais }}
+              <small class="text-muted">{{ form.pais.errors }}</small>
+            </fieldset>
+          </div>
+          <div class="col-lg-4">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.estado.auto_id }}">{{ form.estado.label_tag }}</label>
+              {{ form.estado }}
+              <small class="text-muted">{{ form.estado.errors }}</small>
+            </fieldset>
+          </div>
+        </div>
+
+        <div class='row'>
+           <div class="col-lg-4">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.cidade.auto_id }}">{{ form.cidade.label_tag }}</label>
+              {{ form.cidade }}
+              <small class="text-muted">{{ form.cidade.errors }}</small>
+            </fieldset>
+          </div>
+          <div class="col-lg-4">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.bairro.auto_id }}">{{ form.bairro.label_tag }}</label>
+              {{ form.bairro }}
+              <small class="text-muted">{{ form.bairro.errors }}</small>
+            </fieldset>
+          </div>
+          <div class="col-lg-4">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.rua.auto_id }}">{{ form.rua.label_tag }}</label>
+              {{ form.rua }}
+              <small class="text-muted">{{ form.rua.errors }}</small>
+            </fieldset>
+          </div>
+        </div>
+
+        <div class='row'>
+           <div class="col-lg-4">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.numero.auto_id }}">{{ form.numero.label_tag }}</label>
+              {{ form.numero }}
+              <small class="text-muted">{{ form.numero.errors }}</small>
+            </fieldset>
+          </div>
+          <div class="col-lg-8">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.complemento.auto_id }}">{{ form.complemento.label_tag }}</label>
+              {{ form.complemento }}
+              <small class="text-muted">{{ form.complemento.errors }}</small>
+            </fieldset>
+          </div>
+        </div>
+
+        <div class='row'>
+          <div class="col-lg-12">
+              <fieldset class="form-group">
+                <label class="form-label semibold" for="{{ form.pontoreferencia.auto_id }}">{{ form.pontoreferencia.label_tag }}</label>
+                {{ form.pontoreferencia }}
+                <small class="text-muted">{{ form.pontoreferencia.errors }}</small>
+              </fieldset>
+          </div>
+        </div>
+
+        {% block subclass_form %}{% endblock %}        
+
+        {% block buttom %}
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="form-group">
+              <button type="submit" class="btn btn-success btn-cons">
+                Salvar
+              </button>
+              <div class="pull-right">
+              <a class="btn btn-secondary-outline" href="{% url 'user-list' %}">
+                Cancelar
+              </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endblock %}
+
+      </form>
+    </div>
+  </div>
+  <!-- END PANEL -->
 </div>
-{% endblock %} {% block javascript %}
+{% endblock %}
+
+{% block javascript %}
 <script src="{% static 'js/default/jquery.inputmask.min.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/default/form_wizard.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/default/jquery.bootstrap.wizard.min.js' %}" type="text/javascript">
@@ -263,7 +258,6 @@ $(document).ready(function() {
     $("#id_cep").mask("99.999-999");
     $("#id_cep_empresa_cliente").mask("99.999-999");
     $('#id_data_nascimento').mask("99/99/9999");
-    $('#id_dt_admissao').mask('99/9999');
 
 
 });
@@ -368,12 +362,5 @@ function validar_cpf(strCPF) {
 };
 
 
-
-
-
-//Submit form
-$(".finish").click(function() {
-    $("#form-personal").submit();
-});
 </script>
 {% endblock %}

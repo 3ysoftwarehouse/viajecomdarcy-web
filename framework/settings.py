@@ -64,6 +64,7 @@ CUSTOM_APPS = [
     'apps.acomodacao',
     'apps.venda',
     'apps.api_rest',
+    'apps.pessoa',
     # SUBCLASS APPS
     #'apps.subclasses.empresa.startup',
     'apps.subclasses.empresa.escola',

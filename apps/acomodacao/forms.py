@@ -1,20 +1,9 @@
 #-*- coding: utf-8 -*-
-
-
-##################################################
-#               DJANGO IMPORTS                   #
-##################################################
 from django import forms
 from django.conf import settings
 from django.contrib.admin.widgets import FilteredSelectMultiple
-##################################################
 
-
-##################################################
-#               CUSTOM IMPORTS                   #
-##################################################
-from .models import Acomodacao # MODELS
-##################################################
+from .models import Acomodacao 
 
 class AcomodacaoForm(forms.ModelForm):
 
@@ -25,16 +14,12 @@ class AcomodacaoForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(AcomodacaoForm, self).__init__(*args, **kwargs)
-        # acomodacao_desc Fields widget
         self.fields['acomodacao_desc'].widget.attrs['class'] = 'form-control'
         self.fields['acomodacao_desc'].widget.attrs['placeholder'] = 'Descrição'
-
-        # sigla Fields widget
         self.fields['sigla'].widget.attrs['class'] = 'form-control'
         self.fields['sigla'].widget.attrs['placeholder'] = 'Sigla'
-
-        # numero Fields widget
         self.fields['numero'].widget.attrs['class'] = 'form-control'
         self.fields['numero'].widget.attrs['placeholder'] = 'Número'
 
-    pass
+        self.fields['acomodacao_desc'].label = "Descrição da Acomodação"
+
