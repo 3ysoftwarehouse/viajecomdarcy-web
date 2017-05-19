@@ -156,6 +156,7 @@ class UserRegisterForm(forms.ModelForm):
         self.fields['rg'].widget.attrs['class'] = 'form-control'
         self.fields['rg'].widget.attrs['placeholder'] = 'Digite o RG'
         self.fields['rg'].required = True
+        self.fields['rg'].label = "RG ou Matricula de Certidão de Nascimento"
         self.fields['orgaoemissor'].widget.attrs['class'] = 'form-control'
         self.fields['orgaoemissor'].widget.attrs['placeholder'] = 'Digite o Orgao Emissor'
         self.fields['orgaoemissor'].required = True
