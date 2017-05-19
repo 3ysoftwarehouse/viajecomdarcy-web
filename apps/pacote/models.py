@@ -12,7 +12,7 @@ class Pacote(models.Model):
 	pacote_nome = models.CharField(max_length=45)
 	pacote_desc = models.TextField(max_length=200)
 	is_active = models.BooleanField(default=True)
-	pacote_preco = models.DecimalField(max_digits=10, decimal_places=2)
+	pacote_preco = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 	pacote_taxa = models.DecimalField(max_digits=10, decimal_places=2)
 	pacote_daybyday = models.TextField(null=True, blank=True)
 	pacote_obs = models.TextField(null=True, blank=True)
