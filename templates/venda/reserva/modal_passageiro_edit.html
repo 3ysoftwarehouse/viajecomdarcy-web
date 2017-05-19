@@ -1,0 +1,110 @@
+{% load staticfiles %}
+{% load filters %}
+<div class="modal fade stick-up" id="modalPassageiroEdit" tabindex="-1" role="dialog" aria-hidden="false">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content-wrapper">
+      <div class="modal-content">
+        <div class="modal-header clearfix text-left">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14"></i>
+          </button>
+          <h5 id="modal-title-tag semi-bold">Editar <span class="semi-bold">Passageiro</span></h5>
+          <p class="p-b-10"></p>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+              <form autocomplete="off" method="post" enctype="multipart/form-data" role="form" id="form-personal2">
+                  {% csrf_token %}
+                  <input type="hidden" id="id_id_reserva_passageiro" name="id_reserva_passageiro" >
+                  <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group  required" value="">
+                                <label for="id_valor_servico" class=" teste">Passageiro:</label>
+                                {{ form_passageiro.id_passageiro|htmlattributes:"required:required"}}
+                            </div>                                        
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group " value="">
+                                <label for="id_valor_pago" class="">Excursão:</label>
+                                {{ form_passageiro.id_excursao|htmlattributes:"required:required" }}
+                                <input type="text" value="true" class="hidden" id="edit-reserva" />
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group " value="">
+                                <label for="id_valor_pago" class="">Pacote:</label>
+                                {{ form_passageiro.id_pacote|htmlattributes:"required:required" }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group " value="">
+                                <label for="id_valor_pago" class="">Acomodação:</label>
+                                {{ form_passageiro.id_acomodacao_pacote|htmlattributes:"required:required" }}
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group " value="">
+                                <label for="id_valor_pago" class="">Preço Acomodação:</label>
+                                {{ form_passageiro.preco_acomodacao|htmlattributes:"required:required" }}
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group " value="">
+                                <label for="id_valor_pago" class="">Taxa:</label>
+                                {{ form_passageiro.reserva_passageiro_preco|htmlattributes:"required:required" }}
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group " value="">
+                                <label for="id_valor_pago" class="">Moeda:</label>
+                                {{ form_passageiro.id_moeda|htmlattributes:"required:required" }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group " value="">
+                                <label for="id_valor_pago" class="">Cambio:</label>
+                                {{ form_passageiro.reserva_passageiro_cambio|htmlattributes:"required:required"  }}
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group " value="">
+                                <label for="id_valor_pago" class="">Registro Interno:</label>
+                                {{ form_passageiro.registro_interno }}
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group " value="">
+                                <label for="id_valor_pago" class="">Desconto:</label>
+                                {{ form_passageiro.desconto }}
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group " value="">
+                                <label for="id_valor_pago" class="">Obs:</label>
+                                {{ form_passageiro.reserva_passageiro_obs }}
+                            </div>
+                        </div> 
+                    </div>
+
+                    <div style="display:none;">
+                        {{ form_passageiro.id_status_reserva_passageiro }}
+                    </div> 
+
+                    <div class="row">
+                        <button type="button" id="edit_reserva_passageiro_btn" class="btn btn-primary pull-right">Salvar</button>
+                    </div>  
+                </div> 
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<!-- /.modal-content -->

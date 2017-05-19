@@ -6,8 +6,13 @@
         {% ifchanged passageiro.id_passageiro.id_usuario %}
         <thead class="p-t-20">
             <tr>
-                <th class="text-black">{{passageiro.id_passageiro.id_usuario.nome}} {{passageiro.id_passageiro.id_usuario.sobrenome}}</th>
-
+                <th class="text-black">
+                    {{passageiro.id_passageiro.id_usuario.nome}} 
+                    {{passageiro.id_passageiro.id_usuario.sobrenome}}
+                    <a href="#" onclick="modalPassageiroEdit('{{passageiro.id_reserva_passageiro}}','{{passageiro.id_passageiro.id_passageiro}}', '{{passageiro.id_pacote.id_excursao.id_excursao}}', '{{passageiro.id_pacote.id_pacote}}', '{{passageiro.id_acomodacao_pacote.pk}}', '{{passageiro.preco_acomodacao}}', '{{passageiro.reserva_passageiro_preco}}', '{{passageiro.id_moeda.id_moeda}}', '{{passageiro.reserva_passageiro_cambio}}', '{{passageiro.registro_interno}}', '{{passageiro.desconto}}', '{{passageiro.reserva_passageiro_obs}}')">
+                        <i class="pg-settings"></i>
+                    </a>
+                </th>
                 <th class="text-right text-black">Total</th>
             </tr>
         </thead>

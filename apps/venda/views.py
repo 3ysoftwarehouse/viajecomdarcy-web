@@ -43,7 +43,10 @@ class ReservaNova(JSONResponseMixin,View):
         try:
             id_status_reserva = StatusReserva.objects.get(descricao="ABERTO")
         except:
-            context['Status'] = "não encontrado"
+            id_status_reserva = StatusReserva()
+            id_status_reserva.descricao = "ABERTO"
+            id_status_reserva.save()
+            #context['Status'] = "não encontrado"
         if not context:
             reserva = Reserva()
             reserva.id_emissor = emissor
@@ -57,8 +60,15 @@ class ReservaNova(JSONResponseMixin,View):
 class ReservaRegister(JSONResponseMixin,View):
     def get(self, request, pk):
         formset = formset_factory(ReservaPassageiroForm,extra=0)
+        try:
+            id_status_reserva_passageiro = StatusReservaPassageiro.objects.get(descricao="RESERVADO").pk
+        except:
+            id_status_reserva_passageiro = StatusReservaPassageiro()
+            id_status_reserva_passageiro.descricao = "RESERVADO"
+            id_status_reserva_passageiro.save()
+
         initial_data = [
-            {'id_status_reserva_passageiro': StatusReservaPassageiro.objects.get(descricao="RESERVADO").pk},
+            {'id_status_reserva_passageiro': id_status_reserva_passageiro},
         ]
         passageiros = ReservaPassageiro.objects.filter(id_reserva = pk).order_by('id_passageiro')
         form = ReservaForm()
@@ -167,7 +177,6 @@ class ReservaRegister(JSONResponseMixin,View):
             return redirect(reverse_lazy('passageiro-opcional', kwargs = {'pk' : reserva.pk, }))
 
         return render (request, 'venda/reserva/register.html', { 'form':form, 'formset':formset, 'context':context })
-
 
 class ReservaEdit(JSONResponseMixin,View):
     def get(self, request, **kwargs):
@@ -568,7 +577,56 @@ def addPassageiroToReserva(request,pk):
             return JsonResponse({'status':'success', 'message':'success','html':html})
         except Exception as e:
             return JsonResponse({'message':str(e), 'status':'error'})
-    
+
+def editPassageiroReserva(request):
+    if request.method == 'POST':
+        form = ReservaPassageiroForm(request.POST)
+        
+        id_reserva_passageiro = request.POST.get('id_reserva_passageiro')
+        id_passageiro = request.POST.get('id_passageiro')
+        id_pacote = request.POST.get('id_pacote')
+        id_status_reserva_passageiro = request.POST.get('id_status_reserva_passageiro')
+        reserva_passageiro_preco = request.POST.get('reserva_passageiro_preco')
+        reserva_passageiro_cambio = request.POST.get('reserva_passageiro_cambio')
+        reserva_passageiro_obs = request.POST.get('reserva_passageiro_obs')
+        id_acomodacao_pacote = request.POST.get('id_acomodacao_pacote')
+        preco_acomodacao = request.POST.get('preco_acomodacao')
+        registro_interno = request.POST.get('registro_interno')
+        desconto = request.POST.get('desconto')
+
+        try:
+            status_reserva_passageiro = StatusReservaPassageiro.objects.get(descricao="RESERVADO")
+            passageiro = Passageiro.objects.get(id_passageiro = id_passageiro)
+            pacote = Pacote.objects.get(id_pacote = id_pacote)
+            #reserva = Reserva.objects.get(pk=pk)
+            reservapassageiro = ReservaPassageiro.objects.get(pk=id_reserva_passageiro)
+            #reservapassageiro.id_reserva =  reserva
+            reservapassageiro.id_passageiro = passageiro
+            reservapassageiro.id_pacote = pacote
+            reservapassageiro.id_status_reserva_passageiro = status_reserva_passageiro
+            reservapassageiro.id_escola = passageiro.id_escola
+            reservapassageiro.reserva_passageiro_preco = reserva_passageiro_preco
+            reservapassageiro.id_moeda = pacote.id_moeda
+            reservapassageiro.reserva_passageiro_cambio = reserva_passageiro_cambio
+            if reserva_passageiro_obs:
+                reservapassageiro.reserva_passageiro_obs = reserva_passageiro_obs
+
+            # FEATURE 805 MODIFICAÇÔES
+            reservapassageiro.id_acomodacao_pacote = Acomodacao.objects.get(id_acomodacao = id_acomodacao_pacote)
+            reservapassageiro.preco_acomodacao = preco_acomodacao
+            if registro_interno:
+                reservapassageiro.registro_interno = registro_interno
+            if desconto:
+                reservapassageiro.desconto = desconto
+
+            reservapassageiro.save()
+            passageiros = ReservaPassageiro.objects.filter(id_reserva = reservapassageiro.id_reserva).order_by('id_passageiro')
+            html = render_to_string('venda/reserva/reservas_snippet.html', {'passageiros':passageiros})
+            return JsonResponse({'status':'success', 'message':'success','html':html})
+        except Exception as e:
+            return JsonResponse({'message':str(e), 'status':'error'})
+
+
 def addOpcionalPassageiro(request, pk):
     if request.method == 'POST':
         reserva = Reserva.objects.get(pk=pk)
