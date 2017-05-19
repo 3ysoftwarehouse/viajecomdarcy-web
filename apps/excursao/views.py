@@ -50,7 +50,7 @@ class ExcursaoEdit(JSONResponseMixin,View):
 
 
 class ExcursaoList(JSONResponseMixin,ListView):
-	queryset = Excursao.objects.all()
+	queryset = Excursao.objects.filter(is_active=True)
 	template_name = 'excursao/excursao/list.html'
 
 	def get_context_data(self, **kwargs):
@@ -89,7 +89,7 @@ class CidadeEdit(JSONResponseMixin,UpdateView):
 
 
 class CidadeList(JSONResponseMixin,ListView):
-	model = Cidade
+	queryset = Cidade.objects.order_by('cidade')
 	template_name = 'excursao/cidade/list.html'
 
 	def get_context_data(self, **kwargs):
@@ -108,7 +108,7 @@ class CidadeDetail(JSONResponseMixin,DetailView):
 
 class CidadeDelete(JSONResponseMixin,DeleteView):
 	model = Cidade
-	success_url = reverse_lazy('pacote-list')
+	success_url = reverse_lazy('cidade-list')
 	template_name = 'excursao/cidade/delete.html'
 
 

@@ -43,12 +43,13 @@ class AcomodacaoEdit(JSONResponseMixin,UpdateView):
 
 
 class AcomodacaoList(JSONResponseMixin,ListView):
-	model = Acomodacao
+	queryset = Acomodacao.objects.order_by('-numero')
 	template_name = 'acomodacao/list.html'
 
 	def get_context_data(self, **kwargs):
 		context = super(AcomodacaoList, self).get_context_data(**kwargs)
 		return context
+
 
 
 class AcomodacaoDetail(JSONResponseMixin,DetailView):
