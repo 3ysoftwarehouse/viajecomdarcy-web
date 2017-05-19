@@ -38,21 +38,31 @@
              <th style="width:25%">Nome</th>
              <th style="width:25%">Email</th>
              <th style="width:25%">CPF</th>
+             <th style="width:25%">Telefone</th>
              <th style="width:25%">Opções</th>
           </tr>
        </thead>
        <tbody>
-          {% for cliente in object_list %}
+          {% for object in object_list %}
           <tr>
              <td class="v-align-middle ">
-                <p>{{cliente.usuario.nomecompleto}}</p>
+                <p>{{object.cliente.usuario.nomecompleto}}</p>
              </td>
              <td class="v-align-middle">
-                <p>{{cliente.usuario.email}}</p>
+                <p>{{object.cliente.usuario.email}}</p>
              </td>   
              <td class="v-align-middle">
-                <p>{{cliente.usuario.cpf}}</p>
-             </td>                 
+                <p>{{object.cliente.usuario.cpf}}</p>
+             </td> 
+             <td class="v-align-middle">
+                <p>
+                {% if object.telefones %}
+                  {{object.telefones.0}}
+                {% else %}
+                  --------------
+                {% endif %}
+                </td>
+             </td>              
              <td class="v-align-middle">
                 <a href="/framework/dashboard/cliente/edit/{{cliente.pk}}">
                 <i class="pg-settings"></i>

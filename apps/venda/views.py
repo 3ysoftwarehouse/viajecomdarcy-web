@@ -519,7 +519,13 @@ class PassageiroOpcMoedaJson(JSONResponseMixin,View):
 
 def finalizarAgendamento(request, pk=None, cl=None):
     try:
-        id_status_reserva = StatusReserva.objects.get(descricao="RESERVADO")
+        try:
+            id_status_reserva = StatusReserva.objects.get(descricao="RESERVADO")
+        except:
+            id_status_reserva = StatusReserva()
+            id_status_reserva.descricao = "RESERVADO"
+            id_status_reserva.save()
+            
         id_cliente = Cliente.objects.get(pk=cl)
         reserva = Reserva.objects.get(pk=pk)
         reserva.id_status_reserva = id_status_reserva

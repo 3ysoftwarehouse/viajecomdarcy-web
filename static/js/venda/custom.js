@@ -288,7 +288,7 @@ function setMoeda(codigo,id){
           for(i=0; i < acomodacao.length; i++){
             htmlString += '<option data-preco="'+String(acomodacao[i].preco)+'" value="'+ String(acomodacao[i].id_acomodacao)+'">'+acomodacao[i].id_acomodacao__acomodacao_desc+'</option>'
           }
-          $("#id_form-"+id+"-id_acomodacao_pacote").html(htmlString);
+          $("#id_id_acomodacao_pacote").html(htmlString);
 
         }
       },

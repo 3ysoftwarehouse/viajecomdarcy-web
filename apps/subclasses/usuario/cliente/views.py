@@ -292,6 +292,20 @@ class ClienteList(JSONResponseMixin,ListView):
 
 	def get_context_data(self, **kwargs):
 		context = super(ClienteList, self).get_context_data(**kwargs)
+
+		emissor = get_emissor(self)
+		if emissor:
+			clientes = Cliente.objects.filter(id_agencia=emissor.id_agencia.pk)
+		else:
+			clientes = Cliente.objects.all()
+
+		object_list = []
+		for cliente in clientes:
+			telefones = TelefoneUsuario.objects.filter(id_usuario=cliente.usuario)
+			object_list.append({'cliente':cliente, 'telefones':telefones})
+
+		context['object_list'] = object_list
+		
 		return context
 
 
