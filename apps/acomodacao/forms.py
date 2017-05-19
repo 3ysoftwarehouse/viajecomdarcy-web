@@ -22,4 +22,6 @@ class AcomodacaoForm(forms.ModelForm):
         self.fields['numero'].widget.attrs['placeholder'] = 'Número'
 
         self.fields['acomodacao_desc'].label = "Descrição da Acomodação"
+        self.fields['numero'].label = "Quantidade de Passageiros"
+        
 

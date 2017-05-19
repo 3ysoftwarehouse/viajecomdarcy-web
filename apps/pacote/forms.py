@@ -59,7 +59,7 @@ class PacoteRegisterForm(forms.ModelForm):
 		self.fields['pacote_desc'].label = "Descrição do Pacote"
 		self.fields['pacote_preco'].label = "Preço do Pacote"
 		self.fields['pacote_taxa'].label = "Taxa do Pacote"
-		self.fields['taxa_remessa'].label = "Taxa de Remessa"
+		self.fields['taxa_remessa'].label = "Taxa de Remessa %"
 		self.fields['pacote_obs'].label = "Observação"
 		self.fields['pacote_daybyday'].label = "Day by day"
 		self.fields['id_opcional'].label = "Pacote Opcional"

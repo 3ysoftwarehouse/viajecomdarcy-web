@@ -32,7 +32,7 @@ class Opcional(models.Model):
 
 	def percentage(self):
 		if self.taxa_remessa:
-			taxa = self.taxa_remessa * 100;
+			taxa = self.taxa_remessa
 			return "%.1f" % taxa
 		else:
 			return 0
