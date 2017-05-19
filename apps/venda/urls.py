@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 ##################################################
 #				CUSTOM IMPORTS                   #
 ##################################################
-from .views import ReservaRegister, ReservaList, ReservaDetail, ReservaEdit, ReservaDelete, ExcursaoPacoteJson, PacoteMoedaJson, PassageiroOpc, PassageiroOpcJson, PassageiroOpcMoedaJson, addPassageiroToReserva, addOpcionalPassageiro, finalizarAgendamento
+from .views import *
 from apps.venda import views
 ##################################################
 
@@ -30,6 +30,7 @@ urlpatterns = (
 	url(r'^dashboard/passageiro/opcional/passageiro_opcional_json/(?P<id_reserva>\d+)/(?P<id_passageiro>\d+)$', login_required(PassageiroOpcJson.as_view()), name="passageiro-opcional-json"),
 	url(r'^dashboard/passageiro/opcional/passageiro_opcional_moeda_json/(?P<id_reserva_passageiro>\d+)/(?P<id_opcional>\d+)$', login_required(PassageiroOpcMoedaJson.as_view()), name="passageiro-opcional-moeda-json"),
 	url(r'^dashboard/reservapassageiro/(?P<pk>\d+)/$', login_required(addPassageiroToReserva), name="add-passageiro"),
+	url(r'^dashboard/reservapassageiro/edit/$', login_required(editPassageiroReserva), name="edit-passageiro"),
 	url(r'^dashboard/opcionalpassageiro/(?P<pk>\d+)/$', login_required(addOpcionalPassageiro), name="add-opcional"),
 	url(r'^dashboard/finalizaragendamento/(?P<pk>\d+)/(?P<cl>\d+)/', login_required(finalizarAgendamento), name="finalizar-agendamento"),
 )
