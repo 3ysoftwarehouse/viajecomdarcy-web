@@ -26,9 +26,15 @@ class EscolaRegister(JSONResponseMixin,View):
 		return render (request, 'subclasses/empresa/escola/register.html', context)
 
 	def post(self, request, *args, **kwargs):
-		form = EscolaRegisterForm(request.POST, request.FILES)
-		PhoneFormSet = formset_factory(PhoneForm)		
-		formset = PhoneFormSet(request.POST, request.FILES)
+		if request.POST.get('is_modal'):
+			form = EscolaRegisterForm(request.POST, request.FILES, prefix="escola")
+			PhoneFormSet = formset_factory(PhoneForm)		
+			formset = PhoneFormSet(request.POST, request.FILES, prefix="phone2")
+		else:
+			form = EscolaRegisterForm(request.POST, request.FILES)
+			PhoneFormSet = formset_factory(PhoneForm)		
+			formset = PhoneFormSet(request.POST, request.FILES)
+
 		if form.is_valid() and formset.is_valid():
 			company = form.save(commit=False)
 
@@ -71,7 +77,10 @@ class EscolaRegister(JSONResponseMixin,View):
 			escola.id_empresa = company
 			escola.save()
 
-			return redirect(reverse_lazy("escola-list"))
+			if request.POST.get('is_modal'):
+				return JsonResponse({'status':'success', 'id_escola':escola.pk, 'nomefantasia': escola.id_empresa.nomefantasia})
+			else:
+				return redirect(reverse_lazy("escola-list"))
 		
 		context = {'form':form, 'formset':formset}
 		return render (request, 'subclasses/empresa/escola/register.html', context)
