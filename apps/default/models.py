@@ -223,6 +223,6 @@ class Documento(models.Model):
 	id_documento = models.AutoField(primary_key=True)
 	id_usuario = models.ForeignKey('Usuario', on_delete=models.DO_NOTHING)
 	id_tipo_documento = models.ForeignKey('TipoDocumento', on_delete=models.DO_NOTHING)
-	anexo = models.ImageField(upload_to="default/documents")
+	anexo = models.FileField(upload_to="default/documents")
 	datahora = models.DateTimeField(default=timezone.now)
 	
