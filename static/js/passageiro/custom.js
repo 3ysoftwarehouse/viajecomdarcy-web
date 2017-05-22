@@ -15,7 +15,7 @@ $('#new_escola_btn').on('click', function(event) {
   $('#form-escola').validate();
   var csrftoken = getCookie('csrftoken');
   if($('#form-escola').valid()){
-    var formData = new FormData(document.getElementById('form-escola'));
+    var formData = new FormData($('#form-escola')[0]);
     formData.append('csrfmiddlewaretoken', csrftoken);
     $.ajax({
       url: escola_register_url,
