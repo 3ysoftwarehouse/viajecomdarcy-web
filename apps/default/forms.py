@@ -206,7 +206,7 @@ class UserRegisterForm(forms.ModelForm):
         pais = cleaned_data.get("pais")
         numero = cleaned_data.get("numero")
 
-        msg = "This field is required."
+        msg = "Este campo é obrigatório."
         if cep:
             if not rua:
                 self.add_error('rua', msg)

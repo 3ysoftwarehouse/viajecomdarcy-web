@@ -110,7 +110,7 @@ class ClienteRegisterForm(forms.ModelForm):
 		numero = cleaned_data.get("numero_empresa")
 
 
-		msg = "This field is required."
+		msg = "Este campo é obrigatório."
 		if cep:
 		    if not rua:
 		        self.add_error('rua_empresa', msg)

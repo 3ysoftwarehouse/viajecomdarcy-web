@@ -64,12 +64,12 @@
                 </td>
              </td>              
              <td class="v-align-middle">
-                <a href="/framework/dashboard/cliente/edit/{{cliente.pk}}">
-                <i class="pg-settings"></i>
+                <a href="{% url 'cliente-edit' object.cliente.pk %}">
+                  <i class="pg-settings"></i>
                 </a>
                 {% if request.user.id_usuario != usuario.id_usuario %}
-                <a href="/framework/dashboard/cliente/delete/{{cliente.usuario.pk}}">
-                <i class="pg-eraser"></i>
+                <a href="{% url 'cliente-delete' object.cliente.usuario.pk %}">
+                  <i class="pg-eraser"></i>
                 </a>
                 {% endif %}
              </td>
