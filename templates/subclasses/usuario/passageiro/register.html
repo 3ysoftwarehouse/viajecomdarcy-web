@@ -127,8 +127,6 @@
   </div>          
 </div>
 
-{% include 'subclasses/usuario/passageiro/modal_escola_register.html' %}
-
 {% endblock %}
 {% block buttom %} 
 <div class="row">
@@ -147,16 +145,20 @@
 </div>
 {% endblock %}
 
+{% block modals %} 
+  {% include 'subclasses/usuario/passageiro/modal_escola_register.html' %}
+{% endblock %}
+
 {% block javascript %}
 {{ block.super }}
 <script src="{% static 'js/default/jquery.validate.min.js' %}"></script>
 <script>
 $(function() {
     //Formset
-    $('#id_doc_table .tr').formset({
+    $('#form-personal #id_doc_table .tr').formset({
      prefix: '{{ doc_formset.prefix }}'
     })
-    $('#id_phone_table .tr').formset({
+    $('#form-escola #id_phone2_table .tr').formset({
       prefix: '{{ formset2.prefix }}'
     })
 })

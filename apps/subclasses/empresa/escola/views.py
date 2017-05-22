@@ -82,8 +82,11 @@ class EscolaRegister(JSONResponseMixin,View):
 			else:
 				return redirect(reverse_lazy("escola-list"))
 		
-		context = {'form':form, 'formset':formset}
-		return render (request, 'subclasses/empresa/escola/register.html', context)
+		if request.POST.get('is_modal'):
+			return JsonResponse({'status':'error', 'message': str(form.errors)})
+		else:
+			context = {'form':form, 'formset':formset}
+			return render (request, 'subclasses/empresa/escola/register.html', context)
 
 
 class EscolaEdit(JSONResponseMixin,View):
