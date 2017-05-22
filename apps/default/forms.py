@@ -165,7 +165,6 @@ class UserRegisterForm(forms.ModelForm):
 
        
         self.fields['cep'].widget.attrs['class'] = 'form-control'
-        self.fields['cep'].widget.attrs['onblur'] = 'get_cep_data(this.value)'
         self.fields['cep'].widget.attrs['placeholder'] = 'Digite o CEP'
         self.fields['rua'].widget.attrs['class'] = 'form-control'
         self.fields['rua'].widget.attrs['placeholder'] = 'Digite a rua'
