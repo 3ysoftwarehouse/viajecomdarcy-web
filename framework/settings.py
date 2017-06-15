@@ -65,6 +65,7 @@ CUSTOM_APPS = [
     'apps.venda',
     'apps.api_rest',
     'apps.pessoa',
+    'apps.public_pax',
     # SUBCLASS APPS
     #'apps.subclasses.empresa.startup',
     'apps.subclasses.empresa.escola',
@@ -170,9 +171,9 @@ WSGI_APPLICATION = 'framework.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'viajecomdarcy',
+        'NAME': 'vcd2',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': 'manohacker',
         'HOST': ''
     }
 }

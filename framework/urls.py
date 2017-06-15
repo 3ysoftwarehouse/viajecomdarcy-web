@@ -43,6 +43,7 @@ urlpatterns += i18n_patterns(
 	url(r'^framework/', include('apps.subclasses.usuario.cliente.urls')),
 	url(r'^framework/', include('apps.subclasses.usuario.passageiro.urls')),
 	url(r'^framework/', include('apps.subclasses.usuario.emissor.urls')),
+	url(r'', include('apps.public_pax.urls')),
 )
 
 
