@@ -1,51 +1,84 @@
+{% extends 'default/panel/base.html'%}
 {% load staticfiles %}
 {% block content %}
 
-<!-- Add icon library -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<div class="card">
-    {% if object.foto %}
-  <img src="{{object.foto.url}}" alt="John" style="width:100%">
-    {%endif%}
-  <div class="container">
-    <h2>{{object.pax|title}}</h2>
-    <p class="title">{{object.data_nascimento}}</p>
-    <p>{{object.escola}}</p>
-      {%if object.ficha_medica%}
-      <a href="{{object.ficha_medica.url}}" target="_blank"><p><button >Ficha médica</button></p></a>
-      {%endif%}
-  </div>
-</div>
-<div class="card">
-      <h3 style="text-align: left;">Informações Gerais</h3>
-          <p>Agencia: {{object.agencia|title}}</p>
-          <p>Emissor: {{object.emissor|title}}</p>
-          <p>Pacote: {{object.grupo}}</p>
-</div>
-<div class="card">
-    <div></div>
-      <h3 style="text-align: left;">Responsável</h3>
-          <p>{{object.resp_pax|title}}</p>
-          <p>{{object.fone_resp|title}}</p>
-          <p>{{object.email_resp|lower}}</p>
-</div>
-{% if object.roomates.count > 0 %}
-<div class="card">
-    <div></div>
-      <h3 style="text-align: left;">Roomates</h3>
-    {%for roomate in object.roomates.all%}
-          <p>{{roomate.pax|title}}</p>
-    {% endfor%}
-</div>
-    {%endif%}
-{% if object.opcionais%}
-<div class="card">
-      <h3 style="text-align: left;">Opcionais</h3>
-          <p>{{object.opcionais|title}}</p>
-</div>
-{%endif%}
-  </div>
-</div>
- <link href="{% static 'css/public_pax/public_pax.css' %}" rel="stylesheet" type="text/css" />
+<div class="col-lg-4 offset-lg-4 col-md-4 offset-md-4 ">
+					<section class="box-typical">
+						<div class="profile-card">
+                            {% if object.foto %}
+							<div class="profile-card-photo img-circle" style="background-image:url('{{object.foto.url}}'); background-size:cover; background-repeat: no-repeat;background-position:center center">
+							</div>
+                            {% endif %}
+							<div class="profile-card-name">{{object.pax|title}}</div>
+							<div class="profile-card-status">{{object.data_nascimento}}</div>
+							<div class="profile-card-location">{{object.escola}}</div>
+                            {%if object.ficha_medica%}
+							<a href="{{object.ficha_medica.url}}" target="_blank" class="btn btn-rounded">Ficha médica</a>
+                            {%endif%}
+						</div><!--.profile-card-->
+
+
+						<div class="profile-links-list b-t">
+                            <div class="m-l">
+                            <p><b>Informações Gerais</b></p>
+							<p class="m-a-0">Agencia: {{object.agencia|title}}</p>
+                            <p class="m-a-0">Emissor: {{object.emissor|title}}</p>
+                            <p class="m-a-0">Pacote: {{object.grupo}}</p>
+                                </div>
+						</div>
+                        <div class="profile-links-list b-t">
+                            <div class="m-l">
+                                <p><b>Responsável</b></p>
+                                <p class="m-a-0">{{object.resp_pax|title}}</p>
+                                <p class="m-a-0">{{object.fone_resp|title}}</p>
+                                <p class="m-a-0">{{object.email_resp|lower}}</p>
+                            </div>
+						</div>
+					</section><!--.box-typical-->
+                    {% if object.roomates.count > 0 %}
+					<section class="box-typical">
+						<header class="box-typical-header-sm">
+							Roomates
+							&nbsp;
+							<a href="#" class="full-count">{{ object.roomates.all|length }}</a>
+						</header>
+                        {%for roomate in object.roomates.all%}
+						<div class="friends-list">
+							<article class="friends-list-item">
+								<div class="user-card-row">
+									<div class="tbl-row">
+										<div class="tbl-cell tbl-cell-photo">
+											<a href="#">
+                                                {% if roomate.foto %}
+												<img src="{{roomates.foto.url}}" alt="">
+                                                {% else %}
+                                                <img src="/static/build/img/avatar-2-64.png">
+                                                {% endif %}
+											</a>
+										</div>
+										<div class="tbl-cell">
+											<p class="user-card-row-name"><a href="#">{{roomate.pax|title}}</a></p>
+											<p class="user-card-row-location"></p>
+										</div>
+									</div>
+								</div>
+							</article>
+                            {% endfor%}
+						</div>
+					</section><!--.box-typical-->
+                    {% endif %}
+                    {% if object.opcionais%}
+                    <section class="box-typical">
+						<header class="box-typical-header-sm">
+							Opcionais
+							&nbsp;
+						</header>
+						<div>
+							<p class="m-l">{{object.opcionais|title}}</p>
+						</div>
+					</section><!--.box-typical-->
+                    {% endif %}
+				</div>
+
 {% endblock %}
