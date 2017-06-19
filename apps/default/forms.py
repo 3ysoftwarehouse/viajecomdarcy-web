@@ -156,6 +156,7 @@ class UserRegisterForm(forms.ModelForm):
         self.fields['rg'].widget.attrs['class'] = 'form-control'
         self.fields['rg'].widget.attrs['placeholder'] = 'Digite o RG'
         self.fields['rg'].required = True
+        self.fields['rg'].label = "RG ou Matricula de Certidão de Nascimento"
         self.fields['orgaoemissor'].widget.attrs['class'] = 'form-control'
         self.fields['orgaoemissor'].widget.attrs['placeholder'] = 'Digite o Orgao Emissor'
         self.fields['orgaoemissor'].required = True
@@ -164,7 +165,6 @@ class UserRegisterForm(forms.ModelForm):
 
        
         self.fields['cep'].widget.attrs['class'] = 'form-control'
-        self.fields['cep'].widget.attrs['onblur'] = 'get_cep_data(this.value)'
         self.fields['cep'].widget.attrs['placeholder'] = 'Digite o CEP'
         self.fields['rua'].widget.attrs['class'] = 'form-control'
         self.fields['rua'].widget.attrs['placeholder'] = 'Digite a rua'
@@ -206,7 +206,7 @@ class UserRegisterForm(forms.ModelForm):
         pais = cleaned_data.get("pais")
         numero = cleaned_data.get("numero")
 
-        msg = "This field is required."
+        msg = "Este campo é obrigatório."
         if cep:
             if not rua:
                 self.add_error('rua', msg)

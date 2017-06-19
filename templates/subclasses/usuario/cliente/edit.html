@@ -1,7 +1,7 @@
 {% extends "default/user/edit.html" %}
 {% block title %} Cliente {% endblock %}
 {% block subclass_form %}
-<h5 class="m-t-lg with-border">Cliente</h5>
+<h5 class="m-t-lg with-border">Dados para Financiamento</h5>
 <div class='row'>
    <div class="col-lg-4">
     <fieldset class="form-group">
@@ -165,25 +165,25 @@
 
 <h5 class="m-t-lg with-border">Endereço Empresa Cliente</h5>
 <div class='row'>
-   <div class="col-lg-3">
+   <div class="col-lg-2">
     <fieldset class="form-group">
       <label class="form-label semibold" for="{{ form_cliente.cep_empresa_cliente.auto_id }}">{{ form_cliente.cep_empresa_cliente.label_tag }}</label>
       {{ form_cliente.cep_empresa_cliente }}
       <small class="text-muted">{{ form_cliente.cep_empresa_cliente.errors }}</small>
     </fieldset>
   </div>
-  <div class="col-lg-3">
+  <div class="col-lg-2">
+    <fieldset class="form-group" style="margin-top:30px">
+      <button id="buscar_cep_empresa" class="btn btn-success btn-cons" type="button">
+        Buscar CEP
+      </button>
+    </fieldset>
+  </div>
+  <div class="col-lg-2">
     <fieldset class="form-group">
       <label class="form-label semibold" for="{{ form_cliente.pais_empresa.auto_id }}">{{ form_cliente.pais_empresa.label_tag }}</label>
       {{ form_cliente.pais_empresa }}
       <small class="text-muted">{{ form_cliente.pais_empresa.errors }}</small>
-    </fieldset>
-  </div>
-  <div class="col-lg-3">
-    <fieldset class="form-group">
-      <label class="form-label semibold" for="{{ form_cliente.estado_empresa.auto_id }}">{{ form_cliente.estado_empresa.label_tag }}</label>
-      {{ form_cliente.estado_empresa }}
-      <small class="text-muted">{{ form_cliente.estado_empresa.errors }}</small>
     </fieldset>
   </div>
   <div class="col-lg-3">
@@ -264,6 +264,9 @@ $("#id_dt_emissao_rg").mask("99/99/9999");
 $("#id_dt_admissao").mask("99/99/9999"); 
 $("#id_dt_banco").mask("99/99/9999"); 
 
+$('#buscar_cep_empresa').click(function(event){
+      get_cep_data_empresa($("#id_cep_empresa_cliente").val());
+});
 
 $(document).ready(function() {
     $(function() {

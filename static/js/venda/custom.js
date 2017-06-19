@@ -74,6 +74,60 @@ $('#new_reserva_passageiro_btn').on('click', function(event) {
   }
 });
 
+function modalPassageiroEdit(id_reserva_passageiro, id_passageiro, id_excursao, id_pacote, id_acomodacao_pacote, preco_acomodacao, reserva_passageiro_preco, id_moeda, reserva_passageiro_cambio, registro_interno, desconto, reserva_passageiro_obs){
+  $('#modalPassageiroEdit #id_id_reserva_passageiro').val(id_reserva_passageiro);
+  $('#modalPassageiroEdit #id_id_passageiro').val(id_passageiro);
+  $('#modalPassageiroEdit #id_id_excursao').val(id_excursao);
+  $('#modalPassageiroEdit #id_id_pacote').val(id_pacote);
+  $('#modalPassageiroEdit #id_id_acomodacao_pacote').val(id_acomodacao_pacote);
+  $('#modalPassageiroEdit #id_preco_acomodacao').val(parseFloat(preco_acomodacao));
+  $('#modalPassageiroEdit #id_reserva_passageiro_preco').val(parseFloat(reserva_passageiro_preco));
+  $('#modalPassageiroEdit #id_id_moeda').val(id_moeda);
+  $('#modalPassageiroEdit #id_reserva_passageiro_cambio').val(parseFloat(reserva_passageiro_cambio));
+  $('#modalPassageiroEdit #id_registro_interno').val(registro_interno);
+  $('#modalPassageiroEdit #id_desconto').val(parseFloat(desconto));
+  $('#modalPassageiroEdit #id_reserva_passageiro_obs').val(reserva_passageiro_obs);
+
+  $('#modalPassageiroEdit #id_id_pacote').prop('disabled', false);
+  $('#modalPassageiroEdit #id_id_acomodacao_pacote').prop('disabled', false);
+  $('#modalPassageiroEdit #id_preco_acomodacao').prop('disabled', false);
+  $('#modalPassageiroEdit #id_id_moeda').prop('disabled', false);
+
+  $('#modalPassageiroEdit').modal('show');
+}
+
+$('#edit_reserva_passageiro_btn').on('click', function(event) {
+  $('#form-personal2').validate();
+  var csrftoken = getCookie('csrftoken');
+  if($('#form-personal2').valid()){
+    var formData = new FormData($('#form-personal2')[0]);
+    formData.append('csrfmiddlewaretoken', csrftoken);
+    $.ajax({
+      url: url_edit,
+      type: 'POST',
+      enctype: "multipart/form-data",
+      cache: false,
+      contentType: false,
+      processData: false,
+      data: formData,
+      success : function(response) {
+        if(response.status == "success"){
+        genNotification('Passageiro editado com sucesso!','success');
+        $('#divDetalhes').html(response.html);
+        }
+        else{
+          genNotification(response.message,'error');
+        }
+        $('#modalPassageiroEdit').modal('hide');
+      },
+      error: function(error) {
+        genNotification(error.messageText,'error');
+        $('#modalPassageiroEdit').modal('hide');
+      }    
+    });
+  }
+});
+
 function modalOpcional(id_passageiro){
   $('#modalOpcional #id_id_passageiro').val(id_passageiro).change();
   $('#modalOpcional').modal('show');
@@ -234,7 +288,7 @@ function setMoeda(codigo,id){
           for(i=0; i < acomodacao.length; i++){
             htmlString += '<option data-preco="'+String(acomodacao[i].preco)+'" value="'+ String(acomodacao[i].id_acomodacao)+'">'+acomodacao[i].id_acomodacao__acomodacao_desc+'</option>'
           }
-          $("#id_form-"+id+"-id_acomodacao_pacote").html(htmlString);
+          $("#id_id_acomodacao_pacote").html(htmlString);
 
         }
       },

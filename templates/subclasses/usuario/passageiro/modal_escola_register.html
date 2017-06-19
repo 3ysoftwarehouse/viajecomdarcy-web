@@ -1,0 +1,185 @@
+{% load staticfiles %}
+{% load filters %}
+        <div class="modal fade stick-up" id="modalEscola" tabindex="-1" role="dialog" aria-hidden="false">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content-wrapper">
+              <div class="modal-content">
+                <div class="modal-header clearfix text-left">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14"></i>
+                  </button>
+                  <h5 id="modal-title-tag semi-bold">Adicionar <span class="semi-bold">Escola</span></h5>
+                  <p class="p-b-10"></p>
+              </div>
+              <div class="modal-body">
+                  <div class="row">
+                      <form autocomplete="off"  method="post" enctype="multipart/form-data" role="form" id="form-escola" novalidate="novalidate">
+                        {% csrf_token %}
+
+                        <input type="hidden" id="is_modal" name="is_modal" value="True"/>
+                       
+                        <div class='row'>
+                           <div class="col-lg-6">
+                            <fieldset class="form-group">
+                              <label class="form-label semibold" for="{{ form_escola.cnpj.auto_id }}">{{ form_escola.cnpj.label_tag }}</label>
+                              {{ form_escola.cnpj }}
+                              <small class="text-muted">{{ form_escola.cnpj.errors }}</small>
+                            </fieldset>
+                          </div>
+                          <div class="col-lg-6">
+                            <fieldset class="form-group">
+                              <label class="form-label semibold" for="{{ form_escola.ie.auto_id }}">{{ form_escola.ie.label_tag }}</label>
+                              {{ form_escola.ie }}
+                              <small class="text-muted">{{ form_escola.ie.errors }}</small>
+                            </fieldset>
+                          </div>
+                        </div>
+
+                        <div class='row'>
+                           <div class="col-lg-12">
+                            <fieldset class="form-group">
+                              <label class="form-label semibold" for="{{ form_escola.razaosocial.auto_id }}">{{ form_escola.razaosocial.label_tag }}</label>
+                              {{ form_escola.razaosocial }}
+                              <small class="text-muted">{{ form_escola.razaosocial.errors }}</small>
+                            </fieldset>
+                          </div>
+                        </div>
+
+                        <div class='row'>
+                           <div class="col-lg-12">
+                            <fieldset class="form-group">
+                              <label class="form-label semibold" for="{{ form.nomefantasia.auto_id }}">{{ form_escola.nomefantasia.label_tag }}</label>
+                              {{ form_escola.nomefantasia }}
+                              <small class="text-muted">{{ form_escola.nomefantasia.errors }}</small>
+                            </fieldset>
+                          </div>
+                        </div>
+
+                        <h5 class="m-t-lg with-border">Contato</h5>
+                        <div class='row'>
+                           <div class="col-lg-12">
+                            <div id="id_phone2_table" class="row form-group-attached p-t-10" >
+                              {% for form2 in formset2.forms %}
+                                <div id="{{ form2.prefix }}-row" class="tr form-group-attached">
+                                  <div class="col-lg-3">
+                                    <fieldset class="form-group">
+                                      <label class="form-label semibold" for="{{ form2.id_cidade.tipo_telefone }}">{{ form2.tipo_telefone.label_tag }}</label>
+                                      {{ form2.tipo_telefone }}
+                                      <small class="text-muted">{{ form2.tipo_telefone.errors }}</small>
+                                    </fieldset>
+                                  </div>
+                                  <div class="col-lg-3">
+                                    <fieldset class="form-group">
+                                      <label class="form-label semibold" for="{{ form2.numero.auto_id }}">{{ form2.numero.label_tag }}</label>
+                                      {{ form2.numero }}
+                                      <small class="text-muted">{{ form2.numero.errors }}</small>
+                                    </fieldset>
+                                  </div>
+                                  <div class="col-lg-3">
+                                    <fieldset class="form-group">
+                                      <label class="form-label semibold" for="{{ form2.ramal.auto_id }}">{{ form2.ramal.label_tag }}</label>
+                                      {{ form2.ramal }}
+                                      <small class="text-muted">{{ form2.ramal.errors }}</small>
+                                    </fieldset>
+                                  </div>
+                                  <div class="col-lg-3">
+                                    <fieldset class="form-group">
+                                      <label class="form-label semibold" for="{{ form2.nome_contato.auto_id }}">{{ form2.nome_contato.label_tag }}</label>
+                                      {{ form2.nome_contato }}
+                                      <small class="text-muted">{{ form2.nome_contato.errors }}</small>
+                                    </fieldset>
+                                  </div>
+                                </div>
+                                {% endfor %}
+                                {{ formset2.management_form }}           
+                            </div>
+                          </div>          
+                        </div>
+
+                        <h5 class="m-t-lg with-border">Endereço</h5>
+                        <div class='row'>
+                           <div class="col-lg-4">
+                            <fieldset class="form-group">
+                              <label class="form-label semibold" for="{{ form_escola.pais.auto_id }}">{{ form_escola.pais.label_tag }}</label>
+                              {{ form_escola.pais }}
+                              <small class="text-muted">{{ form_escola.pais.errors }}</small>
+                            </fieldset>
+                          </div>
+                          <div class="col-lg-4">
+                            <fieldset class="form-group">
+                              <label class="form-label semibold" for="{{ form_escola.estado.auto_id }}">{{ form_escola.estado.label_tag }}</label>
+                              {{ form_escola.estado }}
+                              <small class="text-muted">{{ form_escola.estado.errors }}</small>
+                            </fieldset>
+                          </div>
+                          <div class="col-lg-4">
+                            <fieldset class="form-group">
+                              <label class="form-label semibold" for="{{ form_escola.cep.auto_id }}">{{ form_escola.cep.label_tag }}</label>
+                              {{ form_escola.cep }}
+                              <small class="text-muted">{{ form_escola.cep.errors }}</small>
+                            </fieldset>
+                          </div>
+                        </div>
+
+                        <div class='row'>
+                           <div class="col-lg-4">
+                            <fieldset class="form-group">
+                              <label class="form-label semibold" for="{{ form_escola.cidade.auto_id }}">{{ form_escola.cidade.label_tag }}</label>
+                              {{ form_escola.cidade }}
+                              <small class="text-muted">{{ form_escola.cidade.errors }}</small>
+                            </fieldset>
+                          </div>
+                          <div class="col-lg-4">
+                            <fieldset class="form-group">
+                              <label class="form-label semibold" for="{{ form_escola.bairro.auto_id }}">{{ form_escola.bairro.label_tag }}</label>
+                              {{ form_escola.bairro }}
+                              <small class="text-muted">{{ form_escola.bairro.errors }}</small>
+                            </fieldset>
+                          </div>
+                          <div class="col-lg-4">
+                            <fieldset class="form-group">
+                              <label class="form-label semibold" for="{{ form_escola.rua.auto_id }}">{{ form_escola.rua.label_tag }}</label>
+                              {{ form_escola.rua }}
+                              <small class="text-muted">{{ form_escola.rua.errors }}</small>
+                            </fieldset>
+                          </div>
+                        </div>
+
+                        <div class='row'>
+                           <div class="col-lg-4">
+                            <fieldset class="form-group">
+                              <label class="form-label semibold" for="{{ form_escola.numeroed.auto_id }}">{{ form_escola.numeroed.label_tag }}</label>
+                              {{ form_escola.numeroed }}
+                              <small class="text-muted">{{ form_escola.numeroed.errors }}</small>
+                            </fieldset>
+                          </div>
+                          <div class="col-lg-8">
+                            <fieldset class="form-group">
+                              <label class="form-label semibold" for="{{ form_escola.complemento.auto_id }}">{{ form_escola.complemento.label_tag }}</label>
+                              {{ form_escola.complemento }}
+                              <small class="text-muted">{{ form_escola.complemento.errors }}</small>
+                            </fieldset>
+                          </div>
+                          
+                        </div>
+
+                        <div class='row'>
+                          <div class="col-lg-12">
+                              <fieldset class="form-group">
+                                <label class="form-label semibold" for="{{ form_escola.pontoreferencia.auto_id }}">{{ form_escola.pontoreferencia.label_tag }}</label>
+                                {{ form_escola.pontoreferencia }}
+                                <small class="text-muted">{{ form_escola.pontoreferencia.errors }}</small>
+                              </fieldset>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                            <button type="button" id="new_escola_btn" class="btn btn-primary pull-right">Salvar</button>
+                        </div> 
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- /.modal-content -->

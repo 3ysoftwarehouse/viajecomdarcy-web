@@ -70,7 +70,6 @@ class ClienteRegisterForm(forms.ModelForm):
 		#Empresa
 		self.fields['cep_empresa_cliente'].widget.attrs['class'] = 'form-control'
 		self.fields['cep_empresa_cliente'].widget.attrs['placeholder'] = 'CEP'
-		self.fields['cep_empresa_cliente'].widget.attrs['onblur'] = 'get_cep_data_empresa(this.value)'
 		self.fields['bairro_empresa'].widget.attrs['class'] = 'form-control'
 		self.fields['bairro_empresa'].widget.attrs['placeholder'] = 'Bairro'
 		self.fields['rua_empresa'].widget.attrs['class'] = 'form-control'
@@ -111,7 +110,7 @@ class ClienteRegisterForm(forms.ModelForm):
 		numero = cleaned_data.get("numero_empresa")
 
 
-		msg = "This field is required."
+		msg = "Este campo é obrigatório."
 		if cep:
 		    if not rua:
 		        self.add_error('rua_empresa', msg)

@@ -17,6 +17,7 @@ from .forms import PassageiroRegisterForm, DocumentoForm, RequiredFormSet
 from apps.default.forms import PhoneForm 
 from apps.default.views import JSONResponseMixin
 from apps.subclasses.usuario.emissor.views import get_emissor
+from apps.subclasses.empresa.escola.forms import EscolaRegisterForm
 
 
 class PassageiroRegister(JSONResponseMixin,View):
@@ -24,10 +25,12 @@ class PassageiroRegister(JSONResponseMixin,View):
 		form = PassageiroRegisterForm		
 		PhoneFormSet = formset_factory(PhoneForm)
 		formset = PhoneFormSet(prefix='phone')
+		form_escola = EscolaRegisterForm(prefix='escola')
+		formset2 = PhoneFormSet(prefix='phone2')
 		DocFormSet = formset_factory(DocumentoForm, formset=RequiredFormSet)
 		doc_formset = DocFormSet(prefix='doc')
 		request.session["view"]="passageiro"
-		context = {'form':form, 'formset':formset, 'doc_formset':doc_formset}
+		context = {'form':form, 'formset':formset, 'form_escola':form_escola, 'formset2':formset2, 'doc_formset':doc_formset}
 		return render(request, 'subclasses/usuario/passageiro/register.html', context)
 
 	def post(self, request, *args, **kwargs):

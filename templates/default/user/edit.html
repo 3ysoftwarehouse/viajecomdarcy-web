@@ -138,11 +138,18 @@
 
         <h5 class="m-t-lg with-border">Endereço</h5>
         <div class='row'>
-          <div class="col-lg-4">
+           <div class="col-lg-2">
             <fieldset class="form-group">
               <label class="form-label semibold" for="{{ form.cep.auto_id }}">{{ form.cep.label_tag }}</label>
               {{ form.cep }}
               <small class="text-muted">{{ form.cep.errors }}</small>
+            </fieldset>
+          </div>
+          <div class="col-lg-2">
+            <fieldset class="form-group" style="margin-top:30px">
+              <button id="buscar_cep" class="btn btn-success btn-cons" type="button">
+                Buscar CEP
+              </button>
             </fieldset>
           </div>
           <div class="col-lg-4">
@@ -260,6 +267,10 @@ $(document).ready(function() {
     $('#id_data_nascimento').mask("99/99/9999");
 
 
+});
+
+$('#buscar_cep').click(function(event){
+      get_cep_data($("#id_cep").val());
 });
 
 var hostname = location.host

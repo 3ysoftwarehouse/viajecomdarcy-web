@@ -47,6 +47,8 @@ class ReservaPassageiro(models.Model):
     preco_acomodacao = models.DecimalField(max_digits=14, decimal_places=2)
     passageiro_opcional = models.ManyToManyField('venda.PassageiroOpcional')
 
+    def __str__(self):
+        return str(self.id_passageiro)
     
 class PassageiroOpcional(models.Model):
     id_reserva_passageiro_opcional = models.AutoField(primary_key=True)

@@ -10,8 +10,9 @@ from django.http import (HttpResponse,
 from django.forms import formset_factory
 from datetime import datetime
 
-from apps.default.models import Projeto, Usuario, Empresa, Logradouro, Endereco, TipoEmpresa, TipoTelefone, TelefoneUsuario, TipoUsuario, Genero # MODELS
-from .models import Cliente # MODELS
+from apps.default.models import *
+from .models import * # MODELS
+from apps.subclasses.usuario.passageiro.models import *
 from .forms import ClienteRegisterForm
 from apps.default.forms import PhoneForm, UserRegisterForm
 from apps.default.views import JSONResponseMixin
@@ -118,6 +119,16 @@ class ClienteRegister(JSONResponseMixin,View):
 				cliente.id_agencia = emissor.id_agencia
 			cliente.save()
 
+			passageiro = Passageiro()
+			passageiro.id_usuario = cliente.usuario
+			if emissor:
+				passageiro.id_emissor = cliente.id_emissor
+				passageiro.id_agencia = cliente.id_agencia
+			passageiro.nome_pai = cliente.nome_pai
+			passageiro.nome_mae = cliente.nome_mae
+			passageiro.naturalidade = cliente.naturalidade
+			passageiro.save()
+
 			return redirect(reverse_lazy("cliente-list"))
 		
 		context = {'form':form, 'form_cliente':form_cliente, 'formset':formset}
@@ -165,6 +176,11 @@ class ClienteEdit(JSONResponseMixin,View):
 
 	def post(self, request, pk, *args, **kwargs):
 		cliente = Cliente.objects.get(pk=pk)
+		try:
+			passageiro = Passageiro.objects.get(id_usuario=cliente.usuario)
+		except:
+			passageiro = Passageiro()
+			
 		user = Usuario.objects.get(pk=cliente.usuario.pk)
 		telefones = TelefoneUsuario.objects.filter(id_usuario=user.pk)
 		extra = 1
@@ -272,6 +288,15 @@ class ClienteEdit(JSONResponseMixin,View):
 				cliente.id_agencia = emissor.id_agencia
 			cliente.save()
 
+			passageiro.id_usuario = cliente.usuario
+			if emissor:
+				passageiro.id_emissor = cliente.id_emissor
+				passageiro.id_agencia = cliente.id_agencia
+			passageiro.nome_pai = cliente.nome_pai
+			passageiro.nome_mae = cliente.nome_mae
+			passageiro.naturalidade = cliente.naturalidade
+			passageiro.save()
+
 			return redirect(reverse_lazy("cliente-list"))
 
 		context = {'form':form, 'form_cliente':form_cliente, 'formset':formset}
@@ -292,6 +317,20 @@ class ClienteList(JSONResponseMixin,ListView):
 
 	def get_context_data(self, **kwargs):
 		context = super(ClienteList, self).get_context_data(**kwargs)
+
+		emissor = get_emissor(self)
+		if emissor:
+			clientes = Cliente.objects.filter(id_agencia=emissor.id_agencia.pk)
+		else:
+			clientes = Cliente.objects.all()
+
+		object_list = []
+		for cliente in clientes:
+			telefones = TelefoneUsuario.objects.filter(id_usuario=cliente.usuario)
+			object_list.append({'cliente':cliente, 'telefones':telefones})
+
+		context['object_list'] = object_list
+		
 		return context
 
 
