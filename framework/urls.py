@@ -31,6 +31,7 @@ urlpatterns += i18n_patterns(
 	url(r'^api_rest/', include('apps.api_rest.urls', namespace='apit_rest')),
 	url(r'^framework/', include('apps.default.urls')),
 	url(r'^framework/', include('apps.excursao.urls')),
+	url(r'^framework/', include('apps.gestao_lead.urls')),
 	url(r'^framework/', include('apps.moeda.urls')),
 	url(r'^framework/', include('apps.pacote.urls')),
 	url(r'^framework/', include('apps.acomodacao.urls')),

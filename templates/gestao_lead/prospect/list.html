@@ -1,0 +1,67 @@
+{% extends "default/panel/layout.html" %} 
+{% load staticfiles %}
+
+{% block css %}
+ 
+{% endblock %}
+
+{% block page_info %}
+    <li>
+      <a class="active">Excursão</a>
+    </li>
+{% endblock %}
+
+{% block content %}
+<div class="panel panel-transparent">
+  <div class="panel-heading">
+    <div class="panel-title fs-16">
+      Prospect
+    </div>
+    <div class="btn-group pull-right m-b-10">
+      <a class="btn btn-default" href="/framework/dashboard/prospect/register/" type="button">Cadastrar</a>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div class="panel-body">
+   <table class="table table-hover table-condensed table-responsive" id="tableWithSearch">
+        <thead>
+          <tr>
+             <th style="width:20%">Nome</th>
+             <th style="width:20%">Escola</th>
+             <th style="width:20%">Email</th>
+             <th style="width:20%">Telefone</th>
+             <th style="width:15%">Opções</th>
+          </tr>
+       </thead>
+       <tbody>
+          {% for prospect in object_list %}
+          <tr>
+             <td class="v-align-middle ">
+                <p>{{prospect.nome_completo}}</p>
+             </td>
+             <td class="v-align-middle">
+                <p>{{prospect.escola}}</p>
+             </td>       
+             <td class="v-align-middle">
+                <p>{{prospect.email}}</p>
+             </td>  
+             <td class="v-align-middle">
+                <p>{{prospect.telefone}}</p>
+             </td>                  
+             <td class="v-align-middle">
+                <a href="/framework/dashboard/prospect/edit/{{prospect.pk}}">
+                  <i class="pg-settings"></i>
+                </a>
+                <a href="/framework/dashboard/prospect/delete/{{prospect.pk}}">
+                  <i class="pg-eraser"></i>
+                </a>
+             </td>
+          </tr>
+          {% endfor %}
+       </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block javascript %}{% endblock %}
