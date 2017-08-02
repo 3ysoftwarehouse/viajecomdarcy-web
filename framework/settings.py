@@ -74,6 +74,7 @@ CUSTOM_APPS = [
     'apps.subclasses.usuario.cliente',
     'apps.subclasses.usuario.passageiro',
     'apps.subclasses.usuario.emissor',
+    'apps.gestao_lead',
 ]
 INSTALLED_APPS = DJANGO_APPS + CUSTOM_APPS
 
