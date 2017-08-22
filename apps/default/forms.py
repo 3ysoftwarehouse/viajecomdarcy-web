@@ -111,7 +111,7 @@ class ProfileForm(forms.ModelForm):
 
 
 class UserRegisterForm(forms.ModelForm):
-    repetir_password = forms.CharField(label='Confirmação de Senha', widget=forms.PasswordInput, required=False)
+    repetir_password = forms.CharField(label='Confirmação de Senha', widget=forms.PasswordInput, required=True)
     
     cep = forms.CharField(label='CEP:', max_length=10)
     rua = forms.CharField(label='Rua:', max_length=100)

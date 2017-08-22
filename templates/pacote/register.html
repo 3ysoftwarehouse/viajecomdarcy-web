@@ -25,14 +25,14 @@
         <div class='row'>
            <div class="col-lg-6">
             <fieldset class="form-group">
-              <label class="form-label semibold" for="{{ form.pacote_nome.auto_id }}">{{ form.pacote_nome.label_tag }}</label>
+              <label class="form-label semibold" for="{{ form.pacote_nome.auto_id }}">{{ form.pacote_nome.label_tag }}<i style="color:red">*</i></label>
               {{ form.pacote_nome }}
               <small class="text-muted">{{ form.pacote_nome.errors }}</small>
             </fieldset>
           </div>
            <div class="col-lg-6">
             <fieldset class="form-group">
-              <label class="form-label semibold" for="{{ form.id_excursao.auto_id }}">{{ form.id_excursao.label_tag }}</label>
+              <label class="form-label semibold" for="{{ form.id_excursao.auto_id }}">{{ form.id_excursao.label_tag }}<i style="color:red">*</i></label>
               {{ form.id_excursao }}
               <small class="text-muted">{{ form.id_excursao.errors }}</small>
             </fieldset>
@@ -41,7 +41,7 @@
         <div class='row'>
           <div class="col-lg-12">
             <fieldset class="form-group">
-              <label class="form-label semibold" for="{{ form.pacote_desc.auto_id }}">{{ form.pacote_desc.label_tag }}</label>
+              <label class="form-label semibold" for="{{ form.pacote_desc.auto_id }}">{{ form.pacote_desc.label_tag }}<i style="color:red">*</i></label>
               {{ form.pacote_desc }}
               <small class="text-muted">{{ form.pacote_desc.errors }}</small>
             </fieldset>
@@ -50,21 +50,21 @@
         <div class='row'>
            <div class="col-lg-4">
             <fieldset class="form-group">
-              <label class="form-label semibold" for="{{ form.id_moeda.auto_id }}">{{ form.id_moeda.label_tag }}</label>
+              <label class="form-label semibold" for="{{ form.id_moeda.auto_id }}">{{ form.id_moeda.label_tag }}<i style="color:red">*</i></label>
               {{ form.id_moeda }}
               <small class="text-muted">{{ form.id_moeda.errors }}</small>
             </fieldset>
           </div>
           <div class="col-lg-4">
             <fieldset class="form-group">
-              <label class="form-label semibold" for="{{ form.pacote_taxa.auto_id }}">{{ form.pacote_taxa.label_tag }}</label>
+              <label class="form-label semibold" for="{{ form.pacote_taxa.auto_id }}">{{ form.pacote_taxa.label_tag }}<i style="color:red">*</i></label>
               {{ form.pacote_taxa }}
               <small class="text-muted">{{ form.pacote_taxa.errors }}</small>
             </fieldset>
           </div>
           <div class="col-lg-4">
             <fieldset class="form-group">
-              <label class="form-label semibold" for="{{ form.taxa_remessa.auto_id }}">{{ form.taxa_remessa.label_tag }}</label>
+              <label class="form-label semibold" for="{{ form.taxa_remessa.auto_id }}">{{ form.taxa_remessa.label_tag }}<i style="color:red">*</i></label>
               {{ form.taxa_remessa }}
               <small class="text-muted">{{ form.taxa_remessa.errors }}</small>
             </fieldset>
@@ -74,7 +74,7 @@
         <div class='row'>
            <div class="col-lg-4">
             <fieldset class="form-group">
-              <label class="form-label semibold" for="{{ form.data_prevista.auto_id }}">{{ form.data_prevista.label_tag }}</label>
+              <label class="form-label semibold" for="{{ form.data_prevista.auto_id }}">{{ form.data_prevista.label_tag }}<i style="color:red">*</i></label>
               <input type="text" value="{{form.data_prevista.value|date:'d/m/Y' }}" placeholder="__/__/__" name="data_prevista" id="id_data_prevista" class="form-control">
               <small class="text-muted">{{ form.data_prevista.errors }}</small>
             </fieldset>
@@ -128,14 +128,14 @@
                 <div id="{{ form.prefix }}-row" class="tr form-group-attached">
                   <div class="col-lg-6">
                     <fieldset class="form-group">
-                      <label class="form-label semibold" for="{{ form.id_cidade.auto_id }}">{{ form.id_cidade.label_tag }}</label>
+                      <label class="form-label semibold" for="{{ form.id_cidade.auto_id }}">{{ form.id_cidade.label_tag }}<i style="color:red">*</i></label>
                       {{ form.id_cidade }}
                       <small class="text-muted">{{ form.id_cidade.errors }}</small>
                     </fieldset>
                   </div>
                   <div class="col-lg-6">
                     <fieldset class="form-group">
-                      <label class="form-label semibold" for="{{ form.qtd_dias.auto_id }}">{{ form.qtd_dias.label_tag }}</label>
+                      <label class="form-label semibold" for="{{ form.qtd_dias.auto_id }}">{{ form.qtd_dias.label_tag }}<i style="color:red">*</i></label>
                       {{ form.qtd_dias }}
                       <small class="text-muted">{{ form.qtd_dias.errors }}</small>
                     </fieldset>
@@ -155,14 +155,14 @@
                 <div id="{{ form.prefix }}-row" class="tr form-group-attached">
                   <div class="col-lg-6">
                     <fieldset class="form-group">
-                      <label class="form-label semibold" for="{{ form.id_acomodacao.auto_id }}">{{ form.id_acomodacao.label_tag }}</label>
+                      <label class="form-label semibold" for="{{ form.id_acomodacao.auto_id }}">{{ form.id_acomodacao.label_tag }}<i style="color:red">*</i></label>
                       {{ form.id_acomodacao }}
                       <small class="text-muted">{{ form.id_acomodacao.errors }}</small>
                     </fieldset>
                   </div>
                   <div class="col-lg-6">
                     <fieldset class="form-group">
-                      <label class="form-label semibold" for="{{ form.preco.auto_id }}">{{ form.preco.label_tag }}</label>
+                      <label class="form-label semibold" for="{{ form.preco.auto_id }}">{{ form.preco.label_tag }}<i style="color:red">*</i></label>
                       {{ form.preco }}
                       <small class="text-muted">{{ form.preco.errors }}</small>
                     </fieldset>

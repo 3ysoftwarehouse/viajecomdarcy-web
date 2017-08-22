@@ -24,7 +24,7 @@
         <div class='row'>
           <div class="col-lg-12">
             <fieldset class="form-group">
-              <label class="form-label semibold" for="{{ form.moeda_desc.auto_id }}">Nome</label>
+              <label class="form-label semibold" for="{{ form.moeda_desc.auto_id }}">Nome<i style="color:red">*</i></label>
               {{ form.moeda_desc }}
               <small class="text-muted">{{ form.moeda_desc.errors }}</small>
             </fieldset>
@@ -33,14 +33,14 @@
         <div class="row">
           <div class="col-lg-6">
             <fieldset class="form-group">
-              <label class="form-label semibold" for="{{ form.moeda_cambio.auto_id }}">Cambio</label>
+              <label class="form-label semibold" for="{{ form.moeda_cambio.auto_id }}">Cambio<i style="color:red">*</i></label>
               {{ form.moeda_cambio }}
               <small class="text-muted">{{ form.moeda_cambio.errors }}</small>
             </fieldset>
           </div>
           <div class="col-lg-6">
             <fieldset class="form-group">
-              <label class="form-label semibold" for="{{ form.moeda_simbolo.auto_id }}">Símbolo</label>
+              <label class="form-label semibold" for="{{ form.moeda_simbolo.auto_id }}">Símbolo<i style="color:red">*</i></label>
               {{ form.moeda_simbolo }}
               <small class="text-muted">{{ form.moeda_simbolo.errors }}</small>
             </fieldset>
