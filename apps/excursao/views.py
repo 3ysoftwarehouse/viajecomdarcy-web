@@ -50,7 +50,7 @@ class ExcursaoEdit(JSONResponseMixin,View):
 
 
 class ExcursaoList(JSONResponseMixin,ListView):
-	queryset = Excursao.objects.filter(is_active=True)
+	queryset = Excursao.objects.all()
 	template_name = 'excursao/excursao/list.html'
 
 	def get_context_data(self, **kwargs):

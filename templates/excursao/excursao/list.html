@@ -35,7 +35,7 @@
           <tr>
              <th style="width:20%">Descrição</th>
              <th style="width:20%">Ativa</th>
-             <th style="width:15%">Opções</th>
+             <th style="width:15%"></th>
           </tr>
        </thead>
        <tbody>
@@ -55,7 +55,7 @@
              </td>                       
              <td class="v-align-middle">
                 <a href="/framework/dashboard/excursao/edit/{{excursao.pk}}">
-                <i class="pg-settings"></i>
+                  <i class="pg-settings"></i>
                 </a>
                 {% if request.user.id_usuario != usuario.id_usuario %}
                 <a href="/framework/dashboard/excursao/delete/{{excursao.pk}}">

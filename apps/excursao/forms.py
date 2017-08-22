@@ -17,8 +17,7 @@ class ExcursaoRegisterForm(forms.ModelForm):
         self.fields['excurcao_desc'].widget.attrs['class'] = 'form-control'
         self.fields['excurcao_desc'].widget.attrs['placeholder'] = 'Digite a descrição'
         self.fields['is_active'].widget.attrs['class'] = 'form-control'
-        self.fields['is_active'].widget.attrs['checked'] = 'checked' 
-    		
+        self.fields['is_internacional'].widget.attrs['class'] = 'form-control' 		
 		
 
 

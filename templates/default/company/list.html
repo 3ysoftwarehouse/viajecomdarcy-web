@@ -38,8 +38,7 @@
               <th style="width:15%">Tipo</th>
               <th style="width:15%">CNPJ</th>
               <th style="width:15%">Iscrição Estadual</th>
-              <th style="width:15%">Verificada</th>
-              <th style="width:15%">Endereço</th>
+              <th style="width:15%"></th>
            </tr>
         </thead>
         <tbody>
@@ -59,15 +58,6 @@
                 </td>
                 <td class="v-align-middle">
                    <p>{{empresa.ie}}</p>
-                </td>
-                <td class="v-align-middle">
-                   <p>
-                    {% if empresa.verificada %}
-                      <span class="glyphicon glyphicon-ok"></span>
-                    {% else %}
-                      <span class="glyphicon glyphicon-remove"></span>
-                    {% endif %}
-                  </p>
                 </td>
                 <td class="v-align-middle">
                   <a href="/framework/dashboard/company/edit/{{empresa.id_empresa}}">
