@@ -486,7 +486,7 @@ class PhoneForm(forms.Form):
         super(PhoneForm, self).__init__(*args, **kwargs)
         self.fields['tipo_telefone'].widget.attrs['class'] = 'form-control'
         self.fields['tipo_telefone'].queryset = TipoTelefone.objects.all()
-        self.fields['numero'].widget.attrs['class'] = 'form-control'
+        self.fields['numero'].widget.attrs['class'] = 'form-control celphones'
         self.fields['numero'].widget.attrs['placeholder'] = 'numero'
         self.fields['ramal'].widget.attrs['class'] = 'form-control'
         self.fields['ramal'].widget.attrs['placeholder'] = 'ramal'
