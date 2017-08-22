@@ -26,7 +26,7 @@
         <div class='row'>
            <div class="col-lg-12">
             <fieldset class="form-group">
-              <label class="form-label semibold" for="{{ form.nome.auto_id }}">{{ form.nome.label_tag }}</label>
+              <label class="form-label semibold" for="{{ form.nome.auto_id }}">{{ form.nome.label_tag }}<i style="color:red">*</i></label>
               {{ form.nome }}
               <small class="text-muted">{{ form.nome.errors }}</small>
             </fieldset>
@@ -36,7 +36,7 @@
         <div class='row'>
            <div class="col-lg-12">
             <fieldset class="form-group">
-              <label class="form-label semibold" for="{{ form.email.auto_id }}">{{ form.email.label_tag }}</label>
+              <label class="form-label semibold" for="{{ form.email.auto_id }}">{{ form.email.label_tag }}<i style="color:red">*</i></label>
               {{ form.email }}
               <small class="text-muted">{{ form.email.errors }}</small>
             </fieldset>
@@ -47,14 +47,14 @@
         <div class='row'>
            <div class="col-lg-6">
             <fieldset class="form-group">
-              <label class="form-label semibold" for="{{ form.password.auto_id }}">{{ form.password.label_tag }}</label>
+              <label class="form-label semibold" for="{{ form.password.auto_id }}">{{ form.password.label_tag }}<i style="color:red">*</i></label>
               {{ form.password }}
               <small class="text-muted">{{ form.password.errors }}</small>
             </fieldset>
           </div>
           <div class="col-lg-6">
             <fieldset class="form-group">
-              <label class="form-label semibold" for="{{ form.repetir_password.auto_id }}">{{ form.repetir_password.label_tag }}</label>
+              <label class="form-label semibold" for="{{ form.repetir_password.auto_id }}">{{ form.repetir_password.label_tag }}<i style="color:red">*</i></label>
               {{ form.repetir_password }}
               <small class="text-muted">{{ form.repetir_password.errors }}</small>
             </fieldset>
@@ -64,21 +64,21 @@
         <div class='row'>
            <div class="col-lg-4">
             <fieldset class="form-group">
-              <label class="form-label semibold" for="{{ form.cpf.auto_id }}">{{ form.cpf.label_tag }}</label>
+              <label class="form-label semibold" for="{{ form.cpf.auto_id }}">{{ form.cpf.label_tag }}<i style="color:red">*</i></label>
               {{ form.cpf }}
               <small class="text-muted">{{ form.cpf.errors }}</small>
             </fieldset>
           </div>
           <div class="col-lg-4">
             <fieldset class="form-group">
-              <label class="form-label semibold" for="{{ form.rg.auto_id }}">{{ form.rg.label_tag }}</label>
+              <label class="form-label semibold" for="{{ form.rg.auto_id }}">{{ form.rg.label_tag }}<i style="color:red">*</i></label>
               {{ form.rg }}
               <small class="text-muted">{{ form.rg.errors }}</small>
             </fieldset>
           </div>
           <div class="col-lg-4">
             <fieldset class="form-group">
-              <label class="form-label semibold" for="{{ form.orgaoemissor.auto_id }}">Orgão Emissor</label>
+              <label class="form-label semibold" for="{{ form.orgaoemissor.auto_id }}">Orgão Emissor<i style="color:red">*</i></label>
               {{ form.orgaoemissor }}
               <small class="text-muted">{{ form.orgaoemissor.errors }}</small>
             </fieldset>

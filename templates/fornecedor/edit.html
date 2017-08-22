@@ -28,7 +28,7 @@
             <div class="row">
               <div class="col-lg-6">
                 <fieldset class="form-group">
-                  <label class="form-label semibold" for="{{ form.nome.auto_id }}">{{ form.nome.label_tag }}</label>
+                  <label class="form-label semibold" for="{{ form.nome.auto_id }}">{{ form.nome.label_tag }}<i style="color:red">*</i></label>
                   {{ form.nome }}
                   <small class="text-muted">{{ form.nome.errors }}</small>
                 </fieldset>
@@ -126,7 +126,7 @@
             <div class='row'>
               <div class="col-lg-6">
                 <fieldset class="form-group">
-                  <label class="form-label semibold" for="{{ form.nome.auto_id }}">{{ form.nome.label_tag }}</label>
+                  <label class="form-label semibold" for="{{ form.nome.auto_id }}">{{ form.nome.label_tag }}<i style="color:red">*</i></label>
                   {{ form.nome }}
                   <small class="text-muted">{{ form.nome.errors }}</small>
                 </fieldset>

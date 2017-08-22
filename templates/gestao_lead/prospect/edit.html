@@ -24,7 +24,7 @@
         <div class='row'>
           <div class="col-lg-6">
             <fieldset class="form-group">
-              <label class="form-label semibold" for="{{ form.nome_completo.auto_id }}">{{ form.nome_completo.label_tag }}</label>
+              <label class="form-label semibold" for="{{ form.nome_completo.auto_id }}">{{ form.nome_completo.label_tag }}<i style="color:red">*</i></label>
               {{ form.nome_completo }}
               <small class="text-muted">{{ form.nome_completo.errors }}</small>
             </fieldset>
@@ -40,14 +40,14 @@
         <div class='row'>
           <div class="col-lg-6">
             <fieldset class="form-group">
-              <label class="form-label semibold" for="{{ form.email.auto_id }}">{{ form.email.label_tag }}</label>
+              <label class="form-label semibold" for="{{ form.email.auto_id }}">{{ form.email.label_tag }}<i style="color:red">*</i></label>
               {{ form.email }}
               <small class="text-muted" id="email_error">{{ form.email.errors }}</small>
             </fieldset>
           </div>
           <div class="col-lg-6">
             <fieldset class="form-group">
-              <label class="form-label semibold" for="{{ form.telefone.auto_id }}">{{ form.telefone.label_tag }}</label>
+              <label class="form-label semibold" for="{{ form.telefone.auto_id }}">{{ form.telefone.label_tag }}<i style="color:red">*</i></label>
               {{ form.telefone }}
               <small class="text-muted" id="telefone_error">{{ form.telefone.errors }}</small>
             </fieldset>

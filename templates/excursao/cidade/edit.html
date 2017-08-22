@@ -24,7 +24,7 @@
         <div class='row'>
            <div class="col-lg-12">
             <fieldset class="form-group">
-              <label class="form-label semibold" for="{{ form.cidade.auto_id }}">{{ form.cidade.label_tag }}</label>
+              <label class="form-label semibold" for="{{ form.cidade.auto_id }}">{{ form.cidade.label_tag }}<i style="color:red">*</i></label>
               {{ form.cidade }}
               <small class="text-muted">{{ form.cidade.errors }}</small>
             </fieldset>
