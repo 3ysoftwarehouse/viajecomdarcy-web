@@ -1,54 +1,47 @@
-{% if passageiros %}
 <div class="table-responsive">
     <table class="table m-t-20 table-condensed">
-        {% for passageiro in passageiros %}
-        {% ifchanged passageiro.id_passageiro.id_usuario %}
         <thead class="p-t-20">
             <tr>
                 <th class="text-black">
-                    {{passageiro.id_passageiro.id_usuario.nome}} 
-                    {{passageiro.id_passageiro.id_usuario.sobrenome}}
+                    {{reservapassageiro.id_passageiro.id_usuario.nome}} 
+                    {{reservapassageiro.id_passageiro.id_usuario.sobrenome}}
                 </th>
                 <th class="text-right text-black">Total</th>
             </tr>
         </thead>
         <tbody>
-            {% for pacote in passageiro.passageiro_opcional.all %}
-            <tr>
-                <div style="display:none;" id="passageiro_{{passageiro.id_passageiro.id_passageiro}}">
-                    {% for pacote in passageiro.passageiro_opcional.all %}
-                        {{pacote.id_opcional.pk}}|
-                    {% endfor %}
-                </div>
-                <td class="no-border">
-                    <p class="text-black">{{pacote.id_opcional}}</p>
-                </td>
-                <td class="text-right no-border">{{pacote.id_moeda.moeda_simbolo}} {{pacote.preco_reserva_opcional}}</td>
-            </tr>
-            {% if forloop.last %}
-            <tr class="no-padding no-margin"><td></td>
-                <td class="text-right"><button class="btn btn-md btn-primary" onclick="modalOpcional({{passageiro.id_passageiro.id_passageiro}})"  type="">Adicionar Opcional</button></td></tr>
+            {% for pacote in reservapassageiro.id_passageiro.passageiro_opcional.all %}
+                <tr>
+                    <div style="display:none;" id="passageiro_{{reservapassageiro.id_passageiro.id_passageiro}}">
+                        {% for pacote in passageiro.passageiro_opcional.all %}
+                            {{pacote.id_opcional.pk}}|
+                        {% endfor %}
+                    </div>
+                    <td class="no-border">
+                        <p class="text-black">{{pacote.id_opcional}}</p>
+                    </td>
+                    <td class="text-right no-border">{{pacote.id_moeda.moeda_simbolo}} {{pacote.preco_reserva_opcional}}</td>
+                </tr>
+                {% if forloop.last %}
+                    <tr class="no-padding no-margin">
+                        <td></td>
+                        <td class="text-right">
+                            <a class="btn btn-md btn-primary" onclick="modalOpcional({{passageiro.id_passageiro.id_passageiro}})"  type="">
+                                Adicionar Opcional
+                            </a>
+                        </td>
+                    </tr>
                 {% endif %}
-                {% empty %}
+            {% empty %}
                 <tr class="no-padding no-margin">
                     <td>Nenhum opcional adicionado.</td>
-                    <td class="text-right"><button class="btn btn-md btn-primary" onclick="modalOpcional({{passageiro.id_passageiro.id_passageiro}})">Adicionar Opcional</button></td>
+                    <td class="text-right">
+                        <a class="btn btn-md btn-primary" onclick="modalOpcional({{passageiro.id_passageiro.id_passageiro}})">
+                            Adicionar Opcional
+                        </a>
+                    </td>
                 </tr>
-                {% endfor %}
-                {% if not forloop.first %}
-                </tbody>
-                {% endif %}
-            {% endifchanged %}
-            {% empty %}
-            <div >
-                <p class="p-l-10 p-r-20 p-t-20 p-b-20 fs-16">Não há nenhum passageiro adicionado ainda.</p>
-            </div>
             {% endfor %}
         </tbody>
     </table>
-</div>  
-{%else%}
-    <div >
-        <p class="p-l-10 p-r-20 p-t-20 p-b-20 fs-16">Não há nenhum passageiro adicionado ainda.</p>
-    </div>
-{% endif %}
+</div>

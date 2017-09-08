@@ -21,7 +21,7 @@ from django.forms import formset_factory
 #               CUSTOM IMPORTS                   #
 ##################################################
 from .models import Reserva, StatusReserva, StatusReservaPassageiro, ReservaPassageiro, PassageiroOpcional
-from .forms import ReservaForm, ReservaPassageiroForm, FiltroReservaForm, ReservaOpcionaisForm, NovaReservaForm
+from .forms import ReservaForm, ReservaPassageiroForm, FiltroReservaForm, ReservaOpcionaisForm, NovaReservaForm, NovaReservaPassageiroForm
 from apps.default.views import JSONResponseMixin
 from apps.subclasses.usuario.emissor.models import Emissor
 from apps.subclasses.usuario.cliente.models import Cliente
@@ -233,17 +233,20 @@ class ReservaEdit(JSONResponseMixin,View):
             reserva = Reserva.objects.get(pk=self.kwargs['pk'])
             reservapassageiro = ReservaPassageiro.objects.get(id_reserva=reserva.pk)
 
-            form = ReservaPassageiroForm(instance=reservapassageiro)
-            form_opcional = ReservaOpcionaisForm()
+            opcionais_inicial = {'id_passageiro':reservapassageiro.id_passageiro}
+
+            form = NovaReservaPassageiroForm(instance=reservapassageiro)
+            form_opcional = ReservaOpcionaisForm(initial=opcionais_inicial)
             context['form'] = form
             context['form_opcional'] = form_opcional
             context['reservapassageiro'] = reservapassageiro
-            context['passageiros'] = [reservapassageiro]
             return render (request, 'venda/reserva/edit-novo.html', context)
         else:
             return redirect(reverse_lazy("reserva-list", kwargs={'context':context}))
 
     def post(self, request, pk=None, *args, **kwargs):
+        context = {}
+
         try:
             emissor = Emissor.objects.get(id_usuario=request.user.id_usuario)
         except Emissor.DoesNotExist:
@@ -253,13 +256,21 @@ class ReservaEdit(JSONResponseMixin,View):
             reserva = Reserva.objects.get(pk=self.kwargs['pk'])
             reservapassageiro = ReservaPassageiro.objects.get(id_reserva=reserva.pk)
 
-            form = ReservaPassageiroForm(request.POST, instance=reservapassageiro)
-            context['form'] = form
+            form = NovaReservaPassageiroForm(request.POST, instance=reservapassageiro)
             if form.is_valid():
                 obj = form.save(commit=False)
                 obj.save()
                 return redirect(reverse_lazy("reserva-list"))
             else:
+                opcionais_inicial = {'id_passageiro':reservapassageiro.id_passageiro}
+                form_opcional = ReservaOpcionaisForm(initial=opcionais_inicial)
+                context['form'] = form
+                context['form_opcional'] = form_opcional
+                context['reservapassageiro'] = reservapassageiro
+
+                print(request.POST)
+                print(form.errors)
+                print(form_opcional.errors)
                 return render (request, 'venda/reserva/edit-novo.html', context)
         else:
             return redirect(reverse_lazy("reserva-list", kwargs={'context':context}))
