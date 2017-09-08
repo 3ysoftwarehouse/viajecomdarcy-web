@@ -119,7 +119,7 @@ class NovaReservaPassageiroForm(forms.ModelForm):
         # preco_acomodacao  Fields widget
         self.fields['preco_acomodacao'].widget.attrs['class'] = 'form-control form-preco'
         self.fields['preco_acomodacao'].widget.attrs['required'] = True
-    pass
+        pass
 
 class ReservaPassageiroForm(forms.ModelForm):
 
