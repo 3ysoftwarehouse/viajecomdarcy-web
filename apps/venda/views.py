@@ -21,7 +21,7 @@ from django.forms import formset_factory
 #               CUSTOM IMPORTS                   #
 ##################################################
 from .models import Reserva, StatusReserva, StatusReservaPassageiro, ReservaPassageiro, PassageiroOpcional
-from .forms import ReservaForm, ReservaPassageiroForm, FiltroReservaForm, ReservaOpcionaisForm
+from .forms import ReservaForm, ReservaPassageiroForm, FiltroReservaForm, ReservaOpcionaisForm, NovaReservaForm
 from apps.default.views import JSONResponseMixin
 from apps.subclasses.usuario.emissor.models import Emissor
 from apps.subclasses.usuario.cliente.models import Cliente
@@ -36,26 +36,67 @@ from apps.subclasses.usuario.emissor.views import get_emissor
 class ReservaNova(JSONResponseMixin,View):
     def get(self, request):
         context = {}
+
         try:
             emissor = Emissor.objects.get(id_usuario=request.user.id_usuario)
         except Emissor.DoesNotExist:
             context['Emissor'] = "não encontrado"
+
+        if not context:
+            form = NovaReservaForm()
+            context['form'] = form
+            return render (request, 'venda/reserva/register-novo.html', context)
+        else:
+            return redirect(reverse_lazy("reserva-list", kwargs={'context':context}))
+
+    def post(self, request, *args, **kwargs):
+        context = {}
+
+        try:
+            emissor = Emissor.objects.get(id_usuario=request.user.id_usuario)
+        except Emissor.DoesNotExist:
+            context['Emissor'] = "não encontrado"
+
         try:
             id_status_reserva = StatusReserva.objects.get(descricao="ABERTO")
         except:
             id_status_reserva = StatusReserva()
             id_status_reserva.descricao = "ABERTO"
             id_status_reserva.save()
-            #context['Status'] = "não encontrado"
+
+        try:
+            id_status_reserva_passageiro = StatusReservaPassageiro.objects.get(descricao="RESERVADO")
+        except:
+            id_status_reserva_passageiro = StatusReservaPassageiro()
+            id_status_reserva_passageiro.descricao = "RESERVADO"
+            id_status_reserva_passageiro.save()
+
         if not context:
-            reserva = Reserva()
-            reserva.id_emissor = emissor
-            reserva.id_agencia = emissor.id_agencia
-            reserva.id_status_reserva = id_status_reserva
-            reserva.save()
-            return redirect(reverse_lazy("reserva-register", kwargs={'pk': reserva.pk}))
+            form = NovaReservaForm(request.POST)
+            context['form'] = form
+            if form.is_valid():
+                reserva = form.save(commit=False)
+                reserva.id_emissor = emissor
+                reserva.id_status_reserva = id_status_reserva
+                reserva.id_agencia = emissor.id_agencia
+                reserva.save()
+
+                passageiro = form.cleaned_data.get('id_passageiro')
+
+                reserva_passageiro = ReservaPassageiro()
+                reserva_passageiro.id_reserva = reserva
+                reserva_passageiro.id_passageiro = passageiro
+                reserva_passageiro.id_status_reserva_passageiro = id_status_reserva_passageiro
+                reserva_passageiro.id_escola = passageiro.id_escola
+                reserva_passageiro.save()
+
+                return redirect(reverse_lazy("reserva-edit", kwargs={'pk': reserva.pk}))
+            else:
+                return render (request, 'venda/reserva/register-novo.html', context)
         else:
             return redirect(reverse_lazy("reserva-list", kwargs={'context':context}))
+
+
 
 class ReservaRegister(JSONResponseMixin,View):
     def get(self, request, pk):
@@ -178,109 +219,10 @@ class ReservaRegister(JSONResponseMixin,View):
 
         return render (request, 'venda/reserva/register.html', { 'form':form, 'formset':formset, 'context':context })
 
+
 class ReservaEdit(JSONResponseMixin,View):
-    def get(self, request, **kwargs):
-
-        reserva = Reserva.objects.get(pk=self.kwargs['pk'])
-        reservapassageiros = ReservaPassageiro.objects.filter(id_reserva=reserva.pk)
-
-        formset = formset_factory(ReservaPassageiroForm,extra=0)
-        initial_data = []
-        for reservapassageiro in reservapassageiros:
-            initial_data.append({
-                    'id_excursao':reservapassageiro.id_pacote.id_excursao,
-                    'id_passageiro':reservapassageiro.id_passageiro,
-                    'id_pacote':reservapassageiro.id_pacote,
-                    'id_moeda':reservapassageiro.id_moeda,
-                    'id_status_reserva_passageiro':reservapassageiro.id_status_reserva_passageiro,
-                    'reserva_passageiro_preco':reservapassageiro.reserva_passageiro_preco,
-                    'reserva_passageiro_cambio':reservapassageiro.reserva_passageiro_cambio,
-                    'reserva_passageiro_obs':reservapassageiro.reserva_passageiro_obs,
-
-                    # FEATURE 805 MODIFICAÇÔES
-                    'id_acomodacao_pacote':reservapassageiro.id_acomodacao_pacote,
-                    'registro_interno':reservapassageiro.registro_interno,
-                    'desconto':reservapassageiro.desconto,
-                    'preco_acomodacao':reservapassageiro.preco_acomodacao,
-                })
-            
-        
-
-        formset = formset(
-                initial = initial_data
-            )
-        try:            
-            form = ReservaForm(
-                initial = {
-                    'id_cliente' : reserva.id_cliente,
-                    'id_status_reserva': reserva.id_status_reserva,
-                }
-            )
-        except:
-            form = ReservaForm()
-        
-        return render (request, 'venda/reserva/register.html', { 'form':form, 'formset':formset })
-
-    def post(self, request, pk=None, *args, **kwargs):
-        formset = formset_factory(ReservaPassageiroForm)
-        formset = formset(request.POST)
-        form = ReservaForm(request.POST)
-
-        context = {}        
-        data = request.POST
-
-        if not data.get('id_cliente', None):
-            context['Cliente'] = "não pode ser vazio"
-        else:
-            id_cliente = Cliente.objects.get(pk=data['id_cliente'])
-        if not data.get('id_status_reserva', None):
-            #context['Status da Reserva'] = "não pode ser vazio"
-            pass
-        else:
-            id_status_reserva = StatusReserva.objects.get(pk=data['id_status_reserva'])
-
-        listPassageiros = []
-        if formset.is_valid():
-            for f in formset:
-                value = f.cleaned_data
-                listPassageiros.append([
-                    value.get('id_passageiro'),
-                    value.get('id_pacote'),
-                    value.get('id_status_reserva_passageiro'),
-                    value.get('reserva_passageiro_preco'),
-                    value.get('reserva_passageiro_cambio'),
-                    value.get('reserva_passageiro_obs'),
-
-                    # FEATURE 805 MODIFICAÇÔES
-                    value.get('id_acomodacao_pacote'),
-                    value.get('preco_acomodacao'),
-                    value.get('registro_interno'),
-                    value.get('desconto')
-                    ]
-                    )
-
-                if not value.get('id_passageiro'):
-                    context['Passagerio'] = "não pode ser vazio"
-                if not value.get('id_pacote'):
-                    context['Pacote'] = "não pode ser vazio"
-                #if not value.get('id_status_reserva_passageiro'):
-                #   context['Status da Reserva do Passafeiro'] = "não pode ser vazio"
-                if not value.get('reserva_passageiro_preco'):
-                    context['Preço'] = "não pode ser vazio"
-                if not value.get('reserva_passageiro_cambio'):
-                    context['Cambio'] = "não pode ser vazio"
-                #if not value.get('reserva_passageiro_obs'):
-                #   context['Obs'] = "não pode ser vazio"
-
-                # FEATURE 805 MODIFICAÇÔES
-                if not value.get('id_acomodacao_pacote'):
-                    context['Acomodação'] = "não pode ser vazio"
-                if not value.get('preco_acomodacao'):
-                    context['Preço Acomodação'] = "não pode ser vazio"
-        else:
-            for erro in formset.errors:                 
-                context['error'] = erro
-            pass
+    def get(self, request, pk=None, *args, **kwargs):
+        context = {}
 
         try:
             emissor = Emissor.objects.get(id_usuario=request.user.id_usuario)
@@ -288,46 +230,40 @@ class ReservaEdit(JSONResponseMixin,View):
             context['Emissor'] = "não encontrado"
 
         if not context:
-
             reserva = Reserva.objects.get(pk=self.kwargs['pk'])
-            reservapassageiros = ReservaPassageiro.objects.filter(id_reserva=reserva.pk)
+            reservapassageiro = ReservaPassageiro.objects.get(id_reserva=reserva.pk)
 
-            for value in reservapassageiros:
-                value.delete()
+            form = ReservaPassageiroForm(instance=reservapassageiro)
+            form_opcional = ReservaOpcionaisForm()
+            context['form'] = form
+            context['form_opcional'] = form_opcional
+            context['reservapassageiro'] = reservapassageiro
+            context['passageiros'] = [reservapassageiro]
+            return render (request, 'venda/reserva/edit-novo.html', context)
+        else:
+            return redirect(reverse_lazy("reserva-list", kwargs={'context':context}))
 
-            reserva.id_cliente = id_cliente
-            reserva.id_emissor = emissor
-            reserva.id_agencia = emissor.id_agencia
-            reserva.id_status_reserva = id_status_reserva
-            reserva.save()
+    def post(self, request, pk=None, *args, **kwargs):
+        try:
+            emissor = Emissor.objects.get(id_usuario=request.user.id_usuario)
+        except Emissor.DoesNotExist:
+            context['Emissor'] = "não encontrado"
 
-            for value in listPassageiros:
+        if not context:
+            reserva = Reserva.objects.get(pk=self.kwargs['pk'])
+            reservapassageiro = ReservaPassageiro.objects.get(id_reserva=reserva.pk)
 
-                reservapassageiro = ReservaPassageiro() 
-                reservapassageiro.id_reserva =  reserva
-                reservapassageiro.id_passageiro = value[0]
-                reservapassageiro.id_pacote = value[1]
-                reservapassageiro.id_status_reserva_passageiro = value[2]
-                reservapassageiro.id_escola = value[0].id_escola
-                reservapassageiro.reserva_passageiro_preco = value[3]
-                reservapassageiro.id_moeda = value[1].id_moeda
-                reservapassageiro.reserva_passageiro_cambio = value[4]
-                if value[5]:
-                    reservapassageiro.reserva_passageiro_obs = value[5]
+            form = ReservaPassageiroForm(request.POST, instance=reservapassageiro)
+            context['form'] = form
+            if form.is_valid():
+                obj = form.save(commit=False)
+                obj.save()
+                return redirect(reverse_lazy("reserva-list"))
+            else:
+                return render (request, 'venda/reserva/edit-novo.html', context)
+        else:
+            return redirect(reverse_lazy("reserva-list", kwargs={'context':context}))
 
-                # FEATURE 805 MODIFICAÇÔES
-                reservapassageiro.id_acomodacao_pacote = value[6]
-                reservapassageiro.preco_acomodacao = value[7]
-                if value[8]:
-                    reservapassageiro.registro_interno = value[8]
-                if value[9]:
-                    reservapassageiro.desconto = value[9]
-
-                reservapassageiro.save()
-
-            return redirect(reverse_lazy('reserva-list'))
-
-        return render (request, 'venda/reserva/edit.html', { 'form':form, 'formset':formset, 'context':context })
 
 class ReservaList(JSONResponseMixin, View):
     def get(self, request, **kwargs):

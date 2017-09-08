@@ -1,0 +1,58 @@
+{% extends "default/panel/layout.html" %}
+{% load staticfiles %}
+
+{% block page_info %}
+    <li>
+      <b>Reserva</b>
+    </li>
+    <li>
+      <a class="active">Cadastro</a>
+    </li>    
+{% endblock %}
+
+{% block content %}
+<div class="col-md-12">
+  <!-- START PANEL -->
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">
+      </div>
+    </div>
+    <div class="panel-body">
+      <form autocomplete="off"  method="post" enctype="multipart/form-data" role="form" id="form-personal" novalidate="novalidate">
+        {% csrf_token %}
+          <div class="col-lg-6">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.id_cliente.auto_id }}">Cliente<i style="color:red">*</i></label>
+              {{ form.id_cliente }}
+              <small class="text-muted">{{ form.id_cliente.errors }}</small>
+            </fieldset>
+          </div>
+          <div class="col-lg-6">
+            <fieldset class="form-group">
+              <label class="form-label semibold" for="{{ form.id_passageiro.auto_id }}">Passageiro<i style="color:red">*</i></label>
+              {{ form.id_passageiro }}
+              <small class="text-muted">{{ form.id_passageiro.errors }}</small>
+            </fieldset>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="form-group">
+              <button type="submit" class="btn btn-success btn-cons">
+                Salvar
+              </button>
+              <div class="pull-right">
+              <a class="btn btn-secondary-outline" href="{% url 'reserva-list' %}">
+                Cancelar
+              </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- END PANEL -->
+</div>
+{% endblock %}

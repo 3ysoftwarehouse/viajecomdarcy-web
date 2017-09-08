@@ -33,6 +33,7 @@ class FiltroReservaForm(forms.Form):
         self.fields['data_inicio'].widget.attrs['placeholder'] = 'Data de inicio'
         self.fields['data_fim'].widget.attrs['placeholder'] = 'Data de término'
 
+
 class ReservaForm(forms.ModelForm):
 
     class Meta:
@@ -50,6 +51,78 @@ class ReservaForm(forms.ModelForm):
     pass
 
 
+class NovaReservaForm(forms.ModelForm):
+
+    id_passageiro = forms.ModelChoiceField(queryset=Passageiro.objects.all())
+
+    class Meta:
+        model = Reserva
+        fields = ['id_cliente']
+
+
+    def __init__(self, *args, **kwargs):
+        super(NovaReservaForm, self).__init__(*args, **kwargs)
+        self.fields['id_cliente'].widget.attrs['class'] = 'form-control'
+        self.fields['id_passageiro'].widget.attrs['class'] = 'form-control'
+
+
+class NovaReservaPassageiroForm(forms.ModelForm):
+
+    class Meta:
+        model = ReservaPassageiro
+        exclude = ['id_reserva','id_passageiro','id_status_reserva_passageiro','id_escola']
+
+
+    def __init__(self, *args, **kwargs):
+        super(ReservaPassageiroForm, self).__init__(*args, **kwargs)
+        # id_reserva Fields widget
+        self.fields['id_excursao'].widget.attrs['class'] = 'form-control form-excursao'
+        self.fields['id_excursao'].widget.attrs['required'] = True
+        self.fields['id_excursao'].widget.attrs['onchange'] = 'setExcursaoPacote(this)'
+
+        # id_pacote Fields widget
+        self.fields['id_pacote'].widget.attrs['class'] = 'form-control form-pacote'
+        self.fields['id_pacote'].widget.attrs['required'] = True
+        self.fields['id_pacote'].widget.attrs['onchange'] = 'setPacoteAcomodacao(this)'
+
+        # id_status_reserva_passageiro  Fields widget
+        self.fields['id_status_reserva_passageiro'].widget.attrs['class'] = 'form-control'
+        self.fields['id_status_reserva_passageiro'].widget.attrs['required'] = True
+
+        # reserva_passageiro_preco Fields widget
+        self.fields['reserva_passageiro_preco'].widget.attrs['class'] = 'form-control'
+        self.fields['reserva_passageiro_preco'].widget.attrs['required'] = True
+
+        # reserva_passageiro_cambio  Fields widget
+        self.fields['id_moeda'].widget.attrs['class'] = 'form-control form-moeda'
+        self.fields['id_moeda'].widget.attrs['required'] = True
+
+        # reserva_passageiro_cambio  Fields widget
+        self.fields['reserva_passageiro_cambio'].widget.attrs['class'] = 'form-control'
+        self.fields['reserva_passageiro_cambio'].widget.attrs['required'] = True
+
+        # reserva_passageiro_obs  Fields widget
+        self.fields['reserva_passageiro_obs'].widget.attrs['class'] = 'form-control'
+        self.fields['reserva_passageiro_obs'].widget.attrs['required'] = True
+
+        # registro_interno  Fields widget
+        self.fields['registro_interno'].widget.attrs['class'] = 'form-control'
+        self.fields['registro_interno'].widget.attrs['required'] = True
+
+        # desconto  Fields widget
+        self.fields['desconto'].widget.attrs['class'] = 'form-control'
+        self.fields['desconto'].widget.attrs['required'] = True
+
+        # id_acomodacao_pacote  Fields widget
+        self.fields['id_acomodacao_pacote'].widget.attrs['class'] = 'form-control form-acomodacao'
+        self.fields['id_acomodacao_pacote'].widget.attrs['onchange'] = 'setPrecoAcomodacao(this)'
+        self.fields['id_acomodacao_pacote'].widget.attrs['required'] = True
+
+        # preco_acomodacao  Fields widget
+        self.fields['preco_acomodacao'].widget.attrs['class'] = 'form-control form-preco'
+        self.fields['preco_acomodacao'].widget.attrs['required'] = True
+    pass
+
 class ReservaPassageiroForm(forms.ModelForm):
 
     id_excursao = forms.ModelChoiceField (queryset=Excursao.objects.all())
@@ -63,7 +136,6 @@ class ReservaPassageiroForm(forms.ModelForm):
     class Meta:
         model = ReservaPassageiro
         fields = (
-            'id_passageiro', 
             'id_status_reserva_passageiro',
             'reserva_passageiro_preco','reserva_passageiro_cambio', 
             'preco_acomodacao'
@@ -75,8 +147,6 @@ class ReservaPassageiroForm(forms.ModelForm):
         # id_reserva Fields widget
         self.fields['id_excursao'].widget.attrs['class'] = 'form-control form-excursao'
         self.fields['id_excursao'].widget.attrs['onchange'] = 'setExcursaoPacote(this)'
-        # id_passageiro Fields widget
-        self.fields['id_passageiro'].widget.attrs['class'] = 'form-control'
         # id_pacote Fields widget
         self.fields['id_pacote'].widget.attrs['class'] = 'form-control form-pacote'
         self.fields['id_pacote'].widget.attrs['onchange'] = 'setPacoteAcomodacao(this)'
