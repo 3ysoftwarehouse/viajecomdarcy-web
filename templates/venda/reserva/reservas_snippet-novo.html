@@ -10,7 +10,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for pacote in reservapassageiro.id_passageiro.passageiro_opcional.all %}
+            {% for pacote in reservapassageiro.passageiro_opcional.all %}
                 <tr>
                     <div style="display:none;" id="passageiro_{{reservapassageiro.id_passageiro.id_passageiro}}">
                         {% for pacote in passageiro.passageiro_opcional.all %}

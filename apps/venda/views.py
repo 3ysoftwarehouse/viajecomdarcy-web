@@ -233,7 +233,10 @@ class ReservaEdit(JSONResponseMixin,View):
             reserva = Reserva.objects.get(pk=self.kwargs['pk'])
             reservapassageiro = ReservaPassageiro.objects.get(id_reserva=reserva.pk)
 
-            opcionais_inicial = {'id_passageiro':reservapassageiro.id_passageiro}
+            opcionais_inicial = {
+                'id_passageiro':reservapassageiro.id_passageiro,
+                'id_reserva_passageiro':reservapassageiro.pk
+            }
 
             form = NovaReservaPassageiroForm(instance=reservapassageiro)
             form_opcional = ReservaOpcionaisForm(initial=opcionais_inicial)
@@ -262,15 +265,15 @@ class ReservaEdit(JSONResponseMixin,View):
                 obj.save()
                 return redirect(reverse_lazy("reserva-list"))
             else:
-                opcionais_inicial = {'id_passageiro':reservapassageiro.id_passageiro}
-                form_opcional = ReservaOpcionaisForm(initial=opcionais_inicial)
+                opcionais_inicial = {
+                    'id_passageiro':reservapassageiro.id_passageiro,
+                    'id_reserva_passageiro':reservapassageiro.pk
+                }
+                form_opcional = ReservaOpcionaisForm(request.POST)
                 context['form'] = form
                 context['form_opcional'] = form_opcional
                 context['reservapassageiro'] = reservapassageiro
 
-                print(request.POST)
-                print(form.errors)
-                print(form_opcional.errors)
                 return render (request, 'venda/reserva/edit-novo.html', context)
         else:
             return redirect(reverse_lazy("reserva-list", kwargs={'context':context}))
