@@ -278,7 +278,7 @@ function setMoeda(codigo,id){
         if (response.pacote !== 'error'){
 
           pacote = response.pacote
-          htmlString = '<option selected="selected" value="">---------</option>'
+          htmlString = '<option value="">---------</option>'
           $('#id_reserva_passageiro_preco').val(pacote[0].pacote_preco)
           $("#id_id_moeda").html(htmlString+'<option selected="selected" value="'+pacote[0].id_moeda+'">'+pacote[0].id_moeda__moeda_desc+'</option>');
           $('#id_reserva_passageiro_cambio').val(pacote[0].id_moeda__moeda_cambio)
@@ -290,6 +290,7 @@ function setMoeda(codigo,id){
           }
           $("#id_id_acomodacao_pacote").html(htmlString);
 
+          $("#id_id_moeda").prop('disabled', false);
         }
       },
       error: function(error) {

@@ -68,13 +68,15 @@ class NovaReservaForm(forms.ModelForm):
 
 class NovaReservaPassageiroForm(forms.ModelForm):
 
+    id_excursao = forms.ModelChoiceField (queryset=Excursao.objects.all())
+
     class Meta:
         model = ReservaPassageiro
-        exclude = ['id_reserva','id_passageiro','id_status_reserva_passageiro','id_escola']
+        exclude = ['id_reserva','id_passageiro','id_status_reserva_passageiro','id_escola', 'passageiro_opcional']
 
 
     def __init__(self, *args, **kwargs):
-        super(ReservaPassageiroForm, self).__init__(*args, **kwargs)
+        super(NovaReservaPassageiroForm, self).__init__(*args, **kwargs)
         # id_reserva Fields widget
         self.fields['id_excursao'].widget.attrs['class'] = 'form-control form-excursao'
         self.fields['id_excursao'].widget.attrs['required'] = True
@@ -85,17 +87,13 @@ class NovaReservaPassageiroForm(forms.ModelForm):
         self.fields['id_pacote'].widget.attrs['required'] = True
         self.fields['id_pacote'].widget.attrs['onchange'] = 'setPacoteAcomodacao(this)'
 
-        # id_status_reserva_passageiro  Fields widget
-        self.fields['id_status_reserva_passageiro'].widget.attrs['class'] = 'form-control'
-        self.fields['id_status_reserva_passageiro'].widget.attrs['required'] = True
-
         # reserva_passageiro_preco Fields widget
         self.fields['reserva_passageiro_preco'].widget.attrs['class'] = 'form-control'
         self.fields['reserva_passageiro_preco'].widget.attrs['required'] = True
 
         # reserva_passageiro_cambio  Fields widget
         self.fields['id_moeda'].widget.attrs['class'] = 'form-control form-moeda'
-        self.fields['id_moeda'].widget.attrs['required'] = True
+        self.fields['id_moeda'].widget.attrs['required'] = False
 
         # reserva_passageiro_cambio  Fields widget
         self.fields['reserva_passageiro_cambio'].widget.attrs['class'] = 'form-control'

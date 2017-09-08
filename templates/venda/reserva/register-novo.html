@@ -21,6 +21,7 @@
     <div class="panel-body">
       <form autocomplete="off"  method="post" enctype="multipart/form-data" role="form" id="form-personal" novalidate="novalidate">
         {% csrf_token %}
+        <div class="row">
           <div class="col-lg-6">
             <fieldset class="form-group">
               <label class="form-label semibold" for="{{ form.id_cliente.auto_id }}">Cliente<i style="color:red">*</i></label>
@@ -55,4 +56,10 @@
   </div>
   <!-- END PANEL -->
 </div>
+{% endblock %}
+{% block javascript %}
+  <script>
+    $("#id_id_cliente").select2();
+    $("#id_id_passageiro").select2();
+  </script>
 {% endblock %}
