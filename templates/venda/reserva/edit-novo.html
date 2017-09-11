@@ -33,6 +33,7 @@
             <div class="tab-pane active slide-left" id="tab1">
                 <div class="row row-same-height">
                     <div class="col-md-12">
+
                         <div class="padding-10">
                             <div class="row clearfix p-t-10">
                                 <div class="col-sm-6">
@@ -158,10 +159,16 @@
                                   <button type="submit" class="btn btn-success btn-cons">
                                     Salvar
                                   </button>
+                                  {% if reservapassageiro.id_reserva.editou %}
+                                    <a class="btn btn-md btn-primary" href="/framework/dashboard/reserva/gerar_recibo/{{ reservapassageiro.id_reserva.pk }}">
+                                        <i class="fa fa-file-pdf-o"></i>
+                                        Gerar Recibo
+                                    </a>
+                                  {% endif %}
                                   <div class="pull-right">
-                                  <a class="btn btn-secondary-outline" href="{% url 'reserva-list' %}">
-                                    Cancelar
-                                  </a>
+                                    <a class="btn btn-secondary-outline" href="{% url 'reserva-list' %}">
+                                        Cancelar
+                                    </a>
                                   </div>
                                 </div>
                               </div>
