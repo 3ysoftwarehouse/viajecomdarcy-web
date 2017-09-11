@@ -176,10 +176,18 @@ var blockField = function setPacote(){
       $('.form-preco').val(" ");
     }
   }
-  $('.form-pacote').prop('disabled', true);
-  $('.form-moeda').prop('disabled', true);
-  $('.form-acomodacao').prop('disabled', true);
-  $('.form-preco').prop('disabled', true);
+  if(!$("#id_id_pacote").val()){
+    $('.form-pacote').prop('disabled', true);
+  }
+  if(!$("#id_id_moeda").val()){
+    $('.form-moeda').prop('disabled', true);
+  }
+  if(!$("#id_id_acomodacao_pacote").val()){
+    $('.form-acomodacao').prop('disabled', true);
+  }
+  if(!$("#id_preco_acomodacao").val()){
+    $('.form-preco').prop('disabled', true);
+  }
   $('.form-opcional').prop('disabled', true);
 }
 
@@ -279,7 +287,7 @@ function setMoeda(codigo,id){
 
           pacote = response.pacote
           htmlString = '<option value="">---------</option>'
-          $('#id_reserva_passageiro_preco').val(pacote[0].pacote_preco)
+          $('#id_reserva_passageiro_preco').val(pacote[0].pacote_taxa)
           $("#id_id_moeda").html(htmlString+'<option selected="selected" value="'+pacote[0].id_moeda+'">'+pacote[0].id_moeda__moeda_desc+'</option>');
           $('#id_reserva_passageiro_cambio').val(pacote[0].id_moeda__moeda_cambio)
 
@@ -291,6 +299,7 @@ function setMoeda(codigo,id){
           $("#id_id_acomodacao_pacote").html(htmlString);
 
           $("#id_id_moeda").prop('disabled', false);
+          $("#moeda_text").val(pacote[0].id_moeda__moeda_desc);
         }
       },
       error: function(error) {
@@ -309,13 +318,19 @@ function setPassageiroOpcional(select){
   var id_passageiro = selected.value
   var id = String(select.id).split('-')[1]
   var id_reserva = $('#id_reserva').html()
-  setOpcional(id_reserva, id_passageiro);
+  setOpcional();
   $("#id_id_opcional").parent().children().find('.select2-choice').find('.select2-chosen').html('---------');
   $('#id_id_opcional').prop('disabled', false);
 }
 
-function setOpcional(id_reserva, id_passageiro){
-  var url = '/framework/dashboard/passageiro/opcional/passageiro_opcional_json/' + String(id_reserva) + "/" + String(id_passageiro);
+function setOpcional(){
+
+  var id_pacote = $("#id_id_pacote").val();
+  if(id_pacote){
+    var url = '/framework/dashboard/passageiro/opcional/passageiro_opcional_json/' + String(id_reserva) + "/" + String(id_passageiro) + '/' + String(id_pacote);
+  }else{
+    var url = '/framework/dashboard/passageiro/opcional/passageiro_opcional_json/' + String(id_reserva) + "/" + String(id_passageiro);
+  }
   $.ajax({
     url: url,
     type: 'GET',
@@ -392,6 +407,7 @@ function setMoedaOpcional(id_reserva_passageiro, id_opcional){
       htmlString = '<option value="">---------</option>';
       htmlString += '<option selected="selected" value="'+response.id_moeda+'">'+response.moeda_desc+'</option>';
       $("#modalOpcional #id_id_moeda").html(htmlString);
+      $("#modalOpcional #moeda_text_modal").val(response.moeda_desc);
     },
 
     error: function(error) {
@@ -400,3 +416,7 @@ function setMoedaOpcional(id_reserva_passageiro, id_opcional){
 
   });
 }
+
+$("#id_id_acomodacao_pacote").change(function(){
+  $("#id_desconto").val(0);
+});

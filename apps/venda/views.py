@@ -233,13 +233,20 @@ class ReservaEdit(JSONResponseMixin,View):
             reserva = Reserva.objects.get(pk=self.kwargs['pk'])
             reservapassageiro = ReservaPassageiro.objects.get(id_reserva=reserva.pk)
 
+            if reservapassageiro.id_pacote:
+                reserva_inicial = {'id_excursao':reservapassageiro.id_pacote.id_excursao}
+                form = NovaReservaPassageiroForm(instance=reservapassageiro, initial=reserva_inicial)
+                form.fields['id_pacote'].queryset = Pacote.objects.filter(id_excursao=reservapassageiro.id_pacote.id_excursao)
+                form.fields['id_acomodacao_pacote'].queryset = Acomodacao.objects.filter(pk__in=PacoteAcomadacao.objects.filter(id_pacote=reservapassageiro.id_pacote).values('pk'))
+            else:
+                form = NovaReservaPassageiroForm(instance=reservapassageiro)
+
             opcionais_inicial = {
                 'id_passageiro':reservapassageiro.id_passageiro,
                 'id_reserva_passageiro':reservapassageiro.pk
             }
-
-            form = NovaReservaPassageiroForm(instance=reservapassageiro)
             form_opcional = ReservaOpcionaisForm(initial=opcionais_inicial)
+
             context['form'] = form
             context['form_opcional'] = form_opcional
             context['reservapassageiro'] = reservapassageiro
@@ -259,7 +266,14 @@ class ReservaEdit(JSONResponseMixin,View):
             reserva = Reserva.objects.get(pk=self.kwargs['pk'])
             reservapassageiro = ReservaPassageiro.objects.get(id_reserva=reserva.pk)
 
-            form = NovaReservaPassageiroForm(request.POST, instance=reservapassageiro)
+            if reservapassageiro.id_pacote:
+                reserva_inicial = {'id_excursao':reservapassageiro.id_pacote.id_excursao}
+                form = NovaReservaPassageiroForm(request.POST, instance=reservapassageiro, initial=reserva_inicial)
+                form.fields['id_pacote'].queryset = Pacote.objects.filter(id_excursao=reservapassageiro.id_pacote.id_excursao)
+                form.fields['id_acomodacao_pacote'].queryset = Acomodacao.objects.filter(pk__in=PacoteAcomadacao.objects.filter(id_pacote=reservapassageiro.id_pacote).values('pk'))
+            else:
+                form = NovaReservaPassageiroForm(request.POST, instance=reservapassageiro)
+
             if form.is_valid():
                 obj = form.save(commit=False)
                 obj.save()
@@ -339,7 +353,7 @@ class ExcursaoPacoteJson(JSONResponseMixin,View):
     def get(self, request, *args, **kwargs):
         if self.kwargs:
             try:
-                pacotes = Pacote.objects.filter(id_excursao=self.kwargs['pk']).values('id_pacote','pacote_nome', 'pacote_preco')
+                pacotes = Pacote.objects.filter(id_excursao=self.kwargs['pk']).values('id_pacote','pacote_nome', 'pacote_preco', 'pacote_taxa')
             except:
                 pacotes = None
         if pacotes:
@@ -351,7 +365,7 @@ class PacoteMoedaJson(JSONResponseMixin,View):
     def get(self, request, *args, **kwargs):
         if self.kwargs:
             try:
-                pacote = Pacote.objects.filter(pk=self.kwargs['pk']).values('id_pacote','pacote_preco', 'id_moeda','id_moeda__moeda_desc', 'id_moeda__moeda_cambio')
+                pacote = Pacote.objects.filter(pk=self.kwargs['pk']).values('id_pacote','pacote_preco', 'pacote_taxa', 'id_moeda','id_moeda__moeda_desc', 'id_moeda__moeda_cambio')
                 acomodacao = PacoteAcomadacao.objects.filter(id_pacote=self.kwargs['pk']).values('id_acomodacao','id_acomodacao__acomodacao_desc', 'preco')
             except:
                 pacotes = None
@@ -437,9 +451,18 @@ class PassageiroOpcJson(JSONResponseMixin,View):
     def get(self, request, *args, **kwargs):
         id_reserva = self.kwargs['id_reserva']
         id_passageiro = self.kwargs['id_passageiro']
+
+        try:
+            id_pacote = self.kwargs['id_pacote']
+        except:
+            id_pacote = None
+
         reservapassageiro = ReservaPassageiro.objects.get(id_reserva=id_reserva,id_passageiro=id_passageiro)
         if reservapassageiro:
-            opicionais = PacoteOpcional.objects.filter(id_pacote=reservapassageiro.id_pacote).values('id_opcional','id_opcional__opcional_desc')
+            if id_pacote:
+                opicionais = PacoteOpcional.objects.filter(id_pacote=id_pacote).values('id_opcional','id_opcional__opcional_desc')
+            else:
+                opicionais = PacoteOpcional.objects.filter(id_pacote=reservapassageiro.id_pacote).values('id_opcional','id_opcional__opcional_desc')
             return JsonResponse({
                 'id_reserva_passageiro':reservapassageiro.id_reserva_passageiro,
                 'reserva_passageiro_obs':reservapassageiro.reserva_passageiro_obs, 
@@ -599,8 +622,8 @@ def addOpcionalPassageiro(request, pk):
             opcional.preco_reserva_opcional = preco_reserva_opcional
             opcional.save()
             reservapassageiro.passageiro_opcional.add(opcional)
-            passageiros = ReservaPassageiro.objects.filter(id_reserva = pk).order_by('id_passageiro')
-            html = render_to_string('venda/reserva/reservas_snippet.html', {'passageiros':passageiros})
+            #passageiros = ReservaPassageiro.objects.filter(id_reserva = pk).order_by('id_passageiro')
+            html = render_to_string('venda/reserva/reservas_snippet-novo.html', {'reservapassageiro':reservapassageiro})
             return JsonResponse({'status':'success', 'message':'success','html':html})
         except Exception as e:
             return JsonResponse({'message':str(e), 'status':'error'})
