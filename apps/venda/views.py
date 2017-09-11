@@ -31,6 +31,7 @@ from apps.excursao.models import Excursao, Opcional
 from apps.moeda.models import Moeda
 from apps.pacote.models import Pacote, PacoteAcomadacao, PacoteOpcional
 from apps.subclasses.usuario.emissor.views import get_emissor
+from .utils import RespPdf
 ##################################################
 
 class ReservaNova(JSONResponseMixin,View):
@@ -277,6 +278,10 @@ class ReservaEdit(JSONResponseMixin,View):
             if form.is_valid():
                 obj = form.save(commit=False)
                 obj.save()
+
+                reserva = obj.id_reserva
+                reserva.editou = True
+                reserva.save()
                 return redirect(reverse_lazy("reserva-list"))
             else:
                 opcionais_inicial = {
@@ -493,7 +498,8 @@ class PassageiroOpcMoedaJson(JSONResponseMixin,View):
             moeda = pacoteopcional.id_pacote.id_moeda
             return JsonResponse({
                 'id_moeda':moeda.id_moeda,
-                'moeda_desc':moeda.moeda_desc
+                'moeda_desc':moeda.moeda_desc,
+                'preco_opc':opcional.opcional_preco
             })
         else:
             return JsonResponse({'data':'error'})
@@ -637,3 +643,23 @@ def addOpcionalPassageiro(request, pk):
         except Exception as e:
             return JsonResponse({'message':str(e), 'status':'error'})
 
+
+class GerarReciboReserva(JSONResponseMixin, View):
+    def get(self, request, pk=None):
+        reserva = Reserva.objects.get(pk=pk)
+        reservapassageiro = ReservaPassageiro.objects.get(id_reserva=reserva)
+
+        valor = reservapassageiro.calcular_valor();
+        desconto = reservapassageiro.desconto
+        total = valor - desconto
+
+        context = {
+            'reservapassageiro':reservapassageiro,
+            'valor':valor,
+            'desconto':desconto,
+            'total':total
+        }
+
+        pdf = RespPdf('venda/reserva/invoice.html', context, '', request.build_absolute_uri())
+        return pdf.run()
+        return render(request, 'pdf.html', context)
