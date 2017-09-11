@@ -79,46 +79,46 @@ class NovaReservaPassageiroForm(forms.ModelForm):
         super(NovaReservaPassageiroForm, self).__init__(*args, **kwargs)
         # id_reserva Fields widget
         self.fields['id_excursao'].widget.attrs['class'] = 'form-control form-excursao'
-        self.fields['id_excursao'].widget.attrs['required'] = True
+        self.fields['id_excursao'].required = True
         self.fields['id_excursao'].widget.attrs['onchange'] = 'setExcursaoPacote(this)'
 
         # id_pacote Fields widget
         self.fields['id_pacote'].widget.attrs['class'] = 'form-control form-pacote'
-        self.fields['id_pacote'].widget.attrs['required'] = True
+        self.fields['id_pacote'].required = True
         self.fields['id_pacote'].widget.attrs['onchange'] = 'setPacoteAcomodacao(this)'
 
         # reserva_passageiro_preco Fields widget
         self.fields['reserva_passageiro_preco'].widget.attrs['class'] = 'form-control'
-        self.fields['reserva_passageiro_preco'].widget.attrs['required'] = True
+        self.fields['reserva_passageiro_preco'].required = True
 
         # reserva_passageiro_cambio  Fields widget
         self.fields['id_moeda'].widget.attrs['class'] = 'form-control form-moeda'
-        self.fields['id_moeda'].widget.attrs['required'] = False
+        self.fields['id_moeda'].required = False
 
         # reserva_passageiro_cambio  Fields widget
         self.fields['reserva_passageiro_cambio'].widget.attrs['class'] = 'form-control'
-        self.fields['reserva_passageiro_cambio'].widget.attrs['required'] = True
+        self.fields['reserva_passageiro_cambio'].required = True
 
         # reserva_passageiro_obs  Fields widget
         self.fields['reserva_passageiro_obs'].widget.attrs['class'] = 'form-control'
-        self.fields['reserva_passageiro_obs'].widget.attrs['required'] = True
+        self.fields['reserva_passageiro_obs'].required = False
 
         # registro_interno  Fields widget
         self.fields['registro_interno'].widget.attrs['class'] = 'form-control'
-        self.fields['registro_interno'].widget.attrs['required'] = True
+        self.fields['registro_interno'].required = False
 
         # desconto  Fields widget
         self.fields['desconto'].widget.attrs['class'] = 'form-control'
-        self.fields['desconto'].widget.attrs['required'] = True
+        self.fields['desconto'].required = True
 
         # id_acomodacao_pacote  Fields widget
         self.fields['id_acomodacao_pacote'].widget.attrs['class'] = 'form-control form-acomodacao'
         self.fields['id_acomodacao_pacote'].widget.attrs['onchange'] = 'setPrecoAcomodacao(this)'
-        self.fields['id_acomodacao_pacote'].widget.attrs['required'] = True
+        self.fields['id_acomodacao_pacote'].required = True
 
         # preco_acomodacao  Fields widget
         self.fields['preco_acomodacao'].widget.attrs['class'] = 'form-control form-preco'
-        self.fields['preco_acomodacao'].widget.attrs['required'] = True
+        self.fields['preco_acomodacao'].required = True
         pass
 
 class ReservaPassageiroForm(forms.ModelForm):

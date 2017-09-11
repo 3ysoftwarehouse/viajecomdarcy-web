@@ -57,12 +57,14 @@
                                         <label for="id_valor_pago" class="">Excursão:</label>
                                         {{ form.id_excursao }}
                                         <input type="text" value="true" class="hidden" id="edit-reserva" />
+                                        <small class="text-muted">{{ form.id_excursao.errors }}</small>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group " value="">
                                         <label for="id_valor_pago" class="">Pacote:</label>
                                         {{ form.id_pacote }}
+                                        <small class="text-muted">{{ form.id_pacote.errors }}</small>
                                     </div>
                                 </div>
                             </div>
@@ -71,53 +73,69 @@
                                     <div class="form-group " value="">
                                         <label for="id_valor_pago" class="">Acomodação:</label>
                                         {{ form.id_acomodacao_pacote }}
+                                        <small class="text-muted">{{ form.id_acomodacao_pacote.errors }}</small>
                                     </div>
                                 </div>
                                 <div class="col-sm-2">
                                     <div class="form-group " value="">
                                         <label for="id_valor_pago" class="">Preço Acomodação:</label>
                                         {{ form.preco_acomodacao }}
+                                        <small class="text-muted">{{ form.preco_acomodacao.errors }}</small>
                                     </div>
                                 </div>
                                 <div class="col-sm-2">
                                     <div class="form-group " value="">
                                         <label for="id_valor_pago" class="">Taxa:</label>
                                         {{ form.reserva_passageiro_preco }}
+                                        <small class="text-muted">{{ form.reserva_passageiro_preco.errors }}</small>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group " value="">
                                         <label for="id_valor_pago" class="">Moeda:</label>
-                                        {{ form.id_moeda }}
-                                        <input type="hidden" name="moeda_id" id="moeda_id" value=""/>
+                                        <div style="display:none;">
+                                            {{ form.id_moeda }}
+                                        </div>
+                                        {% if reservapassageiro.id_moeda %}
+                                            <input class="form-control" type="text" id="moeda_text" name="moeda_text" value="{{reservapassageiro.id_moeda}}" disabled/>
+                                        {% else %}
+                                            <input class="form-control" type="text" id="moeda_text" name="moeda_text" value="" disabled/>
+                                        {% endif %}
+                                        <small class="text-muted">{{ form.id_moeda.errors }}</small>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-4">
+                                <div class="col-sm-6">
                                     <div class="form-group " value="">
                                         <label for="id_valor_pago" class="">Cambio:</label>
                                         {{ form.reserva_passageiro_cambio  }}
+                                        <small class="text-muted">{{ form.reserva_passageiro_cambio.errors }}</small>
                                     </div>
                                 </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group " value="">
-                                        <label for="id_valor_pago" class="">Registro Interno:</label>
-                                        {{ form.registro_interno }}
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
+                                <div class="col-sm-6">
                                     <div class="form-group " value="">
                                         <label for="id_valor_pago" class="">Desconto:</label>
                                         {{ form.desconto }}
+                                        <small class="text-muted">{{ form.desconto.errors }}</small>
                                     </div>
                                 </div> 
                             </div>
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group " value="">
+                                        <label for="id_valor_pago" class="">Registro Interno:</label>
+                                        {{ form.registro_interno }}
+                                        <small class="text-muted">{{ form.registro_interno.errors }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group " value="">
                                         <label for="id_valor_pago" class="">Obs:</label>
                                         {{ form.reserva_passageiro_obs }}
+                                        <small class="text-muted">{{ form.reserva_passageiro_obs.errors }}</small>
                                     </div>
                                 </div> 
                             </div>
@@ -188,7 +206,8 @@
         url_edit = "{% url 'edit-passageiro' %}";
         url_opcional = "{% url 'add-opcional' request.resolver_match.kwargs.pk %}";
         url_finalizar = "/en/framework/dashboard/finalizaragendamento/";
-        id_reserva = "{{ request.resolver_match.kwargs.pk }}";
+        id_reserva = "{{ reservapassageiro.id_reserva.pk }}";
+        id_passageiro = "{{ reservapassageiro.id_passageiro.pk }}";
         url_list = "{% url 'reserva-list' %}";
     </script>
     <script src="{% static 'js/venda/custom.js' %}" type="text/javascript"></script>
