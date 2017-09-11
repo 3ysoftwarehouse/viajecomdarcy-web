@@ -413,6 +413,7 @@ function setMoedaOpcional(id_reserva_passageiro, id_opcional){
       htmlString += '<option selected="selected" value="'+response.id_moeda+'">'+response.moeda_desc+'</option>';
       $("#modalOpcional #id_id_moeda").html(htmlString);
       $("#modalOpcional #moeda_text_modal").val(response.moeda_desc);
+      $("#modalOpcional #id_preco_reserva_opcional").val(parseFloat(response.preco_opc));
     },
 
     error: function(error) {

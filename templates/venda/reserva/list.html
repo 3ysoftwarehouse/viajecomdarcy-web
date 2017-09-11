@@ -68,6 +68,11 @@
                    <p>{{ reserva.id_status_reserva }}</p>
                 </td>
                 <td class="v-align-middle">
+                  {% if reserva.editou %}
+                    <a href="/framework/dashboard/reserva/gerar_recibo/{{ reserva.pk }}">
+                      <i class="fa fa-file-pdf-o"></i>
+                    </a>
+                  {% endif %}
                   <a href="/framework/dashboard/reserva/detail/{{ reserva.pk }}">
                     <i class="pg-search"></i>
                   </a>

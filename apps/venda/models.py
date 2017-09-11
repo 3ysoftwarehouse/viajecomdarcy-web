@@ -25,6 +25,7 @@ class Reserva(models.Model):
     id_agencia = models.ForeignKey('agencia.Agencia', on_delete=models.DO_NOTHING)
     id_status_reserva = models.ForeignKey('StatusReserva', on_delete=models.DO_NOTHING)
     data_reserva = models.DateField(auto_now_add=True) 
+    editou = models.BooleanField(default=False)
     
     def __str__(self):
         return self.id_emissor.id_usuario.nome
@@ -49,6 +50,14 @@ class ReservaPassageiro(models.Model):
 
     def __str__(self):
         return str(self.id_passageiro)
+
+    def calcular_valor(self):
+        total = self.preco_acomodacao
+        for passageiroopcional in self.passageiro_opcional.all():
+            preco = passageiroopcional.id_opcional.opcional_preco
+            if preco:
+                total += preco
+        return total
     
 class PassageiroOpcional(models.Model):
     id_reserva_passageiro_opcional = models.AutoField(primary_key=True)

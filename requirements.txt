@@ -39,3 +39,4 @@ six==1.10.0
 sqlparse==0.2.3
 uritemplate==3.0.0
 Werkzeug==0.11.15
+WeasyPrint==0.36
