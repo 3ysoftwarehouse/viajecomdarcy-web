@@ -1,18 +1,6 @@
-{% load staticfiles %}
-{% load i18n %}
-
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Recibo de reserva</title>
-
-    <!-- ICONS -->
-    <link rel="apple-touch-icon" href="/static/img/default/icons/60.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/static/img/default/icons/76.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/static/img/default/icons/120.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/static/img/default/icons/152.png">
-    <!-- END ICONS -->
-
     <!-- CSS -->
     <link href="/static/css/default/pace-theme-flash.css" rel="stylesheet" type="text/css" />
     <link href="/static/css/default/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -108,11 +96,11 @@
                               </p>
                             </td>
                             <td class="text-center"> 
-                              {{ opcional.id_opcional.moeda_simbolo}} {{ opcional.id_opcional.opcional_preco }}
+                              {{ opcional.id_opcional.id_moeda.moeda_simbolo}} {{ opcional.id_opcional.opcional_preco }}
                             </td>
                             <td class="text-center">1</td>
                             <td class="text-right">
-                              {{opcional.id_opcional.moeda_simbolo}} {{opcional.id_opcional.opcional_preco}}
+                              {{opcional.id_opcional.id_moeda.moeda_simbolo}} {{opcional.id_opcional.opcional_preco}}
                             </td>
                           </tr>
                         {% endfor %}
@@ -145,15 +133,15 @@
                     <div class="row row-sm-height b-a b-grey">
                       <div class="col-sm-2 col-sm-height col-middle p-l-25 sm-p-t-15 sm-p-l-15 clearfix sm-p-b-15">
                         <h5 class="font-montserrat all-caps small no-margin hint-text bold">VALOR:</h5>
-                        <h3 class="no-margin">{{ valor }}</h3>
+                        <h3 class="no-margin">{{reservapassageiro.id_moeda.moeda_simbolo}} {{ valor }}</h3>
                       </div>
                       <div class="col-sm-5 col-sm-height col-middle clearfix sm-p-b-15">
                         <h5 class="font-montserrat all-caps small no-margin hint-text bold">DESCONTO:</h5>
-                        <h3 class="no-margin">{{ desconto }}</h3>
+                        <h3 class="no-margin">{{reservapassageiro.id_moeda.moeda_simbolo}} {{ desconto }}</h3>
                       </div>
                       <div class="col-sm-5 text-right bg-menu col-sm-height padding-15">
                         <h5 class="font-montserrat all-caps small no-margin hint-text text-white bold">Total:</h5>
-                        <h1 class="no-margin text-white">{{ total }}</h1>
+                        <h1 class="no-margin text-white">{{reservapassageiro.id_moeda.moeda_simbolo}} {{ total }}</h1>
                       </div>
                     </div>
                   </div>

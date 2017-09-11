@@ -22,7 +22,7 @@ class RespPdf(object):
 		fs = FileSystemStorage('/tmp')
 		with fs.open('mypdf.pdf') as pdf:
 			response = HttpResponse(pdf, content_type='application/pdf')
-			response['Content-Disposition'] = 'attachment; filename="mypdf.pdf"'
+			response['Content-Disposition'] = 'attachment; filename="recibo.pdf"'
 			return response
 
 		return response
