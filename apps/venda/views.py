@@ -476,11 +476,20 @@ class PassageiroOpcMoedaJson(JSONResponseMixin,View):
         id_reserva_passageiro = self.kwargs['id_reserva_passageiro']
         id_opcional = self.kwargs['id_opcional']
 
+        try:
+            id_pacote = self.kwargs['id_pacote']
+        except:
+            id_pacote = None
+
         opcional = Opcional.objects.get(id_opcional=id_opcional)
         reservapassageiro = ReservaPassageiro.objects.get(id_reserva_passageiro=id_reserva_passageiro)
         
         if reservapassageiro and opcional:
-            pacoteopcional = PacoteOpcional.objects.get(id_pacote=reservapassageiro.id_pacote, id_opcional=opcional.id_opcional)
+            if id_pacote:
+                pacoteopcional = PacoteOpcional.objects.get(id_pacote=id_pacote, id_opcional=opcional.id_opcional)
+            else:
+                pacoteopcional = PacoteOpcional.objects.get(id_pacote=reservapassageiro.id_pacote, id_opcional=opcional.id_opcional)
+            
             moeda = pacoteopcional.id_pacote.id_moeda
             return JsonResponse({
                 'id_moeda':moeda.id_moeda,

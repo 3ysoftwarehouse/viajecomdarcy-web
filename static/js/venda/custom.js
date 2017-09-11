@@ -397,7 +397,12 @@ function setPassageiroMoedaOpcional(select){
 }
 
 function setMoedaOpcional(id_reserva_passageiro, id_opcional){
-  var url = '/framework/dashboard/passageiro/opcional/passageiro_opcional_moeda_json/' + String(id_reserva_passageiro) + "/" + String(id_opcional);
+  var id_pacote = $("#id_id_pacote").val();
+  if(id_pacote){
+    var url = '/framework/dashboard/passageiro/opcional/passageiro_opcional_moeda_json/' + String(id_reserva_passageiro) + "/" + String(id_opcional)+ "/" + String(id_pacote);
+  }else{
+    var url = '/framework/dashboard/passageiro/opcional/passageiro_opcional_json/' + String(id_reserva) + "/" + String(id_passageiro);
+  }
   $.ajax({
     url: url,
     type: 'GET',
