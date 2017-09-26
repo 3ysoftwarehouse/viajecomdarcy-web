@@ -1,161 +1,116 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <!-- CSS -->
-    <link href="/static/css/default/pace-theme-flash.css" rel="stylesheet" type="text/css" />
-    <link href="/static/css/default/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="/static/css/default/font-awesome.css" rel="stylesheet" type="text/css" />
-    <link href="/static/css/default/pages-icons.css" rel="stylesheet" type="text/css">
-    <link class="main-stylesheet" href="/static/css/default/pages.css" rel="stylesheet" type="text/css" />
-    <!-- END CSS -->
+    <meta charset="utf-8">
+    <title>VCD</title>
+    <link rel="stylesheet" href="/static/css/default/invoice.css" media="all" />
   </head>
-  <body class="fixed-header">
-    <!-- BEGIN SIDEBPANEL-->
-    <div class="page-container">
-      <!-- START PAGE CONTENT WRAPPER -->
-      <div class="page-content-wrapper">
-        <!-- START PAGE CONTENT -->
-        <div class="content">
-
-          <!-- START CONTAINER FLUID -->
-          <div class="container-fluid container-fixed-lg">
-            <!-- START PANEL -->
-            <div class="panel panel-default">
-              <div class="panel-body">
-                <div class="invoice padding-50 sm-padding-10">
-                  <div>
-                    <div class="pull-left">
-                      VCD OPERADORA
-                    </div>
-                    <div class="pull-right sm-m-t-20">
-                      <h2 class="font-montserrat all-caps hint-text">RECIBO DE VENDA</h2>
-                    </div>
-                    <div class="clearfix"></div>
-                  </div>
-                  <br>
-                  <br>
-                  <div class="container-sm-height">
-                    <div class="row-sm-height">
-                      <div class="col-md-9 col-sm-height sm-no-padding">
-                        <div>
-                          <p class="small no-margin">RECIBO PARA:</p>
-                          <h5 class="semi-bold m-t-0">{{reservapassageiro.id_reserva.id_cliente}}</h5>
-                          <div class="pull-left">CPF: {{reservapassageiro.id_reserva.id_cliente.usuario.cpf}}</div>
-                          <div class="clearfix"></div>
-                        </div>
-                        <br/><br/>
-                        <div>
-                          <h5 class="semi-bold m-t-0">{{reservapassageiro.id_passageiro}}</h5>
-                          <div class="pull-left">CPF: {{reservapassageiro.id_passageiro.id_usuario.cpf}}</div>
-                          <div class="clearfix"></div>
-                        </div>
-                      </div>
-                      <div class="col-md-3 col-sm-height col-bottom sm-no-padding sm-p-b-20">
-                        <div>
-                          <div class="pull-left font-montserrat all-caps">
-                            <b>RESERVA Nº:</b> {{reservapassageiro.id_reserva.pk}}
-                          </div>
-                          <div class="pull-right">
-                            <b>DATA DE RESERVA:</b> {{reservapassageiro.id_reserva.data_reserva}}
-                          </div>
-                          <div class="clearfix"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="table-responsive">
-                    <table class="table m-t-50">
-                      <thead>
-                        <tr>
-                          <th class="">ITENS</th>
-                          <th class="text-center">VALOR</th>
-                          <th class="text-center">QUANTIDADE</th>
-                          <th class="text-right">TOTAL</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td class="">
-                            <p class="text-black">
-                              {{ reservapassageiro.id_pacote.id_excursao }} - {{ reservapassageiro.id_pacote }} - {{ reservapassageiro.id_acomodacao_pacote }}
-                            </p>
-                          </td>
-                          <td class="text-center"> 
-                            {{reservapassageiro.id_moeda.moeda_simbolo}} {{reservapassageiro.preco_acomodacao}}
-                          </td>
-                          <td class="text-center">1</td>
-                          <td class="text-right">
-                            {{reservapassageiro.id_moeda.moeda_simbolo}} {{reservapassageiro.preco_acomodacao}}
-                          </td>
-                        </tr>
-                        {% for opcional in reservapassageiro.passageiro_opcional.all %}
-                          <tr>
-                            <td class="">
-                              <p class="text-black">
-                                {{ opcional.id_reserva_passageiro.id_pacote.id_excursao }} - {{ opcional.id_reserva_passageiro.id_pacote }} - {{ opcional.id_opcional }}
-                              </p>
-                            </td>
-                            <td class="text-center"> 
-                              {{ opcional.id_opcional.id_moeda.moeda_simbolo}} {{ opcional.id_opcional.opcional_preco }}
-                            </td>
-                            <td class="text-center">1</td>
-                            <td class="text-right">
-                              {{opcional.id_opcional.id_moeda.moeda_simbolo}} {{opcional.id_opcional.opcional_preco}}
-                            </td>
-                          </tr>
-                        {% endfor %}
-                      </tbody>
-                    </table>
-                    <br/>
-                    <table class="table m-t-50">
-                      <thead>
-                        <tr>
-                          <th class="">OBSERVAÇÕES</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td class="">
-                            <p class="text-black">
-                              {{ reservapassageiro.reserva_passageiro_obs }}
-                            </p>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <div class="container-sm-height">
-                    <div class="row row-sm-height b-a b-grey">
-                      <div class="col-sm-2 col-sm-height col-middle p-l-25 sm-p-t-15 sm-p-l-15 clearfix sm-p-b-15">
-                        <h5 class="font-montserrat all-caps small no-margin hint-text bold">VALOR:</h5>
-                        <h3 class="no-margin">{{reservapassageiro.id_moeda.moeda_simbolo}} {{ valor }}</h3>
-                      </div>
-                      <div class="col-sm-5 col-sm-height col-middle clearfix sm-p-b-15">
-                        <h5 class="font-montserrat all-caps small no-margin hint-text bold">DESCONTO:</h5>
-                        <h3 class="no-margin">{{reservapassageiro.id_moeda.moeda_simbolo}} {{ desconto }}</h3>
-                      </div>
-                      <div class="col-sm-5 text-right bg-menu col-sm-height padding-15">
-                        <h5 class="font-montserrat all-caps small no-margin hint-text text-white bold">Total:</h5>
-                        <h1 class="no-margin text-white">{{reservapassageiro.id_moeda.moeda_simbolo}} {{ total }}</h1>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- END PANEL -->
-          </div>
-          <!-- END CONTAINER FLUID -->
-        </div>
-        <!-- END PAGE CONTENT -->
+  <body>
+    <header class="clearfix">
+      <div id="logo">
+        <img src="/static/img/default/logo.png">
       </div>
-      <!-- END PAGE CONTENT WRAPPER -->
-    </div>
-    <!-- END PAGE CONTAINER -->
+      <h1>RECIBO DE VENDA</h1>
+      <div id="company" class="clearfix">
+        <div>VCD OPERADORA</div>
+        <!--
+        <div>455 Foggy Heights,<br /> AZ 85004, US</div>
+        <div>(602) 519-0450</div>
+        <div><a href="mailto:company@example.com">company@example.com</a></div>
+        -->
+      </div>
+      <div id="project">
+        <div>
+          <span>CLIENTE: </span>
+          {{reservapassageiro.id_reserva.id_cliente}}
+        </div>
+        <div>
+          <span>EMAIL: </span> 
+          <a href="mailto:{{reservapassageiro.id_reserva.id_cliente.usuario.email}}">{{reservapassageiro.id_reserva.id_cliente.usuario.email}}</a>
+        </div>
+        <div>
+          <span>CPF: </span> 
+          {{reservapassageiro.id_reserva.id_cliente.usuario.cpf}}
+        </div>
+        <!--
+        <div><span>ADDRESS</span> 796 Silver Harbour, TX 79273, US</div>
+        -->
+        <div>
+          <span>RESERVA: </span> 
+          {{reservapassageiro.id_reserva.pk}}
+        </div>
+        <div>
+          <span>DATA: </span> 
+          {{reservapassageiro.id_reserva.data_reserva|date:'d/m/Y'}}
+        </div>
+      </div>
+    </header>
+    <main>
+      <table>
+        <thead>
+          <tr>
+            <th class="service">ITENS</th>
+            <th class="unit">VALOR</th>
+            <th>QUANTIDADE</th>
+            <th>TOTAL</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="service">
+              {{ reservapassageiro.id_pacote.id_excursao }} - 
+              {{ reservapassageiro.id_pacote }} - 
+              {{ reservapassageiro.id_acomodacao_pacote }}
+            </td>
+            <td class="unit">
+              {{reservapassageiro.id_moeda.moeda_simbolo}} {{reservapassageiro.preco_acomodacao}}
+            </td>
+            <td class="qty">
+              1
+            </td>
+            <td class="total">
+              {{reservapassageiro.id_moeda.moeda_simbolo}} {{reservapassageiro.preco_acomodacao}}
+            </td>
+          </tr>
+          {% for opcional in reservapassageiro.passageiro_opcional.all %}
+            <tr>
+              <td class="service">
+                {{ opcional.id_reserva_passageiro.id_pacote.id_excursao }} - 
+                {{ opcional.id_reserva_passageiro.id_pacote }} - 
+                {{ opcional.id_opcional }}
+              </td>
+              <td class="unit">
+                {{ opcional.id_opcional.id_moeda.moeda_simbolo}} {{ opcional.id_opcional.opcional_preco }}
+              </td>
+              <td class="qty">
+                1
+              </td>
+              <td class="total">
+                {{opcional.id_opcional.id_moeda.moeda_simbolo}} {{opcional.id_opcional.opcional_preco}}
+              </td>
+            </tr>
+          {% endfor %}
+          <tr>
+            <td colspan="3">VALOR</td>
+            <td class="total">{{reservapassageiro.id_moeda.moeda_simbolo}} {{ valor }}</td>
+          </tr>
+          <tr>
+            <td colspan="3">DESCONTOS</td>
+            <td class="total">{{reservapassageiro.id_moeda.moeda_simbolo}} {{ desconto }}</td>
+          </tr>
+          <tr>
+            <td colspan="3" class="grand total">TOTAL</td>
+            <td class="grand total">{{reservapassageiro.id_moeda.moeda_simbolo}} {{ total }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div id="notices">
+        <div>OBSERVAÇÕES:</div>
+        <div class="notice">{{reservapassageiro.reserva_passageiro_obs}}</div>
+      </div>
+    </main>
+    <footer>
+      Recibo criado por computador e válido sem selo ou assinatura.
+    </footer>
   </body>
 </html>
