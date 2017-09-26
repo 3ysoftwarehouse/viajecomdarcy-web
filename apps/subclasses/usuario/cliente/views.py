@@ -23,6 +23,7 @@ class ClienteRegister(JSONResponseMixin,View):
 	def get(self, request):
 		form = UserRegisterForm()
 		form.fields['password'].required = False
+		form.fields['repetir_password'].required = False
 		form_cliente = ClienteRegisterForm()
 		formset = formset_factory(PhoneForm)
 		request.session["view"]="cliente"
@@ -33,6 +34,7 @@ class ClienteRegister(JSONResponseMixin,View):
 		form = UserRegisterForm(request.POST, request.FILES)
 		form_cliente = ClienteRegisterForm(request.POST, request.FILES)
 		form.fields['password'].required = False
+		form.fields['repetir_password'].required = False
 		PhoneFormSet = formset_factory(PhoneForm)		
 		formset = PhoneFormSet(request.POST, request.FILES)
 		request.session["view"]="cliente"
@@ -144,6 +146,7 @@ class ClienteEdit(JSONResponseMixin,View):
 
 		form = UserRegisterForm(instance=usuario)		
 		form.fields['password'].required = False
+		form.fields['repetir_password'].required = False
 		form.initial['cep'] = usuario.id_endereco.id_logradouro.cep if usuario.id_endereco else ''
 		form.initial['rua'] = usuario.id_endereco.id_logradouro.nome if usuario.id_endereco else ''
 		form.initial['bairro'] = usuario.id_endereco.id_logradouro.bairro if usuario.id_endereco else ''
@@ -187,6 +190,7 @@ class ClienteEdit(JSONResponseMixin,View):
 		form = UserRegisterForm(request.POST, request.FILES, instance=user)
 		form_cliente = ClienteRegisterForm(request.POST, request.FILES,instance=cliente)
 		form.fields['password'].required = False
+		form.fields['repetir_password'].required = False
 		if telefones:
 			extra = 0
 		PhoneFormSet = formset_factory(PhoneForm, extra=extra)
