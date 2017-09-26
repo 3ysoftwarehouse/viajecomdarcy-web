@@ -34,13 +34,18 @@ class PassageiroRegisterForm(UserRegisterForm, forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		super(PassageiroRegisterForm, self).__init__(*args, **kwargs)
 		self.fields['password'].required = False
+		self.fields['repetir_password'].required = False
 		self.fields['id_escola'].widget.attrs['class'] = 'form-control'
+		self.fields['id_escola'].required = False
 		self.fields['matricula'].widget.attrs['class'] = 'form-control'
 		self.fields['matricula'].widget.attrs['placeholder'] = 'Digite a matricula'
+		self.fields['matricula'].required = False
 		self.fields['natularidade'].widget.attrs['class'] = 'form-control'
 		self.fields['natularidade'].widget.attrs['placeholder'] = 'Digite a natularidade'
+		self.fields['natularidade'].required = False
 		self.fields['observacao'].widget.attrs['class'] = 'form-control'
 		self.fields['observacao'].widget.attrs['placeholder'] = 'Digite algumas observacões'
+		self.fields['observacao'].required = False
 		self.fields['numero_passaporte'].widget.attrs['class'] = 'form-control'
 		self.fields['data_validade_passaporte'].widget.attrs['class'] = 'form-control'
 
@@ -65,6 +70,7 @@ class DocumentoForm(forms.ModelForm):
         super(DocumentoForm, self).__init__(*args, **kwargs)
         self.fields['id_tipo_documento'].widget.attrs['class'] = 'form-control'
         self.fields['id_tipo_documento'].widget.attrs['placeholder'] = 'Tipo'
+        self.fields['id_tipo_documento'].required = False
         self.fields['anexo'].widget.attrs['class'] = 'form-control'
         self.fields['anexo'].widget.attrs['placeholder'] = 'Anexo'
         self.fields['anexo'].required = False

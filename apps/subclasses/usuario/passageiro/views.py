@@ -88,7 +88,7 @@ class PassageiroRegister(JSONResponseMixin,View):
 
 			for  f  in doc_formset:
 				doc = f.cleaned_data
-				if doc:
+				if doc.get('id_tipo_documento') and doc.get('anexo'):
 					documento = Documento()
 					documento.id_usuario = usuario
 					documento.id_tipo_documento = doc.get('id_tipo_documento')
@@ -244,13 +244,12 @@ class PassageiroEdit(JSONResponseMixin,View):
 
 			for  f  in doc_formset:
 				doc = f.cleaned_data
-				if doc:
+				if doc.get('id_tipo_documento') and doc.get('anexo'):
 					documento = Documento()
 					documento.id_usuario = usuario
 					documento.id_tipo_documento = doc.get('id_tipo_documento')
-					if doc.get('id_tipo_documento') and  doc.get('anexo'):
-						documento.anexo = doc.get('anexo')
-						documento.save()
+					documento.anexo = doc.get('anexo')
+					documento.save()
 
 
 			passageiro.id_escola = form.cleaned_data.get("id_escola")
